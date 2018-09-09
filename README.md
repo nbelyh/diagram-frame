@@ -1,6 +1,7 @@
 ## visio-online-spfx-web-part
 
-This is where you include your WebPart documentation.
+SharePoint WebPart to wrap Visio Online.
+You can add custom code in the part, and auto-copmplete is set up.
 
 ### Building the code
 
