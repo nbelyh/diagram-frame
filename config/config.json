@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "spfxvisio": {
+      "components": [
+        {
+          "entrypoint": "./lib/VisioOnlineSpfx.js",
+          "manifest": "./src/VisioOnlineSpfx.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {
+    "VisioEmbed": {
+      "path": "node_modules/@microsoft/office-js/embedded/visio-web-embedded.debug.js",
+      "globalName": "Visio"
+    }
+  },
+  "localizedResources": {
+    "VisioOnlineSpfxStrings": "./src/loc/{locale}.js"
+  }
+}

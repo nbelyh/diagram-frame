@@ -1,0 +1,23 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "eaf98c51-0b5e-4ab0-9eca-139671d32cf5",
+  "alias": "VisioOnlineSpfx",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Other" },
+    "title": { "default": "Visio Online Spfx Part" },
+    "description": { "default": "Wraps Visio Online Page" },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "url": "",
+      "width": "100%",
+      "height": "500px"
+    }
+  }]
+}
