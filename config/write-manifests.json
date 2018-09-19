@@ -1,4 +1,4 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/write-manifests.schema.json",
-  "cdnBasePath": "https://spfxvisio.blob.core.windows.net/visio-online-script-web-part"
+  "cdnBasePath": "<!-- PATH TO CDN -->" //"https://spfxvisio.blob.core.windows.net/visio-online-spfx-web-part"
 }

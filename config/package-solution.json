@@ -4,7 +4,7 @@
     "name": "visio-online-spfx-web-part",
     "id": "bc8110d6-2d34-408e-98c5-7f32eab887cb",
     "version": "0.0.1.0",
-    "includeClientSideAssets": false
+    "includeClientSideAssets": true
   },
   "paths": {
     "zippedPackage": "solution/visio-online-spfx-web-part.sppkg"

@@ -71,10 +71,6 @@ export interface IPropertyFieldDocumentPickerProps {
    */
   disabled?: boolean;
   /**
-   * Whether the document preview is enabled or not. Default is true.
-   */
-  previewDocument?: boolean;
-  /**
    * Defines the file extensions allowed in the picker. You need to specifies all the extensions with
    * a dot and to separate them with a comma without spaces. For example a good value is: `.doc,.docx,.ppt`.
    * The default value is `.doc,.docx,.ppt,.pptx,.xls,.xlsx,.pdf,.txt`
@@ -127,7 +123,6 @@ export interface IPropertyFieldDocumentPickerPropsInternal extends IPropertyPane
   disabled?: boolean;
   onGetErrorMessage?: (value: string) => string | Promise<string>;
   deferredValidationTime?: number;
-  previewDocument?: boolean;
   readOnly?: boolean;
   allowedFileExtensions?: string;
 }
@@ -154,7 +149,6 @@ class PropertyFieldDocumentPickerBuilder implements IPropertyPaneField<IProperty
   private disabled: boolean = false;
   private onGetErrorMessage: (value: string) => string | Promise<string>;
   private deferredValidationTime: number = 200;
-  private previewDocument: boolean = true;
   private readOnly: boolean = true;
   private allowedFileExtensions: string = ".doc,.docx,.ppt,.pptx,.xls,.xlsx,.pdf,.txt";
   private renderWebPart: () => void;
@@ -181,8 +175,6 @@ class PropertyFieldDocumentPickerBuilder implements IPropertyPaneField<IProperty
     this.onGetErrorMessage = _properties.onGetErrorMessage;
     if (_properties.deferredValidationTime !== undefined)
       this.deferredValidationTime = _properties.deferredValidationTime;
-    if (_properties.previewDocument !== undefined)
-      this.previewDocument = _properties.previewDocument;
     if (_properties.readOnly === false)
       this.readOnly = _properties.readOnly;
     if (_properties.allowedFileExtensions != null && _properties.allowedFileExtensions !== undefined && _properties.allowedFileExtensions != '')
@@ -211,7 +203,6 @@ class PropertyFieldDocumentPickerBuilder implements IPropertyPaneField<IProperty
       disabled: this.disabled,
       onGetErrorMessage: this.onGetErrorMessage,
       deferredValidationTime: this.deferredValidationTime,
-      previewDocument: this.previewDocument,
       readOnly: this.readOnly,
       allowedFileExtensions: this.allowedFileExtensions,
       render: this.renderWebPart,
@@ -253,7 +244,6 @@ export function PropertyFieldDocumentPicker(targetProperty: string, properties: 
       disabled: properties.disabled,
       onGetErrorMessage: properties.onGetErrorMessage,
       deferredValidationTime: properties.deferredValidationTime,
-      previewDocument: properties.previewDocument,
       readOnly: properties.readOnly,
       allowedFileExtensions: properties.allowedFileExtensions,
       render: properties.render,

@@ -6,9 +6,12 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "start": "gulp serve",
     "build": "gulp bundle",
     "clean": "gulp clean",
-    "ship": "gulp --ship && gulp deploy-azure-storage",
+    "ship": "gulp --ship",
+    "package": "gulp package-solution --ship",
+    "deploy": "gulp deploy-azure-storage",
     "test": "gulp test"
   },
   "dependencies": {

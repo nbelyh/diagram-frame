@@ -1,9 +1,6 @@
 declare interface IVisioOnlineSpfxStrings {
-  PropertyPaneDescription: string;
   BasicGroupName: string;
   UrlFieldLabel: string;
-  DocumentPickerSite: string;
-  DocumentPickerRecent: string;
   DocumentPickerTitle: string;
 }
 

@@ -14,7 +14,7 @@ export default class VisioOnlineSpfxWebPart extends React.Component<IVisioOnline
 
     const url = this.props.url;
     if (url) {
-      if (url.indexOf("https://") >= 0) {
+      if (url.indexOf("Doc.aspx") >= 0) {
         const session: any = new OfficeExtension.EmbeddedSession(url, {
           container: root,
           width: this.props.width,
@@ -23,7 +23,7 @@ export default class VisioOnlineSpfxWebPart extends React.Component<IVisioOnline
 
         session.init().then(() => {
 
-          Visio.run(session, ctx => {
+          return Visio.run(session, ctx => {
             ctx.document.application.showToolbars = false;
             return ctx.sync();
           });

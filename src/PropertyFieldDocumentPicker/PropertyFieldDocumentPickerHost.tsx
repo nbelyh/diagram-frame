@@ -25,11 +25,7 @@ export interface IPropertyFieldDocumentPickerHostProps extends IPropertyFieldDoc
 
 export interface IPropertyFieldDocumentPickerHostState {
   openPanel?: boolean;
-  openRecent?: boolean;
-  openSite?: boolean;
-  openUpload?: boolean;
-  recentImages?: string[];
-  selectedImage: string;
+  selectedDocument: string;
   errorMessage?: string;
 }
 
@@ -54,20 +50,13 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
     this.onTextFieldChanged = this.onTextFieldChanged.bind(this);
     this.onOpenPanel = this.onOpenPanel.bind(this);
     this.onClosePanel = this.onClosePanel.bind(this);
-    this.onClickRecent = this.onClickRecent.bind(this);
-    this.onClickSite = this.onClickSite.bind(this);
-    this.onClickUpload = this.onClickUpload.bind(this);
     this.handleIframeData = this.handleIframeData.bind(this);
     this.onEraseButton = this.onEraseButton.bind(this);
 
     //Inits the state
     this.state = {
-      selectedImage: this.props.initialValue,
+      selectedDocument: this.props.initialValue,
       openPanel: false,
-      openRecent: false,
-      openSite: true,
-      openUpload: false,
-      recentImages: [],
       errorMessage: ''
     };
 
@@ -80,11 +69,12 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
 
   /**
    * @function
-   * Save the image value
+   * Save the document value
    *
    */
-  private saveImageProperty(imageUrl: string): void {
-    this.delayedValidate(imageUrl);
+  private saveDocumentProperty(documentUrl: string): void {
+    this.setState({ selectedDocument: documentUrl });
+    this.delayedValidate(documentUrl);
   }
 
   /**
@@ -106,13 +96,13 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
       if (typeof result === 'string') {
         if (result === undefined || result === '')
           this.notifyAfterValidate(this.props.initialValue, value);
-        this.setState({ errorMessage: result } as IPropertyFieldDocumentPickerHostState);
+        this.setState({ errorMessage: result });
       }
       else {
         result.then((errorMessage: string) => {
           if (errorMessage === undefined || errorMessage === '')
             this.notifyAfterValidate(this.props.initialValue, value);
-          this.setState({ errorMessage: errorMessage } as IPropertyFieldDocumentPickerHostState);
+          this.setState({ errorMessage: errorMessage });
         });
       }
     }
@@ -140,8 +130,7 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
   *
   */
   private onEraseButton(): void {
-    this.setState({ selectedImage: '' });
-    this.saveImageProperty('');
+    this.saveDocumentProperty('');
   }
 
   /**
@@ -150,7 +139,7 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
   *
   */
   private onOpenPanel(element?: any): void {
-    this.setState({ openPanel: true } as IPropertyFieldDocumentPickerHostState);
+    this.setState({ openPanel: true });
   }
 
   /**
@@ -159,8 +148,7 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
   *
   */
   private onTextFieldChanged(newValue: string): void {
-    this.setState({ selectedImage: newValue });
-    this.saveImageProperty(newValue);
+    this.saveDocumentProperty(newValue);
   }
 
   /**
@@ -169,14 +157,7 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
   *
   */
   private onClosePanel(element?: any): void {
-    this.setState({ openPanel: false } as IPropertyFieldDocumentPickerHostState);
-  }
-
-  private onClickRecent(element?: any): void {
-    //this.state.openRecent = true;
-    //this.state.openSite = false;
-    //this.state.openUpload = false;
-    //this.setState(this.state);
+    this.setState({ openPanel: false });
   }
 
   /**
@@ -185,7 +166,7 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
   *
   */
   private handleIframeData(element?: any) {
-    if (this.state.openSite != true || this.state.openPanel != true)
+    if (this.state.openPanel != true)
       return;
     var data: string = element.data;
     var indexOfPicker = data.indexOf("[OneDrive-FromPicker]");
@@ -195,18 +176,10 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
       if (messageObject.type == "cancel") {
         this.onClosePanel();
       } else if (messageObject.type == "success") {
-        var imageUrl: string = messageObject.items[0].sharePoint.url;
-        var extensions: string[] = this.props.allowedFileExtensions.split(',');
-        var lowerUrl: string = imageUrl.toLowerCase();
-        for (var iExt = 0; iExt < extensions.length; iExt++) {
-          var ext = extensions[iExt].toLowerCase();
-          if (lowerUrl.indexOf(ext) > -1) {
-            this.setState({ selectedImage: imageUrl });
-            this.saveImageProperty(imageUrl);
-            this.onClosePanel();
-            break;
-          }
-        }
+        var documentUrl: string = this.props.context.pageContext.web.absoluteUrl;
+        documentUrl += '/_layouts/15/Doc.aspx?sourcedoc=%7B'+messageObject.items[0].sharePoint.uniqueId+'%7D&action=embedview';
+        this.saveDocumentProperty(documentUrl);
+        this.onClosePanel();
       }
     }
   }
@@ -231,23 +204,6 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
       this.async.dispose();
   }
 
-  private onClickSite(element?: any): void {
-    this.setState({
-      openRecent: false,
-      openSite: true,
-      openUpload: false
-    } as IPropertyFieldDocumentPickerHostState);
-  }
-
-  private onClickUpload(element?: any): void {
-    this.setState({
-      openRecent: false,
-      openSite: false,
-      openUpload: true
-    } as IPropertyFieldDocumentPickerHostState);
-  }
-
-
   /**
    * @function
    * Renders the datepicker controls with Office UI  Fabric
@@ -264,10 +220,6 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
     iframeUrl += encodeURI('folder,' + this.props.allowedFileExtensions);
     iframeUrl += '&p=2';
 
-    // var previewUrl = this.props.context.pageContext.web.absoluteUrl;
-    // previewUrl += '/_layouts/15/getpreview.ashx?path=';
-    // previewUrl += encodeURI(this.state.selectedImage);
-
     //Renders content
     return (
       <div style={{ marginBottom: '8px' }}>
@@ -275,10 +227,10 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
         <table style={{ width: '100%', borderSpacing: 0 }}>
           <tbody>
             <tr>
-              <td>
+              <td style={{ width: "*" }}>
                 <TextField
                   disabled={this.props.disabled}
-                  value={this.state.selectedImage}
+                  value={this.state.selectedDocument}
                   style={{ width: '100%' }}
                   onChanged={this.onTextFieldChanged}
                   readOnly={this.props.readOnly}
@@ -288,8 +240,11 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
                 <table style={{ width: '100%', borderSpacing: 0 }}>
                   <tbody>
                     <tr>
-                      <td><IconButton disabled={this.props.disabled} iconProps={{ iconName: 'FolderSearch' }} onClick={this.onOpenPanel} /></td>
-                      <td><IconButton disabled={this.props.disabled === false && (this.state.selectedImage != null && this.state.selectedImage != '') ? false : true} iconProps={{ iconName: 'Delete' }} onClick={this.onEraseButton} /></td>
+                      <td><IconButton
+                        disabled={this.props.disabled} iconProps={{ iconName: 'FolderSearch' }} onClick={this.onOpenPanel} /></td>
+                      <td><IconButton
+                        disabled={this.props.disabled === false && (this.state.selectedDocument != null && this.state.selectedDocument != '') ? false : true}
+                        iconProps={{ iconName: 'Delete' }} onClick={this.onEraseButton} /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -312,69 +267,9 @@ export default class PropertyFieldDocumentPickerHost extends React.Component<IPr
             isLightDismiss={true} type={PanelType.large}
             headerText={strings.DocumentPickerTitle}>
 
-            <div style={{ backgroundColor: '#F4F4F4', width: '100%', height: '80vh', paddingTop: '0px', display: 'inline-flex' }}>
-
-              <div style={{ width: '206px', backgroundColor: 'white' }}>
-                <div style={{ width: '260px', backgroundColor: '#F4F4F4', height: '40px', marginBottom: '70px' }}>
-                </div>
-
-                <div style={{
-                  paddingLeft: '20px', paddingTop: '10px', color: '#A6A6A6', paddingBottom: '10px',
-                  borderLeftWidth: '1px',
-                  borderLeftStyle: 'solid',
-                  borderLeftColor: this.state.openRecent === true ? 'blue' : 'white',
-                  backgroundColor: this.state.openRecent === true ? '#F4F4F4' : '#FFFFFF'
-                }} onClick={this.onClickRecent} role="menuitem">
-                  <i className="ms-Icon ms-Icon--Clock" style={{ fontSize: '30px' }}></i>
-                  &nbsp;{strings.DocumentPickerRecent}
-                </div>
-                <div style={{
-                  cursor: 'pointer', paddingLeft: '20px', paddingTop: '10px', paddingBottom: '10px',
-                  borderLeftWidth: '1px',
-                  borderLeftStyle: 'solid',
-                  borderLeftColor: this.state.openSite === true ? 'blue' : 'white',
-                  backgroundColor: this.state.openSite === true ? '#F4F4F4' : '#FFFFFF'
-                }} onClick={this.onClickSite} role="menuitem">
-                  <i className="ms-Icon ms-Icon--Globe" style={{ fontSize: '30px' }}></i>
-                  &nbsp;{strings.DocumentPickerSite}
-                </div>
-              </div>
-
-              {this.state.openRecent == true ?
-                <div id="recent" style={{ marginLeft: '2px', width: '100%', backgroundColor: 'white' }}>
-                  <div style={{ width: '100%', backgroundColor: '#F4F4F4', height: '40px', marginBottom: '20px' }}>
-                  </div>
-                  <div style={{ paddingLeft: '30px' }}>
-                    <h1 className="ms-font-xl">Recent images</h1>
-
-                  </div>
-                </div>
-                : ''}
-
-              <div id="site" style={{ marginLeft: '2px', paddingLeft: '0px', paddingTop: '0px', backgroundColor: 'white', visibility: this.state.openSite === true ? 'visible' : 'hidden', width: this.state.openSite === true ? '100%' : '0px', height: this.state.openSite === true ? '80vh' : '0px', }}>
-
-                <iframe ref="filePickerIFrame" style={{ width: this.state.openSite === true ? '100%' : '0px', height: this.state.openSite === true ? '80vh' : '0px', borderWidth: '0' }} className="filePickerIFrame_d791363d" role="application" title="Select files from site picker view. Use toolbaar menu to perform operations, breadcrumbs to navigate between folders and arrow keys to navigate within the list"
-                  src={iframeUrl}></iframe>
-
-              </div>
-
-
-            </div>
-
-
-            {this.state.openSite === false ?
-              <div style={{
-                position: 'absolute',
-                bottom: '0',
-                right: '0',
-                marginBottom: '20px',
-                marginRight: '20px'
-              }}>
-                <PrimaryButton> Open </PrimaryButton>
-                <DefaultButton onClick={this.onClosePanel}> Cancel </DefaultButton>
-              </div>
-              : ''}
-
+            <iframe ref="filePickerIFrame" style={{ border: "0", width: "100%", height: "80vh"}}
+              title="Select files from site picker view. Use toolbaar menu to perform operations, breadcrumbs to navigate between folders and arrow keys to navigate within the list"
+              src={iframeUrl}>Loading...</iframe>
           </Panel>
           : ''}
 

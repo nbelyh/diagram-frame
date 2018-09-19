@@ -46,18 +46,15 @@ export default class VisioOnlineScript extends BaseClientSideWebPart<IVisioOnlin
     return {
       pages: [
         {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
           groups: [
             {
               groupName: strings.BasicGroupName,
               groupFields: [
 
                 PropertyFieldDocumentPicker('url', {
-                  label: 'Select a document',
+                  label: strings.UrlFieldLabel,
                   initialValue: this.properties.url,
-                  allowedFileExtensions: '.vsd,.vsdx,.vst,.vstx',
+                  allowedFileExtensions: '.vsd,.vdx,.vsdx,.vsdm,.vst,.vstx,.vstm',
                   onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
                   render: this.render.bind(this),
                   disableReactivePropertyChanges: this.disableReactivePropertyChanges,

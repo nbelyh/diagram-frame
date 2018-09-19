@@ -1,7 +1,7 @@
 define([], function() {
   return {
-    "PropertyPaneDescription": "Description",
-    "BasicGroupName": "Group Name",
-    "UrlFieldLabel": "The Visio File Url"
-  }
+    "BasicGroupName": "Embedded Visio Online",
+    "UrlFieldLabel": "Visio Document Url",
+    "DocumentPickerTitle": "Select Visio Document"
+    }
 });

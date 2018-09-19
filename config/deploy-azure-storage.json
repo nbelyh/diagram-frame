@@ -2,6 +2,6 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/deploy-azure-storage.schema.json",
   "workingDir": "./temp/deploy/",
   "account": "spfxvisio",
-  "container": "visio-online-script-web-part",
+  "container": "visio-online-spfx-web-part",
   "accessKey": "RfEWbJUqIq34ToAFITyjtrJ8E1HQQniKdea2hen8dkIZkL6Ro7sEPtuljUm3GDvueP1Ix1pPd/oY0YRCrVXd8Q=="
 }
