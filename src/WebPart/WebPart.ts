@@ -6,14 +6,15 @@ import { IPropertyPaneConfiguration, PropertyPaneTextField } from "@microsoft/sp
 
 require('VisioEmbed');
 
-import * as strings from 'VisioOnlineSpfxStrings';
+import * as strings from 'WebPartStrings';
 
-import { VisioOnlineSpfxWebPart } from './VisioOnlineSpfxWebPart';
+import { TopFrame } from './TopFrame';
 
 export interface IVisioOnlineScriptProps {
   url: string;
   width: string;
   height: string;
+
 }
 
 export default class VisioOnlineScript extends BaseClientSideWebPart<IVisioOnlineScriptProps> {
@@ -21,7 +22,7 @@ export default class VisioOnlineScript extends BaseClientSideWebPart<IVisioOnlin
   public render(): void {
 
     const element = React.createElement(
-      VisioOnlineSpfxWebPart,
+      TopFrame,
       {
         url: this.properties.url,
         width: this.properties.width,

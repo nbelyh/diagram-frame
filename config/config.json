@@ -5,8 +5,8 @@
     "spfxvisio": {
       "components": [
         {
-          "entrypoint": "./lib/VisioOnlineSpfx.js",
-          "manifest": "./src/VisioOnlineSpfxWebPart/VisioOnlineSpfx.manifest.json"
+          "entrypoint": "./lib/WebPart/WebPart.js",
+          "manifest": "./src/WebPart/WebPart.manifest.json"
         }
       ]
     }
@@ -18,6 +18,6 @@
     }
   },
   "localizedResources": {
-    "VisioOnlineSpfxStrings": "./src/loc/{locale}.js"
+    "WebPartStrings": "./src/loc/{locale}.js"
   }
 }

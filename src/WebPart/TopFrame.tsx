@@ -1,6 +1,7 @@
 import * as React from 'react';
+import styles from './TopFrame.module.scss';
 
-export function VisioOnlineSpfxWebPart(props: {
+export function TopFrame(props: {
   url: string;
   width: string;
   height: string;
@@ -10,7 +11,7 @@ export function VisioOnlineSpfxWebPart(props: {
 
   React.useEffect(() => {
 
-    const root = ref.current;
+    const root: HTMLElement = ref.current;
     if (props.url && props.url.indexOf("Doc.aspx") >= 0) {
       const session: any = new OfficeExtension.EmbeddedSession(props.url, {
         container: root,
@@ -26,12 +27,15 @@ export function VisioOnlineSpfxWebPart(props: {
       });
 
       return () => {
-        for (var i = 0; i < root.childNodes.length; ++i) {
-          root.removeChild(root.childNodes[i]);
-        }
+        root.innerHTML = "";
       };
     }
   }, [props.url, props.height, props.width]);
 
-  return (<div style={{ height: props.height, width: props.width }} ref={ref} ></div>);
+  const rootStyle = {
+    height: props.height,
+    width: props.width
+  };
+
+  return (<div className={styles.root} style={rootStyle} ref={ref} ></div>);
 }

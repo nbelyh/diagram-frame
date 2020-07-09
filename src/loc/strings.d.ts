@@ -1,10 +1,10 @@
-declare interface IVisioOnlineSpfxStrings {
+declare interface IWebPartStrings {
   BasicGroupName: string;
   UrlFieldLabel: string;
   DocumentPickerTitle: string;
 }
 
-declare module 'VisioOnlineSpfxStrings' {
-  const strings: IVisioOnlineSpfxStrings;
+declare module 'WebPartStrings' {
+  const strings: IWebPartStrings;
   export = strings;
 }
