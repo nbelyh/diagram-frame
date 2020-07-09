@@ -1,54 +1,37 @@
 import * as React from 'react';
-import { IVisioOnlineSpfxWebPartProps } from './IVisioOnlineSpfxWebPartProps';
-import styles from './VisioOnlineSpfxWebPart.module.scss';
 
-export default class VisioOnlineSpfxWebPart extends React.Component<IVisioOnlineSpfxWebPartProps, {}> {
+export function VisioOnlineSpfxWebPart(props: {
+  url: string;
+  width: string;
+  height: string;
+}) {
 
-  private refreshVisioFrame() {
+  const ref = React.useRef(null);
 
-    var root = this.refs.frame as HTMLElement;
+  React.useEffect(() => {
 
-    for (var i = 0; i < root.childNodes.length; ++i) {
-      root.removeChild(root.childNodes[i]);
-    }
+    const root = ref.current;
+    if (props.url && props.url.indexOf("Doc.aspx") >= 0) {
+      const session: any = new OfficeExtension.EmbeddedSession(props.url, {
+        container: root,
+        width: this.props.width,
+        height: this.props.height,
+      });
 
-    const url = this.props.url;
-    if (url) {
-      if (url.indexOf("Doc.aspx") >= 0) {
-        const session: any = new OfficeExtension.EmbeddedSession(url, {
-          container: root,
-          width: this.props.width,
-          height: this.props.height,
+      session.init().then(() => {
+        return Visio.run(session, ctx => {
+          ctx.document.application.showToolbars = false;
+          return ctx.sync();
         });
+      });
 
-        session.init().then(() => {
-
-          return Visio.run(session, ctx => {
-            ctx.document.application.showToolbars = false;
-            return ctx.sync();
-          });
-
-        });
+      return () => {
+        for (var i = 0; i < root.childNodes.length; ++i) {
+          root.removeChild(root.childNodes[i]);
+        }
       }
     }
-  }
+  }, [props.url]);
 
-  public componentDidUpdate(prevProps) {
-    if (this.props.url != prevProps.url ||
-      this.props.width != prevProps.width ||
-      this.props.height != prevProps.height) {
-      this.refreshVisioFrame();
-    }
-  }
-
-  public componentDidMount() {
-    this.refreshVisioFrame();
-  }
-
-  public render(): React.ReactElement<IVisioOnlineSpfxWebPartProps> {
-    return (
-      <div className={ styles.VisioOnlineSpfxWebPart } ref="frame">
-      </div>
-    );
-  }
+  return <div style={{ height: props.height, width: props.width }} ref={ref} ></div>
 }

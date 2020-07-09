@@ -6,7 +6,7 @@
       "components": [
         {
           "entrypoint": "./lib/VisioOnlineSpfx.js",
-          "manifest": "./src/VisioOnlineSpfx.manifest.json"
+          "manifest": "./src/VisioOnlineSpfxWebPart/VisioOnlineSpfx.manifest.json"
         }
       ]
     }

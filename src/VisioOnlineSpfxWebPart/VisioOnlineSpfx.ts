@@ -1,20 +1,14 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import {
-  BaseClientSideWebPart,
-  IPropertyPaneConfiguration,
-  PropertyPaneTextField,
-  PropertyPaneButton
-} from '@microsoft/sp-webpart-base';
+import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
+import { IPropertyPaneConfiguration, PropertyPaneTextField } from "@microsoft/sp-property-pane";
 
 require('VisioEmbed');
 
 import * as strings from 'VisioOnlineSpfxStrings';
-import { PropertyFieldDocumentPicker } from './PropertyFieldDocumentPicker/PropertyFieldDocumentPicker';
 
-import { IVisioOnlineSpfxWebPartProps } from './VisioOnlineSpfxWebPart/IVisioOnlineSpfxWebPartProps';
-import VisioOnlineSpfxWebPart from './VisioOnlineSpfxWebPart/VisioOnlineSpfxWebPart';
+import { VisioOnlineSpfxWebPart } from './VisioOnlineSpfxWebPart';
 
 export interface IVisioOnlineScriptProps {
   url: string;
@@ -26,7 +20,7 @@ export default class VisioOnlineScript extends BaseClientSideWebPart<IVisioOnlin
 
   public render(): void {
 
-    const element: React.ReactElement<IVisioOnlineSpfxWebPartProps> = React.createElement(
+    const element = React.createElement(
       VisioOnlineSpfxWebPart,
       {
         url: this.properties.url,
@@ -50,21 +44,6 @@ export default class VisioOnlineScript extends BaseClientSideWebPart<IVisioOnlin
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-
-                PropertyFieldDocumentPicker('url', {
-                  label: strings.UrlFieldLabel,
-                  initialValue: this.properties.url,
-                  allowedFileExtensions: '.vsd,.vdx,.vsdx,.vsdm,.vst,.vstx,.vstm',
-                  onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
-                  render: this.render.bind(this),
-                  disableReactivePropertyChanges: this.disableReactivePropertyChanges,
-                  properties: this.properties,
-                  context: this.context,
-                  onGetErrorMessage: null,
-                  deferredValidationTime: 0,
-                  readOnly: false,
-                  key: 'picturePickerFieldId'
-                }),
 
                 PropertyPaneTextField('width', {
                   label: 'Width',
