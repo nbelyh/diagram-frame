@@ -31,7 +31,7 @@ export function VisioOnlineSpfxWebPart(props: {
         }
       };
     }
-  }, [props.url]);
+  }, [props.url, props.height, props.width]);
 
   return (<div style={{ height: props.height, width: props.width }} ref={ref} ></div>);
 }
