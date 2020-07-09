@@ -45,16 +45,16 @@ export default class VisioOnlineScript extends BaseClientSideWebPart<IVisioOnlin
               groupName: strings.BasicGroupName,
               groupFields: [
 
+                PropertyPaneTextField('url', {
+                  label: 'URL',
+                }),
+
                 PropertyPaneTextField('width', {
                   label: 'Width',
-                  value: '100%',
-                  disabled: false,
                 }),
 
                 PropertyPaneTextField('height', {
                   label: 'Height',
-                  value: '500px',
-                  disabled: false,
                 })
               ]
             }

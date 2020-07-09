@@ -14,8 +14,8 @@ export function VisioOnlineSpfxWebPart(props: {
     if (props.url && props.url.indexOf("Doc.aspx") >= 0) {
       const session: any = new OfficeExtension.EmbeddedSession(props.url, {
         container: root,
-        width: this.props.width,
-        height: this.props.height,
+        width: props.width,
+        height: props.height,
       });
 
       session.init().then(() => {
@@ -29,9 +29,9 @@ export function VisioOnlineSpfxWebPart(props: {
         for (var i = 0; i < root.childNodes.length; ++i) {
           root.removeChild(root.childNodes[i]);
         }
-      }
+      };
     }
   }, [props.url]);
 
-  return <div style={{ height: props.height, width: props.width }} ref={ref} ></div>
+  return (<div style={{ height: props.height, width: props.width }} ref={ref} ></div>);
 }
