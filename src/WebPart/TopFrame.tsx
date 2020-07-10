@@ -15,8 +15,8 @@ export function TopFrame(props: {
     if (props.url && props.url.indexOf("Doc.aspx") >= 0) {
       const session: any = new OfficeExtension.EmbeddedSession(props.url, {
         container: root,
-        width: props.width,
-        height: props.height,
+        height: '100%',
+        width: '100%'
       });
 
       session.init().then(() => {
@@ -34,7 +34,7 @@ export function TopFrame(props: {
 
   const rootStyle = {
     height: props.height,
-    width: props.width
+    width: props.width,
   };
 
   return (<div className={styles.root} style={rootStyle} ref={ref} ></div>);
