@@ -1,6 +1,6 @@
 {
   "name": "visio-online-spfx-web-part",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "main": "lib/index.js",
   "engines": {
@@ -15,12 +15,15 @@
   },
   "dependencies": {
     "@fluentui/react": "^7.121.2",
-    "@microsoft/office-js": "^1.1.8",
+    "@microsoft/office-js": "^1.1.40",
     "@microsoft/sp-core-library": "1.10.0",
     "@microsoft/sp-lodash-subset": "1.10.0",
     "@microsoft/sp-office-ui-fabric-core": "1.10.0",
     "@microsoft/sp-property-pane": "1.10.0",
     "@microsoft/sp-webpart-base": "1.10.0",
+    "@pnp/sp": "^2.0.6",
+    "@pnp/spfx-controls-react": "^1.19.0",
+    "@pnp/spfx-property-controls": "^1.19.0",
     "react": "16.8.5",
     "react-dom": "16.8.5"
   },

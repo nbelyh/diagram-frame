@@ -1,4 +1,4 @@
-## visio-online-spfx-web-part
+## uv-visio-web-part
 
 SharePoint WebPart to wrap Visio Online.
 You can add custom code in the part, and auto-copmplete is set up.

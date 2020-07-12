@@ -1,7 +1,13 @@
-define([], function() {
+define([], function () {
   return {
-    "BasicGroupName": "Embedded Visio Online",
-    "UrlFieldLabel": "Visio Document Url",
-    "DocumentPickerTitle": "Select Visio Document"
-    }
+    "BasicGroupName": "Basic Settings",
+    "FieldWidth": "Width",
+    "FieldHeight": "Height",
+    "FieldZoom": "Default Zoom",
+    "Toolbars": "Toolbars",
+    "FieldVisioFile": "Visio File",
+    "FieldVisioFileBrowse": "Browse...",
+    "FieldShowToolbars": "Show Toolbars",
+    "FieldShowBorders": "Show Border",
+  }
 });

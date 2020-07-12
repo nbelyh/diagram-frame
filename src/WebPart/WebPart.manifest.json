@@ -16,10 +16,10 @@
         "default": "Other"
       },
       "title": {
-        "default": "Visio Online Spfx Part"
+        "default": "UV Visio WebPart"
       },
       "description": {
-        "default": "Wraps Visio Online Page"
+        "default": "Displays a Visio drawing file with configured settings"
       },
       "officeFabricIconFontName": "Page",
       "properties": {

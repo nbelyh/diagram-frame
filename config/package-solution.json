@@ -1,13 +1,14 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "visio-online-spfx-web-part",
+    "name": "uv-visio-web-part",
     "id": "bc8110d6-2d34-408e-98c5-7f32eab887cb",
-    "version": "0.0.1.0",
+    "version": "0.0.2.0",
     "includeClientSideAssets": true,
-    "isDomainIsolated": false
+    "isDomainIsolated": false,
+    "skipFeatureDeployment": true
   },
   "paths": {
-    "zippedPackage": "solution/visio-online-spfx-web-part.sppkg"
+    "zippedPackage": "solution/uv-visio-web-part.sppkg"
   }
 }
