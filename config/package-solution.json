@@ -1,7 +1,14 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "uv-visio-web-part",
+    "developer": {
+      "name": "Nikolay Belykh",
+      "privacyUrl": "https://unmanagedvisio.com/privacy",
+      "termsOfUseUrl": "https://contoso.com/terms-of-use",
+      "websiteUrl": "https://unmanagedvisio.com/",
+      "mpnId": "6213191"
+    },
+    "name": "Diagram Frame",
     "id": "bc8110d6-2d34-408e-98c5-7f32eab887cb",
     "version": "0.0.2.0",
     "includeClientSideAssets": true,
@@ -9,6 +16,6 @@
     "skipFeatureDeployment": true
   },
   "paths": {
-    "zippedPackage": "solution/uv-visio-web-part.sppkg"
+    "zippedPackage": "solution/diagram-frame-webpart.sppkg"
   }
 }

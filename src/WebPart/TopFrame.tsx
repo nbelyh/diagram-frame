@@ -20,7 +20,7 @@ export function TopFrame(props: {
   const ref = React.useRef(null);
   const [embedUrl, setEmbedUrl] = React.useState(null);
 
-  async function init(ctx: Visio.RequestContext) {
+  const init = (ctx: Visio.RequestContext) => {
     ctx.document.application.showToolbars = props.showToolbars;
     ctx.document.application.showBorders = props.showBorders;
 
@@ -29,8 +29,8 @@ export function TopFrame(props: {
     //   activePage.view.zoom = props.zoom;
     // }
 
-    await ctx.sync();
-  }
+    return ctx.sync();
+  };
 
   React.useEffect(() => {
 
