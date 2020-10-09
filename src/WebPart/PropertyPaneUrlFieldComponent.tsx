@@ -38,5 +38,6 @@ export function PropertyPaneUrlFieldComponent(props: {
     onSave={(filePickerResult: IFilePickerResult) => onUploadImage(filePickerResult)}
     onChanged={(filePickerResult: IFilePickerResult) => onChangeImage(filePickerResult)}
     context={props.context}
+    hideStockImages
   />;
 }

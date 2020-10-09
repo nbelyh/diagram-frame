@@ -34,14 +34,8 @@ export function TopFrame(props: ITopFrameProps) {
 
     await ctx.sync();
 
-    if (props.disableZoom) {
-      ctx.document.getActivePage().view.fitToWindow();
-    }
-
     const pageNames = pages.items.map(p => p.name);
     props.setPageNames(pageNames);
-
-    console.log(pageNames);
   };
 
   React.useEffect(() => {
@@ -88,12 +82,9 @@ export function TopFrame(props: ITopFrameProps) {
   const rootStyle = {
     height: props.height,
     width: props.width,
-    display: "flex"
   };
 
   return (
-    <div className={styles.root} style={rootStyle} >
-      {embedUrl && <div style={{ flex: 1 }} ref={ref} />}
-    </div>
+    <div className={styles.root} style={rootStyle} ref={ref} />
   );
 }
