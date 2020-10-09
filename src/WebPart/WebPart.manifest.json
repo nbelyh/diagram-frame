@@ -21,7 +21,7 @@
       "description": {
         "default": "Displays a Visio drawing file with additional configured settings"
       },
-      "officeFabricIconFontName": "Page",
+      "officeFabricIconFontName": "VisioDiagram",
       "properties": {
         "url": "",
         "width": "100%",

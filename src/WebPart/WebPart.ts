@@ -11,6 +11,7 @@ require('VisioEmbed');
 import * as strings from 'WebPartStrings';
 
 import { TopFrame } from './TopFrame';
+import { PropertyPaneVersionField } from '../PropertyPaneVersionField';
 
 export interface IVisioOnlineScriptProps {
   width: string;
@@ -97,6 +98,12 @@ export default class WebPart extends BaseClientSideWebPart<IVisioOnlineScriptPro
                 PropertyPaneToggle('showBorders', {
                   label: strings.FieldShowBorders,
                 }),
+              ]
+            },
+            {
+              groupName: "About",
+              groupFields: [
+                PropertyPaneVersionField(this.context.manifest.version)
               ]
             }
           ]
