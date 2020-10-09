@@ -31,6 +31,7 @@ export function PropertyPaneUrlFieldComponent(props: {
   };
 
   return <FilePicker
+    label="Visio Document"
     ref={pickerMounted}
     accepts={[".vsd", ".vsdx", ".vsdm"]}
     buttonLabel="Browse..."

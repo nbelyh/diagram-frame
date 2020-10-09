@@ -1,34 +1,47 @@
 import * as React from 'react';
 import styles from './TopFrame.module.scss';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
+import { IWebPartProps } from './WebPart';
 
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-export function TopFrame(props: {
-  url: string;
-  width: string;
-  height: string;
-  showToolbars: boolean;
-  showBorders: boolean;
-  zoom: number;
-  context: WebPartContext
-}) {
+interface ITopFrameProps extends IWebPartProps {
+  context: WebPartContext;
+  setPageNames: (items: string[]) => void;
+}
+
+export function TopFrame(props: ITopFrameProps) {
 
   const ref = React.useRef(null);
   const [embedUrl, setEmbedUrl] = React.useState(null);
 
-  const init = (ctx: Visio.RequestContext) => {
-    ctx.document.application.showToolbars = props.showToolbars;
-    ctx.document.application.showBorders = props.showBorders;
+  const init = async (ctx: Visio.RequestContext) => {
+    ctx.document.application.showToolbars = !props.hideToolbars;
+    ctx.document.application.showBorders = !props.hideBorders;
 
-    // if (props.zoom) {
-    //   var activePage = ctx.document.getActivePage();
-    //   activePage.view.zoom = props.zoom;
-    // }
+    ctx.document.view.hideDiagramBoundary = props.hideDiagramBoundary;
+    ctx.document.view.disableHyperlinks = props.disableHyperlinks;
+    ctx.document.view.disablePan = props.disablePan;
+    ctx.document.view.disablePanZoomWindow = props.disablePanZoomWindow;
+    ctx.document.view.disableZoom = props.disableZoom;
 
-    return ctx.sync();
+    if (props.startPage)
+      ctx.document.setActivePage(props.startPage);
+
+    const pages = await ctx.document.pages.load();
+
+    await ctx.sync();
+
+    if (props.disableZoom) {
+      ctx.document.getActivePage().view.fitToWindow();
+    }
+
+    const pageNames = pages.items.map(p => p.name);
+    props.setPageNames(pageNames);
+
+    console.log(pageNames);
   };
 
   React.useEffect(() => {
@@ -50,7 +63,12 @@ export function TopFrame(props: {
 
       return () => root.innerHTML = "";
     }
-  }, [embedUrl, props.height, props.width, props.showToolbars, props.showBorders, props.zoom]);
+  }, [embedUrl,
+    props.height, props.width,
+    props.zoom, props.startPage,
+    props.hideToolbars, props.hideBorders, props.hideDiagramBoundary,
+    props.disablePan, props.disableZoom, props.disablePanZoomWindow, props.disableHyperlinks,
+  ]);
 
   const resolveUrl = async (url: string) => {
     if (url) {

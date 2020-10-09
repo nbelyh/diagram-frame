@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
-import { IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneToggle } from "@microsoft/sp-property-pane";
+import { IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneTextField, PropertyPaneToggle } from "@microsoft/sp-property-pane";
 import { sp } from '@pnp/sp';
 
 require('VisioEmbed');
@@ -14,16 +14,24 @@ import { PropertyPaneVersionField } from './PropertyPaneVersionField';
 import { PropertyPaneUrlField } from './PropertyPaneUrlField';
 import { Placeholder } from '@pnp/spfx-controls-react';
 
-export interface IVisioOnlineScriptProps {
+export interface IWebPartProps {
+  url: string;
+  startPage: string;
   width: string;
   height: string;
-  showToolbars: boolean;
-  showBorders: boolean;
-  url: string;
+  hideToolbars: boolean;
+  hideBorders: boolean;
+
+  hideDiagramBoundary: boolean;
+  disableHyperlinks: boolean;
+  disablePan: boolean;
+  disablePanZoomWindow: boolean;
+  disableZoom: boolean;
+
   zoom: number;
 }
 
-export default class WebPart extends BaseClientSideWebPart<IVisioOnlineScriptProps> {
+export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
   public onInit(): Promise<void> {
 
@@ -32,17 +40,20 @@ export default class WebPart extends BaseClientSideWebPart<IVisioOnlineScriptPro
     });
   }
 
+  private pageNames = [];
+
+  private setPageNames(pageNames: string[]) {
+    this.pageNames = pageNames.map(pageName => ({ key: pageName, text: pageName }));
+    this.render();
+  }
+
   public render(): void {
 
     const element: React.ReactElement = (this.properties.url)
       ? React.createElement(TopFrame, {
-        width: this.properties.width,
-        height: this.properties.height,
+        ...this.properties,
         context: this.context,
-        url: this.properties.url,
-        showToolbars: this.properties.showToolbars,
-        showBorders: this.properties.showBorders,
-        zoom: +this.properties.zoom
+        setPageNames: (pageNames) => this.setPageNames(pageNames)
       })
       : React.createElement(Placeholder, {
         iconName: "Edit",
@@ -63,6 +74,7 @@ export default class WebPart extends BaseClientSideWebPart<IVisioOnlineScriptPro
     return {
       pages: [
         {
+          displayGroupsAsAccordion: true,
           groups: [
             {
               groupName: strings.BasicGroupName,
@@ -80,20 +92,40 @@ export default class WebPart extends BaseClientSideWebPart<IVisioOnlineScriptPro
                   label: strings.FieldHeight,
                 }),
 
+                PropertyPaneDropdown('startPage', {
+                  label: strings.FieldStartPage,
+                  options: this.pageNames,
+                  selectedKey: this.properties.startPage
+                }),
+
                 PropertyPaneTextField('zoom', {
                   label: strings.FieldZoom,
                 }),
               ]
             },
             {
-              groupName: strings.Toolbars,
+              groupName: "Hide & Disable",
               groupFields: [
-                PropertyPaneToggle('showToolbars', {
-                  label: strings.FieldShowToolbars,
+                PropertyPaneToggle('hideToolbars', {
+                  label: "Hide Toolbars",
                 }),
-
-                PropertyPaneToggle('showBorders', {
-                  label: strings.FieldShowBorders,
+                PropertyPaneToggle('disableHyperlinks', {
+                  label: "Disable Hyperlinks",
+                }),
+                PropertyPaneToggle('disablePan', {
+                  label: "Disable Pan",
+                }),
+                PropertyPaneToggle('disableZoom', {
+                  label: "Disable Zoom",
+                }),
+                PropertyPaneToggle('disablePanZoomWindow', {
+                  label: "Disable PanZoom Window",
+                }),
+                PropertyPaneToggle('hideDiagramBoundary', {
+                  label: "Hide Diagram Boundary",
+                }),
+                PropertyPaneToggle('hideBorders', {
+                  label: "Hide Borders",
                 }),
               ]
             },

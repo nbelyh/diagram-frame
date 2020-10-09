@@ -4,10 +4,9 @@ define([], function () {
     "FieldWidth": "Width",
     "FieldHeight": "Height",
     "FieldZoom": "Default Zoom",
-    "Toolbars": "Toolbars",
+    "View": "View",
     "FieldVisioFile": "Visio File",
     "FieldVisioFileBrowse": "Browse...",
-    "FieldShowToolbars": "Show Toolbars",
-    "FieldShowBorders": "Show Border",
+    "FieldStartPage": "Initial Page"
   }
 });

@@ -5,9 +5,8 @@ declare interface IWebPartStrings {
   BasicGroupName: string;
   FieldWidth: string;
   FieldHeight: string;
-  Toolbars: string;
-  FieldShowToolbars: string;
-  FieldShowBorders: string;
+  View: string;
+  FieldStartPage: string;
 }
 
 declare module 'WebPartStrings' {
