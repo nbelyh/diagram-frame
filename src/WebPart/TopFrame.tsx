@@ -9,7 +9,6 @@ import "@pnp/sp/files";
 
 interface ITopFrameProps extends IWebPartProps {
   context: WebPartContext;
-  setPageNames: (items: string[]) => void;
 }
 
 export function TopFrame(props: ITopFrameProps) {
@@ -18,6 +17,7 @@ export function TopFrame(props: ITopFrameProps) {
   const [embedUrl, setEmbedUrl] = React.useState(null);
 
   const init = async (ctx: Visio.RequestContext) => {
+
     ctx.document.application.showToolbars = !props.hideToolbars;
     ctx.document.application.showBorders = !props.hideBorders;
 
@@ -27,15 +27,16 @@ export function TopFrame(props: ITopFrameProps) {
     ctx.document.view.disablePanZoomWindow = props.disablePanZoomWindow;
     ctx.document.view.disableZoom = props.disableZoom;
 
-    if (props.startPage)
-      ctx.document.setActivePage(props.startPage);
-
-    const pages = await ctx.document.pages.load();
+    const pages = ctx.document.pages.load();
 
     await ctx.sync();
 
-    const pageNames = pages.items.map(p => p.name);
-    props.setPageNames(pageNames);
+    for (let i = 0; i < pages.items.length; ++i) {
+      if (pages.items[i].name === props.startPage || (i + 1) === +props.startPage)
+        ctx.document.setActivePage(pages.items[i].name);
+    }
+
+    await ctx.sync();
   };
 
   React.useEffect(() => {
@@ -55,7 +56,9 @@ export function TopFrame(props: ITopFrameProps) {
 
       session.init().then(() => Visio.run(session, ctx => init(ctx)));
 
-      return () => root.innerHTML = "";
+      return () => {
+        root.innerHTML = "";
+      };
     }
   }, [embedUrl,
     props.height, props.width,

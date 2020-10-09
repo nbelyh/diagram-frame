@@ -40,20 +40,12 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
     });
   }
 
-  private pageNames = [];
-
-  private setPageNames(pageNames: string[]) {
-    this.pageNames = pageNames.map(pageName => ({ key: pageName, text: pageName }));
-    this.render();
-  }
-
   public render(): void {
 
     const element: React.ReactElement = (this.properties.url)
       ? React.createElement(TopFrame, {
         ...this.properties,
-        context: this.context,
-        setPageNames: (pageNames) => this.setPageNames(pageNames)
+        context: this.context
       })
       : React.createElement(Placeholder, {
         iconName: "Edit",
@@ -92,10 +84,8 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
                   label: strings.FieldHeight,
                 }),
 
-                PropertyPaneDropdown('startPage', {
+                PropertyPaneTextField('startPage', {
                   label: strings.FieldStartPage,
-                  options: this.pageNames,
-                  selectedKey: this.properties.startPage
                 }),
 
                 PropertyPaneTextField('zoom', {
