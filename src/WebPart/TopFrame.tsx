@@ -5,10 +5,9 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
-import { IFilePickerResult } from '@pnp/spfx-property-controls/lib/propertyFields/filePicker';
 
 export function TopFrame(props: {
-  filePickerResult: IFilePickerResult;
+  url: string;
   width: string;
   height: string;
   showToolbars: boolean;
@@ -53,19 +52,20 @@ export function TopFrame(props: {
     }
   }, [embedUrl, props.height, props.width, props.showToolbars, props.showBorders, props.zoom]);
 
-  async function resolveUrl() {
-    if (props.filePickerResult) {
-      const file = sp.web.getFileByUrl(props.filePickerResult.fileAbsoluteUrl);
+  const resolveUrl = async (url: string) => {
+    if (url) {
+      const file = sp.web.getFileByUrl(url);
       const item = await file.getItem();
 
-      let url = await item.getWopiFrameUrl(0);
-      return url.replace("action=view", "action=embedview");
+      const wopiFrameUrl = await item.getWopiFrameUrl(0);
+      const result = wopiFrameUrl.replace("action=view", "action=embedview");
+      return result;
     }
-  }
+  };
 
   React.useEffect(() => {
-    resolveUrl().then(val => setEmbedUrl(val));
-  }, [props.filePickerResult]);
+    resolveUrl(props.url).then(val => setEmbedUrl(val));
+  }, [props.url]);
 
   const rootStyle = {
     height: props.height,
@@ -74,8 +74,8 @@ export function TopFrame(props: {
   };
 
   return (
-      <div className={styles.root} style={rootStyle} >
-        {embedUrl && <div style={{flex: 1}} ref={ref} />}
-      </div>
-    );
+    <div className={styles.root} style={rootStyle} >
+      {embedUrl && <div style={{ flex: 1 }} ref={ref} />}
+    </div>
+  );
 }

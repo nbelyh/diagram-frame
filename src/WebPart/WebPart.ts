@@ -3,7 +3,6 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import { IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneToggle } from "@microsoft/sp-property-pane";
-import { PropertyFieldFilePicker, IFilePickerResult } from "@pnp/spfx-property-controls/lib/propertyFields/filePicker";
 import { sp } from '@pnp/sp';
 
 require('VisioEmbed');
@@ -11,14 +10,16 @@ require('VisioEmbed');
 import * as strings from 'WebPartStrings';
 
 import { TopFrame } from './TopFrame';
-import { PropertyPaneVersionField } from '../PropertyPaneVersionField';
+import { PropertyPaneVersionField } from './PropertyPaneVersionField';
+import { PropertyPaneUrlField } from './PropertyPaneUrlField';
+import { Placeholder } from '@pnp/spfx-controls-react';
 
 export interface IVisioOnlineScriptProps {
   width: string;
   height: string;
   showToolbars: boolean;
   showBorders: boolean;
-  filePickerResult: IFilePickerResult;
+  url: string;
   zoom: number;
 }
 
@@ -33,18 +34,23 @@ export default class WebPart extends BaseClientSideWebPart<IVisioOnlineScriptPro
 
   public render(): void {
 
-    const element = React.createElement(
-      TopFrame,
-      {
+    const element: React.ReactElement = (this.properties.url)
+      ? React.createElement(TopFrame, {
         width: this.properties.width,
         height: this.properties.height,
         context: this.context,
-        filePickerResult: this.properties.filePickerResult,
+        url: this.properties.url,
         showToolbars: this.properties.showToolbars,
         showBorders: this.properties.showBorders,
         zoom: +this.properties.zoom
-      }
-    );
+      })
+      : React.createElement(Placeholder, {
+        iconName: "Edit",
+        iconText: "Select Diagram",
+        description: "Press 'Configure' button to choose Visio file to display here",
+        buttonLabel: "Configure",
+        onConfigure: () => this.context.propertyPane.open()
+      });
 
     ReactDom.render(element, this.domElement);
   }
@@ -61,18 +67,9 @@ export default class WebPart extends BaseClientSideWebPart<IVisioOnlineScriptPro
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-
-                PropertyFieldFilePicker('filePicker', {
-                  context: this.context,
-                  filePickerResult: this.properties.filePickerResult,
-                  onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
-                  properties: this.properties,
-                  onSave: (e: IFilePickerResult) => { console.log(`Save: ${e}`); this.properties.filePickerResult = e; },
-                  onChanged: (e: IFilePickerResult) => { console.log(`Changed: ${e}`); this.properties.filePickerResult = e; },
-                  key: "filePickerId",
-                  accepts: [".vsd", ".vsdx", ".vsdm"],
-                  buttonLabel: strings.FieldVisioFileBrowse,
-                  label: strings.FieldVisioFile,
+                PropertyPaneUrlField('url', {
+                  url: this.properties.url,
+                  context: this.context
                 }),
 
                 PropertyPaneTextField('width', {
