@@ -2,16 +2,12 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { IPropertyPaneField, PropertyPaneFieldType, IPropertyPaneCustomFieldProps } from '@microsoft/sp-property-pane';
 
-import "@pnp/sp/webs";
-import "@pnp/sp/folders";
-import "@pnp/sp/lists";
-import "@pnp/sp/files";
-import { WebPartContext } from '@microsoft/sp-webpart-base';
-import { PropertyPaneUrlFieldComponent } from './PropertyPaneUrlFieldComponent';
+import { PropertyPaneSizeFieldComponent } from './PropertyPaneSizeFieldComponent';
 
-export function PropertyPaneUrlField(targetProperty: string, props: {
-  url: string;
-  context: WebPartContext;
+export function PropertyPaneSizeField(targetProperty: string, props: {
+  value: string;
+  label: string;
+  screenUnits: string;
 }): IPropertyPaneField<IPropertyPaneCustomFieldProps> {
 
   return {
@@ -21,7 +17,7 @@ export function PropertyPaneUrlField(targetProperty: string, props: {
       key: targetProperty,
 
       onRender: (parent: HTMLElement, context: any, changeCallback: (targetProperty: string, newValue: any) => void) => {
-        return ReactDom.render(<PropertyPaneUrlFieldComponent context={props.context} url={props.url} setUrl={(url) => changeCallback(targetProperty, url)} />, parent);
+        return ReactDom.render(<PropertyPaneSizeFieldComponent value={props.value} label={props.label} screenUnits={props.screenUnits} setValue={(val) => changeCallback(targetProperty, val)} />, parent);
       },
 
       onDispose(parent: HTMLElement): void {

@@ -14,6 +14,7 @@
     "test": "gulp test"
   },
   "dependencies": {
+    "@fluentui/react": "^7.147.1",
     "@microsoft/office-js": "^1.1.43",
     "@microsoft/sp-core-library": "1.11.0",
     "@microsoft/sp-lodash-subset": "1.11.0",
@@ -21,7 +22,7 @@
     "@microsoft/sp-property-pane": "1.11.0",
     "@microsoft/sp-webpart-base": "1.11.0",
     "@pnp/sp": "^2.0.10",
-    "@pnp/spfx-controls-react": "2.0.0",
+    "@pnp/spfx-controls-react": "2.1.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5"
   },

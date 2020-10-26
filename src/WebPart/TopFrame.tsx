@@ -79,12 +79,18 @@ export function TopFrame(props: ITopFrameProps) {
   };
 
   React.useEffect(() => {
-    resolveUrl(props.url).then(val => setEmbedUrl(val));
+    props.context.statusRenderer.displayLoadingIndicator(ref.current, 'diagram');
+    resolveUrl(props.url).then(val => {
+      props.context.statusRenderer.clearLoadingIndicator(ref.current);
+      setEmbedUrl(val);
+    }, err => {
+      props.context.statusRenderer.renderError(ref.current, err);
+    });
   }, [props.url]);
 
   const rootStyle = {
-    height: props.height,
-    width: props.width,
+    height: props.height ?? "65vh",
+    width: props.width ?? "100%",
   };
 
   return (

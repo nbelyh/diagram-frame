@@ -3,7 +3,7 @@ define([], function () {
     "BasicGroupName": "Basic Settings",
     "FieldWidth": "Width",
     "FieldHeight": "Height",
-    "FieldZoom": "Default Zoom",
+    "FieldZoom": "Default Zoom (%)",
     "View": "View",
     "FieldVisioFile": "Visio File",
     "FieldVisioFileBrowse": "Browse...",

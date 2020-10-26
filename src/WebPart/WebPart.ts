@@ -13,6 +13,7 @@ import { TopFrame } from './TopFrame';
 import { PropertyPaneVersionField } from './PropertyPaneVersionField';
 import { PropertyPaneUrlField } from './PropertyPaneUrlField';
 import { Placeholder } from '@pnp/spfx-controls-react';
+import { PropertyPaneSizeField } from './PropertyPaneSizeField';
 
 export interface IWebPartProps {
   url: string;
@@ -69,19 +70,11 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
           displayGroupsAsAccordion: true,
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: "Drawing Display",
               groupFields: [
                 PropertyPaneUrlField('url', {
                   url: this.properties.url,
                   context: this.context
-                }),
-
-                PropertyPaneTextField('width', {
-                  label: strings.FieldWidth,
-                }),
-
-                PropertyPaneTextField('height', {
-                  label: strings.FieldHeight,
                 }),
 
                 PropertyPaneTextField('startPage', {
@@ -94,11 +87,34 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
               ]
             },
             {
-              groupName: "Hide & Disable",
+              groupName: "Appearance",
               groupFields: [
+                PropertyPaneSizeField('width', {
+                  label: strings.FieldWidth,
+                  value: this.properties.width,
+                  screenUnits: 'w'
+                }),
+
+                PropertyPaneSizeField('height', {
+                  label: strings.FieldHeight,
+                  value: this.properties.height,
+                  screenUnits: 'h'
+                }),
                 PropertyPaneToggle('hideToolbars', {
                   label: "Hide Toolbars",
                 }),
+                PropertyPaneToggle('hideDiagramBoundary', {
+                  label: "Hide Diagram Boundary",
+                }),
+                PropertyPaneToggle('hideBorders', {
+                  label: "Hide Borders",
+                }),
+              ]
+            },
+            {
+              groupName: "Drawing Interactivity",
+              isCollapsed: true,
+              groupFields: [
                 PropertyPaneToggle('disableHyperlinks', {
                   label: "Disable Hyperlinks",
                 }),
@@ -110,12 +126,6 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
                 }),
                 PropertyPaneToggle('disablePanZoomWindow', {
                   label: "Disable PanZoom Window",
-                }),
-                PropertyPaneToggle('hideDiagramBoundary', {
-                  label: "Hide Diagram Boundary",
-                }),
-                PropertyPaneToggle('hideBorders', {
-                  label: "Hide Borders",
                 }),
               ]
             },

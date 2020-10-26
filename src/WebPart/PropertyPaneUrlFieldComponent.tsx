@@ -30,14 +30,18 @@ export function PropertyPaneUrlFieldComponent(props: {
     props.setUrl(fileInfo.data.ServerRelativeUrl);
   };
 
-  return <FilePicker
-    label="Visio Document"
-    ref={pickerMounted}
-    accepts={[".vsd", ".vsdx", ".vsdm"]}
-    buttonLabel="Browse..."
-    onSave={(filePickerResult: IFilePickerResult) => onUploadImage(filePickerResult)}
-    onChanged={(filePickerResult: IFilePickerResult) => onChangeImage(filePickerResult)}
-    context={props.context}
-    hideStockImages
-  />;
+  const fileName = props.url.split('/').pop().split('?')[0].split('#')[0];
+
+  return (
+    <FilePicker
+      label={fileName ?? 'Visio Document'}
+      ref={pickerMounted}
+      accepts={[".vsd", ".vsdx", ".vsdm"]}
+      buttonLabel="Browse..."
+      onSave={(filePickerResult: IFilePickerResult) => onUploadImage(filePickerResult)}
+      onChanged={(filePickerResult: IFilePickerResult) => onChangeImage(filePickerResult)}
+      context={props.context}
+      hideStockImages
+    />
+  );
 }
