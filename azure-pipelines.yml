@@ -97,7 +97,7 @@ stages:
               title: '$(Build.BuildNumber)'
               releaseNotesSource: 'inline'
               releaseNotesInline: 'TBD'
-              assets: '$(System.ArtifactsDirectory)\sharepoint\solution\*.sppkg'
+              assets: '$(System.ArtifactsDirectory)\drop\sharepoint\solution\*.sppkg'
               isPreRelease: true
               changeLogCompareToRelease: 'lastFullRelease'
               changeLogType: 'commitBased'
