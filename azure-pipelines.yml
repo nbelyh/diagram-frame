@@ -85,7 +85,7 @@ stages:
                 $versionFull = "$(Build.BuildNumber)"
                 $version = $versionFull|%{[System.Version]$_}
                 $versionShort = "$($version.Major).$($version.Minor)"
-                Write-Host "##vso[task.setvariable variable=versionShort]"
+                Write-Host "##vso[task.setvariable variable=versionShort]$($versionShort)"
 
           - task: GitHubRelease@1
             inputs:
@@ -97,7 +97,7 @@ stages:
               title: '$(Build.BuildNumber)'
               releaseNotesSource: 'inline'
               releaseNotesInline: 'TBD'
-              assets: '$(System.ArtifactsDirectory)\sharepoint\solution\*.sppkg'
+              assets: '$(System.ArtifactsDirectory)\drop\sharepoint\solution\*.sppkg'
               isPreRelease: true
               changeLogCompareToRelease: 'lastFullRelease'
               changeLogType: 'commitBased'
