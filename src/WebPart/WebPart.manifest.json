@@ -3,11 +3,12 @@
   "id": "eaf98c51-0b5e-4ab0-9eca-139671d32cf5",
   "alias": "DiagramFrameWebPart",
   "componentType": "WebPart",
-  "version": "*",
+  "version": "1.0.0",
   "manifestVersion": 2,
   "requiresCustomScript": false,
   "supportedHosts": [
-    "SharePointWebPart", "SharePointFullPage"
+    "SharePointWebPart",
+    "SharePointFullPage"
   ],
   "preconfiguredEntries": [
     {

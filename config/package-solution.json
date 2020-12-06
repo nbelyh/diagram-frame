@@ -10,7 +10,7 @@
     },
     "name": "Diagram Frame",
     "id": "bc8110d6-2d34-408e-98c5-7f32eab887cb",
-    "version": "0.0.2.0",
+    "version": "1.0.0.0",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "skipFeatureDeployment": true
