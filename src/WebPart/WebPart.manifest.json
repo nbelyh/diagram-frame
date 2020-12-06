@@ -20,9 +20,10 @@
         "default": "Diagram Frame"
       },
       "description": {
-        "default": "Displays a Visio drawing file with additional configured settings"
+        "default": "Displays a Visio drawing file with additional configured settings."
       },
-      "officeFabricIconFontName": "VisioDiagram",
+      "fullPageAppIconImageUrl": "https://unmanagedvisio.com/upload/spfx/icon.svg",
+      "iconImageUrl": "https://unmanagedvisio.com/upload/spfx/icon.svg",
       "properties": {
         "url": "",
         "width": "100%",
