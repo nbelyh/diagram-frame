@@ -16,7 +16,7 @@ export function TopFrame(props: ITopFrameProps) {
   const ref = React.useRef(null);
   const [embedUrl, setEmbedUrl] = React.useState(null);
 
-  const init = async (ctx: Visio.RequestContext) => {
+  const init = (ctx: Visio.RequestContext) => {
 
     ctx.document.application.showToolbars = !props.hideToolbars;
     ctx.document.application.showBorders = !props.hideBorders;
@@ -27,17 +27,23 @@ export function TopFrame(props: ITopFrameProps) {
     ctx.document.view.disablePanZoomWindow = props.disablePanZoomWindow;
     ctx.document.view.disableZoom = props.disableZoom;
 
-    const pages = ctx.document.pages.load();
+    if (props.startPage)
+      ctx.document.setActivePage(props.startPage);
 
-    await ctx.sync();
-
-    for (let i = 0; i < pages.items.length; ++i) {
-      if (pages.items[i].name === props.startPage || (i + 1) === +props.startPage)
-        ctx.document.setActivePage(pages.items[i].name);
-    }
-
-    await ctx.sync();
+    return ctx.sync();
   };
+
+  const [propsChanged, setPropsChanged] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setPropsChanged(propsChanged + 1), 1000);
+    return () => clearTimeout(timer);
+  }, [
+    props.height, props.width,
+    props.zoom, props.startPage,
+    props.hideToolbars, props.hideBorders, props.hideDiagramBoundary,
+    props.disablePan, props.disableZoom, props.disablePanZoomWindow, props.disableHyperlinks
+  ]);
 
   React.useEffect(() => {
 
@@ -60,12 +66,8 @@ export function TopFrame(props: ITopFrameProps) {
         root.innerHTML = "";
       };
     }
-  }, [embedUrl,
-    props.height, props.width,
-    props.zoom, props.startPage,
-    props.hideToolbars, props.hideBorders, props.hideDiagramBoundary,
-    props.disablePan, props.disableZoom, props.disablePanZoomWindow, props.disableHyperlinks,
-  ]);
+
+  }, [embedUrl, propsChanged]);
 
   const resolveUrl = async (url: string) => {
     if (url) {

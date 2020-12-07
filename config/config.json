@@ -13,7 +13,7 @@
   },
   "externals": {
     "VisioEmbed": {
-      "path": "node_modules/@microsoft/office-js/embedded/visio-web-embedded.debug.js",
+      "path": "node_modules/@microsoft/office-js/embedded/visio-web-embedded.js",
       "globalName": "Visio"
     }
   },
