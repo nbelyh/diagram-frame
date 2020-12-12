@@ -7,47 +7,59 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   inkscape:export-ydpi="96"
-   inkscape:export-xdpi="96"
-   inkscape:export-filename="C:\Projects\VisioOnlineSpfxWebPart\docs\icon.png"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="icon.svg"
-   id="svg62"
-   version="1.1"
-   class="st5"
-   color-interpolation-filters="sRGB"
-   xml:space="preserve"
-   viewBox="0 0 224.99972 224.99972"
+   width="300"
    height="300"
-   width="300"><metadata
+   viewBox="0 0 224.99972 224.99972"
+   xml:space="preserve"
+   color-interpolation-filters="sRGB"
+   class="st5"
+   version="1.1"
+   id="svg62"
+   sodipodi:docname="icon.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   inkscape:export-filename="C:\Projects\VisioOnlineSpfxWebPart\docs\icon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"><metadata
    id="metadata68"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs66" /><sodipodi:namedview
-   inkscape:current-layer="svg62"
-   inkscape:window-maximized="0"
-   inkscape:window-y="0"
-   inkscape:window-x="0"
-   inkscape:cy="151.5252"
-   inkscape:cx="-136.84764"
-   inkscape:zoom="1.8071101"
-   units="px"
-   inkscape:lockguides="false"
-   showgrid="false"
-   id="namedview64"
-   inkscape:window-height="1232"
-   inkscape:window-width="2282"
-   inkscape:pageshadow="2"
-   inkscape:pageopacity="0"
-   guidetolerance="10"
-   gridtolerance="10"
-   objecttolerance="10"
-   borderopacity="1"
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
+   id="defs66"><marker
+     inkscape:isstock="true"
+     style="overflow:visible"
+     id="Arrow1Lstart"
+     refX="0.0"
+     refY="0.0"
+     orient="auto"
+     inkscape:stockid="Arrow1Lstart"><path
+       transform="scale(0.8) translate(12.5,0)"
+       style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+       d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+       id="path885" /></marker></defs><sodipodi:namedview
+   inkscape:document-rotation="0"
+   pagecolor="#ffffff"
    bordercolor="#666666"
-   pagecolor="#ffffff" />
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="2282"
+   inkscape:window-height="1232"
+   id="namedview64"
+   showgrid="false"
+   inkscape:lockguides="false"
+   units="px"
+   inkscape:zoom="2.5556396"
+   inkscape:cx="136.28016"
+   inkscape:cy="184.99109"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="g60" />
 	<style
-   id="style2"
-   type="text/css">
+   type="text/css"
+   id="style2">
 	<![CDATA[
 		.st1 {fill:#ffffff;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75}
 		.st2 {fill:#f2f2f2;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75}
@@ -58,141 +70,42 @@
 	</style>
 
 	<g
-   transform="matrix(1.879972,0,0,1.879972,-4.6588267,-1.8136233)"
-   id="g60">
+   id="g60"
+   transform="matrix(1.879972,0,0,1.879972,-4.6588267,-1.8136233)">
 		<title
    id="title4">Page-1</title>
 		<g
-   transform="translate(5.66929,-21.685)"
-   id="shape1-1">
+   style="stroke-width:2.1090763;stroke-miterlimit:7.19999981;stroke-dasharray:none;stroke:#000000;stroke-opacity:1;stroke-linejoin:round;stroke-linecap:butt;paint-order:fill markers stroke"
+   id="shape1-1"
+   transform="matrix(0.99960254,0,0,1.3257775,5.6918228,-48.136007)">
 			<title
    id="title6">Sheet.1</title>
-			<rect
-   id="rect8"
+			<path
    class="st1"
-   height="85.039398"
-   width="113.386"
-   y="39.685001"
-   x="0" />
+   d="M 0,39.685001 H 113.386 V 124.7244 H 0 Z"
+   style="fill:#ffffff;stroke:#000000;stroke-width:2.1090763;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:7.19999981;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+   id="rect8" />
 		</g>
+		
+		
+		
+		
+		
 		<g
-   transform="translate(76.5354,-21.685)"
-   id="shape12-3">
-			<title
-   id="title11">Sheet.12</title>
-			<rect
-   id="rect13"
-   class="st2"
-   height="85.039398"
-   width="42.519699"
-   y="39.685001"
-   x="0" />
-		</g>
-		<g
-   transform="translate(85.0394,-89.7165)"
-   id="shape14-5">
-			<title
-   id="title16">Sheet.14</title>
-			<rect
-   id="rect18"
-   class="st1"
-   height="6.8031502"
-   width="24.6614"
-   y="117.921"
-   x="0" />
-		</g>
-		<g
-   transform="translate(85.0394,-78.6614)"
-   id="shape15-7">
-			<title
-   id="title21">Sheet.15</title>
-			<rect
-   id="rect23"
-   class="st1"
-   height="6.8031502"
-   width="24.6614"
-   y="117.921"
-   x="0" />
-		</g>
-		<g
-   transform="translate(85.4646,-35.8583)"
-   id="group29-9">
-			<title
-   id="title26">Sheet.29</title>
-			<g
-   id="shape30-10">
-				<title
-   id="title28">Sheet.30</title>
-				<rect
-   id="rect30"
-   class="st1"
-   ry="3.4015701"
-   rx="3.4015701"
-   height="6.8031502"
-   width="16.157499"
-   y="117.921"
-   x="0" />
-			</g>
-			<g
-   transform="translate(9.07087)"
-   id="shape31-12">
-				<title
-   id="title33">Sheet.31</title>
-				<ellipse
-   id="ellipse35"
-   class="st3"
-   ry="3.4015701"
-   rx="3.5433099"
-   cy="121.323"
-   cx="3.5433099" />
-			</g>
-		</g>
-		<g
-   transform="translate(85.4646,-48.0472)"
-   id="group32-14">
-			<title
-   id="title39">Sheet.32</title>
-			<g
-   id="shape27-15">
-				<title
-   id="title41">Sheet.27</title>
-				<rect
-   id="rect43"
-   class="st1"
-   ry="3.4015701"
-   rx="3.4015701"
-   height="6.8031502"
-   width="16.157499"
-   y="117.921"
-   x="0" />
-			</g>
-			<g
-   id="shape28-17">
-				<title
-   id="title46">Sheet.28</title>
-				<ellipse
-   id="ellipse48"
-   class="st3"
-   ry="3.4015701"
-   rx="3.5433099"
-   cy="121.323"
-   cx="3.5433099" />
-			</g>
-		</g>
-		<g
-   transform="translate(10.228,-34.1575)"
-   id="group44-19">
+   id="group44-19"
+   transform="matrix(1.3179993,0,0,1.3179993,23.032208,-63.323471)">
 			<title
    id="title52">Sheet.44</title>
 			<g
+   transform="matrix(1.0920906,0,0,1.0920906,-2.8769114,-8.6380785)"
    id="shape45-20">
 				<title
    id="title54">path833</title>
-				<path
-   id="path56"
-   class="st4"
-   d="m 7.74,62.88 c -2.55,0.02 -5.01,1.54 -6.21,3.78 -1.26,2.23 -1.18,5.13 0.19,7.29 1.27,2.08 3.64,3.46 6.09,3.45 1.91,0 3.82,0 5.73,0 0,2.46 0,4.92 0,7.37 C 9.03,87.78 4.51,90.79 0,93.8 c 4.51,3.01 9.03,6.02 13.54,9.03 0,2.46 0,4.92 0,7.37 -4.3,0 -8.6,0 -12.9,0 0,4.84 0,9.68 0,14.52 9.14,0 18.28,0 27.42,0 0,-4.84 0,-9.68 0,-14.52 -4.3,0 -8.6,0 -12.9,0 0,-2.45 0,-4.91 0,-7.37 4.11,-2.74 8.22,-5.48 12.33,-8.22 2.52,0 5.04,0 7.56,0 0,2.87 0,5.73 0,8.6 9.15,0 18.29,0 27.43,0 0,-4.84 0,-9.68 0,-14.52 -9.14,0 -18.28,0 -27.43,0 0,1.44 0,2.87 0,4.31 -2.52,0 -5.04,0 -7.56,0 -4.11,-2.75 -8.22,-5.49 -12.33,-8.23 0,-2.45 0,-4.91 0,-7.37 2.01,-0.01 4.03,0.01 6.05,-0.01 2.62,-0.11 5.08,-1.8 6.17,-4.18 1.06,-2.21 0.88,-4.96 -0.48,-7.01 -1.29,-2.03 -3.65,-3.35 -6.07,-3.32 -4.37,0 -8.73,0 -13.09,0 z m 0.11,1.61 c 4.41,0.01 8.81,-0.01 13.22,0.01 2.11,0.06 4.09,1.46 4.92,3.4 0.81,1.84 0.54,4.1 -0.71,5.68 -1.07,1.41 -2.83,2.27 -4.61,2.21 -4.34,-0.01 -8.68,0 -13.03,-0.01 C 5.53,75.72 3.56,74.34 2.72,72.41 1.9,70.58 2.16,68.31 3.4,66.73 4.44,65.35 6.12,64.48 7.85,64.49 Z m 6.87,21.93 c 3.7,2.46 7.4,4.92 11.1,7.38 -3.83,2.55 -7.65,5.09 -11.47,7.63 C 10.53,98.89 6.7,96.35 2.88,93.8 c 3.82,-2.54 7.65,-5.09 11.47,-7.63 0.12,0.08 0.25,0.17 0.37,0.25 z m 22.62,3.89 c 7.84,0 15.68,0 23.53,0 0,3.76 0,7.52 0,11.29 -8.07,0 -16.14,0 -24.2,0 0,-3.77 0,-7.53 0,-11.29 0.22,0 0.44,0 0.67,0 z M 2.92,111.82 c 7.84,0 15.69,0 23.53,0 0,3.76 0,7.53 0,11.29 -8.07,0 -16.13,0 -24.2,0 0,-3.76 0,-7.53 0,-11.29 0.22,0 0.45,0 0.67,0 z" />
+				
 			</g>
 		</g>
-	</g>
+	<path
+   d="m 30.213008,15.931759 c -4.821113,0.02862 -9.328521,3.559128 -10.572348,8.207061 -1.231849,4.20217 0.294299,9.032624 3.730591,11.751718 2.204565,1.842613 5.120479,2.709173 7.97457,2.535362 2.149739,0 4.299479,0 6.449219,0 0,3.127604 0,6.255208 0,9.382813 -6.708832,4.474838 -13.418938,8.947766 -20.126954,13.423828 6.708108,4.476574 13.418108,8.950313 20.126954,13.425781 0,3.126953 0,6.253906 0,9.380859 -6.189453,0 -12.378907,0 -18.56836,0 0,7.499349 0,14.998698 0,22.498049 13.688802,0 27.377604,0 41.066406,0 0,-7.499351 10e-7,-14.9987 0,-22.498049 -6.189453,0 -12.378906,0 -18.568359,0 0,-3.126953 0,-6.253906 0,-9.380859 5.729818,-3.820313 11.459636,-7.640625 17.189453,-11.460938 3.280599,0 6.561198,0 9.841797,0 0,4.126302 0,8.252605 0,12.378907 13.693359,0 27.386719,0 41.080073,0 0,-7.499349 0,-14.998698 0,-22.498047 -13.693354,0 -27.386714,0 -41.080073,0 0,2.068359 0,4.136719 0,6.205078 -3.279948,0 -6.559896,0 -9.839844,0 -5.730468,-3.82487 -11.460937,-7.64974 -17.191406,-11.474609 0,-3.127605 0,-6.255209 0,-9.382813 2.910675,-0.04181 5.828231,0.08264 8.734375,-0.08008 4.704508,-0.540506 8.789706,-4.364323 9.63376,-9.025663 0.854147,-4.182092 -0.929686,-8.744209 -4.406478,-11.224579 -2.140864,-1.597924 -4.846162,-2.31968 -7.500329,-2.165774 -5.990974,0.0013 -11.982275,-0.0026 -17.973047,0.002 z m 0.191407,3.91211 c 6.466011,0.02289 12.934662,-0.04273 19.399013,0.04175 3.704632,0.298903 6.789139,3.80945 6.569859,7.529636 -0.03539,3.512672 -2.946123,6.67321 -6.429062,7.047044 -3.057667,0.115791 -6.12525,0.01129 -9.186683,0.04278 -3.717628,-0.02463 -7.438037,0.03707 -11.153909,-0.04207 -3.607044,-0.366209 -6.606321,-3.740324 -6.462524,-7.379641 -0.03611,-3.626322 3.014738,-6.929008 6.622655,-7.21057 0.194754,-0.02765 0.513865,-0.02673 0.640651,-0.02893 z m 9.441406,31.427734 c 4.994636,3.320231 9.989609,6.640639 14.984375,9.960938 -5.023438,3.341796 -10.046875,6.683593 -15.070313,10.02539 -5.026599,-3.337044 -10.050526,-6.678105 -15.070312,-10.02539 5.022135,-3.340495 10.044271,-6.68099 15.066406,-10.021485 l 0.08293,0.05589 z m 33.005859,5.736328 c 11.022787,0 22.045573,0 33.06836,0 0,4.884766 0,9.769531 0,14.654297 -11.078125,0 -22.15625,0 -33.234375,0 0,-4.884766 0,-9.769531 0,-14.654297 h 0.1 z M 23.306758,87.968869 c 11.023438,0 22.046875,0 33.070313,0 0,4.884765 0,9.769531 0,14.654301 -11.078125,0 -22.15625,0 -33.234375,0 0,-4.88477 0,-9.769536 0,-14.654301 h 0.1 z"
+   style="fill:#000000;stroke:none;stroke-width:0.107953;stroke-linecap:butt"
+   id="path56" /></g>
 </svg>

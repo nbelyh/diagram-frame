@@ -20,7 +20,7 @@
         "default": "Diagram Frame"
       },
       "description": {
-        "default": "Displays a Visio drawing file with additional configured settings."
+        "default": "The web part is a specialized widget to display a Microsoft Visio diagram in a modern SharePoint page. Similar to the 'Visio Web Access' web part in 'classic' SharePoint. Enables default zoom, page, chrome, and interactivity settings."
       },
       "fullPageAppIconImageUrl": "https://unmanagedvisio.com/upload/spfx/icon.svg",
       "iconImageUrl": "https://unmanagedvisio.com/upload/spfx/icon.svg",
