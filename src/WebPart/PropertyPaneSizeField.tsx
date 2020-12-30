@@ -7,6 +7,7 @@ import { PropertyPaneSizeFieldComponent } from './PropertyPaneSizeFieldComponent
 export function PropertyPaneSizeField(targetProperty: string, props: {
   value: string;
   label: string;
+  description: string;
   screenUnits: string;
 }): IPropertyPaneField<IPropertyPaneCustomFieldProps> {
 
@@ -17,7 +18,14 @@ export function PropertyPaneSizeField(targetProperty: string, props: {
       key: targetProperty,
 
       onRender: (parent: HTMLElement, context: any, changeCallback: (targetProperty: string, newValue: any) => void) => {
-        return ReactDom.render(<PropertyPaneSizeFieldComponent value={props.value} label={props.label} screenUnits={props.screenUnits} setValue={(val) => changeCallback(targetProperty, val)} />, parent);
+        return ReactDom.render(
+          <PropertyPaneSizeFieldComponent
+            value={props.value}
+            label={props.label}
+            description={props.description}
+            screenUnits={props.screenUnits}
+            setValue={(val) => changeCallback(targetProperty, val)}
+          />, parent);
       },
 
       onDispose(parent: HTMLElement): void {

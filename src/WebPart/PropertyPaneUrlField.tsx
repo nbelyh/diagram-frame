@@ -21,7 +21,12 @@ export function PropertyPaneUrlField(targetProperty: string, props: {
       key: targetProperty,
 
       onRender: (parent: HTMLElement, context: any, changeCallback: (targetProperty: string, newValue: any) => void) => {
-        return ReactDom.render(<PropertyPaneUrlFieldComponent context={props.context} url={props.url} setUrl={(url) => changeCallback(targetProperty, url)} />, parent);
+        return ReactDom.render(
+          <PropertyPaneUrlFieldComponent
+            context={props.context}
+            url={props.url}
+            setUrl={(url) => changeCallback(targetProperty, url)}
+          />, parent);
       },
 
       onDispose(parent: HTMLElement): void {

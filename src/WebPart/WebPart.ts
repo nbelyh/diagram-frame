@@ -43,6 +43,8 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
   public render(): void {
 
+    const isPropertyPaneOpen = this.context.propertyPane.isPropertyPaneOpen();
+
     const element: React.ReactElement = (this.properties.url)
       ? React.createElement(TopFrame, {
         ...this.properties,
@@ -50,13 +52,22 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
       })
       : React.createElement(Placeholder, {
         iconName: "Edit",
-        iconText: "Select Diagram",
-        description: "Press 'Configure' button to choose Visio file to display here",
+        iconText: isPropertyPaneOpen ? "Select Visio Diagram" : "Configure Web Part",
+        description: isPropertyPaneOpen ? "Click 'Browse...' Button on configuration panel to select the diagram" : "Press 'Configure' button to configure the web part",
         buttonLabel: "Configure",
-        onConfigure: () => this.context.propertyPane.open()
+        onConfigure: () => this.context.propertyPane.open(),
+        hideButton: isPropertyPaneOpen
       });
 
     ReactDom.render(element, this.domElement);
+  }
+
+  public onPropertyPaneConfigurationStart() {
+    this.render();
+  }
+
+  public onPropertyPaneConfigurationComplete() {
+    this.render();
   }
 
   protected get dataVersion(): Version {
@@ -79,10 +90,12 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
                 PropertyPaneTextField('startPage', {
                   label: strings.FieldStartPage,
+                  description: "Page (name) to activate on load"
                 }),
 
                 PropertyPaneTextField('zoom', {
                   label: strings.FieldZoom,
+                  description: "Zoom level (percents) to set on load"
                 }),
               ]
             },
@@ -91,12 +104,14 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
               groupFields: [
                 PropertyPaneSizeField('width', {
                   label: strings.FieldWidth,
+                  description: "Specify value and units (leave blank for default)",
                   value: this.properties.width,
                   screenUnits: 'w'
                 }),
 
                 PropertyPaneSizeField('height', {
                   label: strings.FieldHeight,
+                  description: "Specify value and units (leave blank for default)",
                   value: this.properties.height,
                   screenUnits: 'h'
                 }),

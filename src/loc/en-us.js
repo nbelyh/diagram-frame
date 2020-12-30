@@ -1,8 +1,8 @@
 define([], function () {
   return {
     "BasicGroupName": "Basic Settings",
-    "FieldWidth": "Width",
-    "FieldHeight": "Height",
+    "FieldWidth": "Diagram width",
+    "FieldHeight": "Diagram height",
     "FieldZoom": "Default Zoom (%)",
     "View": "View",
     "FieldVisioFile": "Visio File",

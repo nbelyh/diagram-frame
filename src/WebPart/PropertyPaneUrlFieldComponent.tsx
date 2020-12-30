@@ -18,11 +18,6 @@ export function PropertyPaneUrlFieldComponent(props: {
     props.setUrl(result.fileAbsoluteUrl);
   };
 
-  const pickerMounted = React.useCallback(picker => {
-    if (picker && !props.url)
-      setTimeout(() => picker.setState({ panelOpen: true }), 100);
-  }, []);
-
   const onUploadImage = async (result: IFilePickerResult) => {
     const fileConent = await result.downloadFileContent();
     const siteAssetsList = await sp.web.lists.ensureSiteAssetsLibrary();
@@ -35,7 +30,6 @@ export function PropertyPaneUrlFieldComponent(props: {
   return (
     <FilePicker
       label={fileName ?? 'Visio Document'}
-      ref={pickerMounted}
       accepts={[".vsd", ".vsdx", ".vsdm"]}
       buttonLabel="Browse..."
       onSave={(filePickerResult: IFilePickerResult) => onUploadImage(filePickerResult)}
