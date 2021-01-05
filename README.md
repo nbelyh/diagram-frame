@@ -2,6 +2,9 @@
 
 The web part is a specialized widget to display a Microsoft Visio diagram in a modern SharePoint page. It is somewhat similar to the classic "Visio Web Access" part in "classic" SharePoint.
 
+In the SharePoint Store:
+https://appsource.microsoft.com/en/product/office/WA200002491
+
 See the details on the website:
 https://unmanagedvisio.com/products/diagram-frame-sharepoint-visio-web-part/
 
