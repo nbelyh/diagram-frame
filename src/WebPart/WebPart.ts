@@ -37,7 +37,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
   public onInit(): Promise<void> {
 
     return super.onInit().then(_ => {
-      sp.setup({ spfxContext: this.context });
+      sp.setup({ spfxContext: this.context as any });
     });
   }
 

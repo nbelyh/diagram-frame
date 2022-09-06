@@ -25,6 +25,17 @@ gulp.task('update-version', function () {
   fs.writeFileSync('./src/WebPart/WebPart.manifest.json', JSON.stringify(webPartManfiestJson, null, 2));
 });
 
+build.tslintCmd.enabled = false;
+
+var getTasks = build.rig.getTasks;
+build.rig.getTasks = function () {
+  var result = getTasks.call(build.rig);
+
+  result.set('serve', result.get('serve-deprecated'));
+
+  return result;
+};
+
 build.initialize(gulp);
 
 build.mergeConfig({

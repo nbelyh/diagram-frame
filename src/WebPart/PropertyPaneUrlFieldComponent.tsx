@@ -14,11 +14,13 @@ export function PropertyPaneUrlFieldComponent(props: {
   context: WebPartContext
 }) {
 
-  const onChangeImage = (result: IFilePickerResult) => {
+  const onChangeImage = (results: IFilePickerResult[]) => {
+    const result = results[0];
     props.setUrl(result.fileAbsoluteUrl);
   };
 
-  const onUploadImage = async (result: IFilePickerResult) => {
+  const onUploadImage = async (results: IFilePickerResult[]) => {
+    const result = results[0];
     const fileConent = await result.downloadFileContent();
     const siteAssetsList = await sp.web.lists.ensureSiteAssetsLibrary();
     const fileInfo = await siteAssetsList.rootFolder.files.add(result.fileName, fileConent, true);
@@ -32,10 +34,11 @@ export function PropertyPaneUrlFieldComponent(props: {
       label={fileName ?? 'Visio Document'}
       accepts={[".vsd", ".vsdx", ".vsdm"]}
       buttonLabel="Browse..."
-      onSave={(filePickerResult: IFilePickerResult) => onUploadImage(filePickerResult)}
-      onChanged={(filePickerResult: IFilePickerResult) => onChangeImage(filePickerResult)}
+      onSave={(filePickerResult: IFilePickerResult[]) => onUploadImage(filePickerResult)}
+      onChange={(filePickerResult: IFilePickerResult[]) => onChangeImage(filePickerResult)}
       context={props.context}
       hideStockImages
+      hideLocalMultipleUploadTab
     />
   );
 }
