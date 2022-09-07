@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
-import { IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneTextField, PropertyPaneToggle } from "@microsoft/sp-property-pane";
+import { IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneToggle } from "@microsoft/sp-property-pane";
 import { sp } from '@pnp/sp';
 
 require('VisioEmbed');
@@ -36,7 +36,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
   public onInit(): Promise<void> {
 
-    return super.onInit().then(_ => {
+    return super.onInit().then(() => {
       sp.setup({ spfxContext: this.context as any });
     });
   }

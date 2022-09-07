@@ -9,6 +9,7 @@ export function PropertyPaneVersionField(version: string): IPropertyPaneField<IP
     type: PropertyPaneFieldType.Custom,
     properties: {
       key: "version",
+      // eslint-disable-next-line  @typescript-eslint/no-unused-vars
       onRender: (parent: HTMLElement, context: any, changeCallback: (targetProperty: string, newValue: any) => void) => {
         const elem = (
           <div>Version: {version}</div>

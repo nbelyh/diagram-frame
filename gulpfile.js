@@ -36,6 +36,15 @@ build.rig.getTasks = function () {
   return result;
 };
 
+const eslint = require('gulp-eslint');
+const eslintSubTask = build.subTask('eslint-subTask', function (gulp, buildOptions, done) {
+  return gulp.src(['src/**/*.{ts,tsx}'])
+    .pipe(eslint('./eslint.json'))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+});
+build.rig.addPreBuildTask(build.task('eslint', eslintSubTask));
+
 build.initialize(gulp);
 
 build.mergeConfig({
