@@ -36,7 +36,7 @@ export function PropertyPaneUrlFieldComponent(props: {
       buttonLabel="Browse..."
       onSave={(filePickerResult: IFilePickerResult[]) => onUploadImage(filePickerResult)}
       onChange={(filePickerResult: IFilePickerResult[]) => onChangeImage(filePickerResult)}
-      context={props.context}
+      context={props.context as any}
       hideStockImages
       hideLocalMultipleUploadTab
     />
