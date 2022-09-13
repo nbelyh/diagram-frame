@@ -4,12 +4,12 @@
   "private": true,
   "main": "lib/index.js",
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=14 <17"
   },
   "scripts": {
     "build": "gulp bundle",
     "ship": "gulp bundle --ship && gulp package-solution --ship",
-    "start": "gulp serve --nobrowser",
+    "start": "gulp serve",
     "clean": "gulp clean",
     "test": "gulp test"
   },
@@ -17,6 +17,7 @@
     "@fluentui/react": "^8.94.1",
     "@microsoft/office-js": "^1.1.78",
     "@microsoft/sp-core-library": "1.15.2",
+    "@microsoft/sp-loader": "^1.15.2",
     "@microsoft/sp-lodash-subset": "1.15.2",
     "@microsoft/sp-office-ui-fabric-core": "1.15.2",
     "@microsoft/sp-property-pane": "1.15.2",
