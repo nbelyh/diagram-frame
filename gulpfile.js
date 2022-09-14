@@ -6,7 +6,7 @@ var path = require('path');
 
 build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
 
-gulp.task('update-version', function () {
+gulp.task('update-version', function (cb) {
 
   const gutil = require('gulp-util');
   const fs = require('fs');
@@ -23,6 +23,8 @@ gulp.task('update-version', function () {
   var webPartManfiestJson = require('./src/WebPart/WebPart.manifest.json');
   webPartManfiestJson.version = version;
   fs.writeFileSync('./src/WebPart/WebPart.manifest.json', JSON.stringify(webPartManfiestJson, null, 2));
+
+  cb();
 });
 
 build.tslintCmd.enabled = false;
