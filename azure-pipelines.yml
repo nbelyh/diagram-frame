@@ -63,7 +63,7 @@ stages:
 
 - stage: GitHubRelease
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: 'windows-latest'
   jobs:
   - deployment: GitHubRelease
     environment: 'github'
