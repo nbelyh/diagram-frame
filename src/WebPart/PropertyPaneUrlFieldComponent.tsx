@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FilePicker, IFilePickerResult } from '@pnp/spfx-controls-react';
+import { FilePicker, IFilePickerResult } from './../min-sp-controls-react/controls/filePicker';
 
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -36,8 +36,9 @@ export function PropertyPaneUrlFieldComponent(props: {
       buttonLabel="Browse..."
       onSave={(filePickerResult: IFilePickerResult[]) => onUploadImage(filePickerResult)}
       onChange={(filePickerResult: IFilePickerResult[]) => onChangeImage(filePickerResult)}
-      context={props.context as any}
+      context={props.context}
       hideStockImages
+      hideRecentTab
       hideLocalMultipleUploadTab
     />
   );

@@ -12,7 +12,7 @@ import * as strings from 'WebPartStrings';
 import { TopFrame } from './TopFrame';
 import { PropertyPaneVersionField } from './PropertyPaneVersionField';
 import { PropertyPaneUrlField } from './PropertyPaneUrlField';
-import { Placeholder } from '@pnp/spfx-controls-react';
+import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
 import { PropertyPaneSizeField } from './PropertyPaneSizeField';
 
 export interface IWebPartProps {

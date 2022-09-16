@@ -9,6 +9,7 @@ node_modules
 # Build generated files
 dist
 lib
+!src/@pnp/spfx-controls-react/lib
 solution
 temp
 *.sppkg

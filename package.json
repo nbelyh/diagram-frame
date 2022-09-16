@@ -4,7 +4,7 @@
   "private": true,
   "main": "lib/index.js",
   "engines": {
-    "node": ">=14 <17"
+    "node": ">=16 <17"
   },
   "scripts": {
     "build": "gulp bundle",
@@ -23,7 +23,6 @@
     "@microsoft/sp-property-pane": "1.15.2",
     "@microsoft/sp-webpart-base": "1.15.2",
     "@pnp/sp": "^2.14.0",
-    "@pnp/spfx-controls-react": "~3.5.0",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
