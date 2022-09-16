@@ -30,6 +30,22 @@ export function TopFrame(props: ITopFrameProps) {
     if (props.startPage)
       ctx.document.setActivePage(props.startPage);
 
+    // sample selection changed event
+    ctx.document.onSelectionChanged.add(async (args) => {
+      if (args.shapeNames.length === 1) {
+        const page = ctx.document.pages.getItem(args.pageName);
+        const shape = page.shapes.getItem(args.shapeNames[0]);
+        ctx.load(shape, ['hyperlinks']);
+        await ctx.sync();
+        const link = shape.hyperlinks.items.map(x => `${x.address}`)[0];
+        if (link) {
+          alert(`navigating to: ${link}`);
+          const embedUrl = await resolveUrl(link);
+          setEmbedUrl(embedUrl);
+        }
+      }
+    });
+
     return ctx.sync();
   };
 
