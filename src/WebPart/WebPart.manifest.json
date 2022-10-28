@@ -3,12 +3,15 @@
   "id": "eaf98c51-0b5e-4ab0-9eca-139671d32cf5",
   "alias": "DiagramFrameWebPart",
   "componentType": "WebPart",
-  "version": "1.0.0",
+  "version": "*",
   "manifestVersion": 2,
   "requiresCustomScript": false,
+  "supportsFullBleed": true,
   "supportedHosts": [
     "SharePointWebPart",
-    "SharePointFullPage"
+    "SharePointFullPage",
+    "TeamsTab",
+    "TeamsPersonalApp"
   ],
   "preconfiguredEntries": [
     {
