@@ -27,7 +27,7 @@ export function PropertyPaneUrlFieldComponent(props: {
     props.setUrl(fileInfo.data.ServerRelativeUrl);
   };
 
-  const fileName = props.url.split('/').pop().split('?')[0].split('#')[0];
+  const fileName = props.url?.split('/').pop().split('?')[0].split('#')[0];
 
   return (
     <FilePicker
