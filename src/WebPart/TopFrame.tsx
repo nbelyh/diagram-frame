@@ -104,11 +104,12 @@ export function TopFrame(props: ITopFrameProps) {
 
   React.useEffect(() => {
     setLoadError('');
-    // props.context.statusRenderer.displayLoadingIndicator(ref.current, 'diagram');
+    props.context.statusRenderer.displayLoadingIndicator(ref.current, 'diagram');
     resolveUrl(props.url).then(val => {
-      // props.context.statusRenderer.clearLoadingIndicator(ref.current);
+      props.context.statusRenderer.clearLoadingIndicator(ref.current);
       setEmbedUrl(val);
     }, err => {
+      props.context.statusRenderer.clearLoadingIndicator(ref.current);
       setLoadError(err);
       // props.context.statusRenderer.renderError(ref.current, err);
     });
@@ -117,36 +118,35 @@ export function TopFrame(props: ITopFrameProps) {
   const rootStyle = {
     height: props.height,
     width: props.width,
-    overflow: 'hidden'
   };
 
-  return loadError
-    ? <Placeholder
-      iconName="Error"
-      iconText={"Unable to show this Visio diagram"}
-      description={props.isPropertyPaneOpen
-        ? `${loadError} Click 'Browse...' Button on configuration panel to select other diagram. Unable to display: ${props.url}`
-        : props.isReadOnly
-          ? `${loadError} Click 'Edit' to start page editing to reconfigure this web part. Unable to display: ${props.url}`
-          : `${loadError} Click 'Configure' button to reconfigure this web part. Unable to display: ${props.url}`}
-      buttonLabel={"Configure"}
-      onConfigure={() => props.onConfigure()}
-      hideButton={props.isReadOnly}
-      disableButton={props.isPropertyPaneOpen}
-    />
-    : props.url
-      ? <div className={styles.root} style={rootStyle} ref={ref} />
-      : <Placeholder
+  return (
+    <div className={styles.root} style={rootStyle} ref={ref}>
+      {!props.url && <Placeholder
         iconName="Edit"
         iconText={"Configure Web Part"}
         description={props.isPropertyPaneOpen
           ? "Click 'Browse...' Button on configuration panel to select the diagram"
           : props.isReadOnly
-          ? `Click 'Edit' to start page editing to reconfigure this web part`
-          : `Click 'Configure' button to configure the web part`}
+            ? `Click 'Edit' to start page editing to reconfigure this web part`
+            : `Click 'Configure' button to configure the web part`}
         buttonLabel={"Configure"}
         onConfigure={() => props.onConfigure()}
         hideButton={props.isReadOnly}
         disableButton={props.isPropertyPaneOpen}
-      />;
+      />}
+      {!!loadError && <Placeholder
+        iconName="Error"
+        iconText={"Unable to show this Visio diagram"}
+        description={props.isPropertyPaneOpen
+          ? `${loadError} Click 'Browse...' Button on configuration panel to select other diagram. Unable to display: ${props.url}`
+          : props.isReadOnly
+            ? `${loadError} Click 'Edit' to start page editing to reconfigure this web part. Unable to display: ${props.url}`
+            : `${loadError} Click 'Configure' button to reconfigure this web part. Unable to display: ${props.url}`}
+        buttonLabel={"Configure"}
+        onConfigure={() => props.onConfigure()}
+        hideButton={props.isReadOnly}
+        disableButton={props.isPropertyPaneOpen}
+      />}
+    </div>);
 }
