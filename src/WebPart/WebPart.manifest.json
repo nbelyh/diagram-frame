@@ -29,8 +29,8 @@
       "iconImageUrl": "https://unmanagedvisio.com/upload/spfx/icon.svg",
       "properties": {
         "url": "",
-        "width": "",
-        "height": ""
+        "width": "100%",
+        "height": "65vh"
       }
     }
   ]

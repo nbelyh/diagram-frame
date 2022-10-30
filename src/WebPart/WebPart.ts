@@ -71,9 +71,15 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
     const isPropertyPaneOpen = this.context.propertyPane.isPropertyPaneOpen();
 
+    const properties = {
+      ...this.properties,
+      width: this.properties.width || '100%',
+      height: this.properties.height || '65vh'
+    };
+
     const element: React.ReactElement = (this.properties.url)
       ? React.createElement(TopFrame, {
-        ...this.properties,
+        ...properties,
         context: this.context
       })
       : React.createElement(Placeholder, {
@@ -100,11 +106,41 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
     return Version.parse('1.0');
   }
 
+  private defaultWidth;
+  private async getDefaultWidth() {
+    if (this.defaultWidth) {
+      return this.defaultWidth;
+    }
+
+    return this.defaultWidth = '100%';
+  }
+
+  private defaultHeight;
+  private async getDefaultHeight() {
+
+    if (this.defaultHeight) {
+      return this.defaultHeight;
+    }
+
+    if (this.context.sdks.microsoftTeams) {
+      return this.defaultHeight = '100%';
+    }
+
+    const pageContext = this.context.pageContext;
+    if (pageContext?.list?.id && pageContext?.listItem?.id) {
+      try {
+        const item = await sp.web.lists.getById(pageContext.list.id.toString()).items.getById(pageContext.listItem.id).select('PageLayoutType').get();
+        if (item['PageLayoutType'] === 'SingleWebPartAppPage') {
+            return this.defaultHeight = '100%';
+        }
+      } catch (err) {
+        console.warn('Unable to dtermine default height using default', err);
+      }
+    }
+    return this.defaultHeight = '65vh';
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-
-    const defaultWidth = '100%';
-    const defaultHeight = (this.context.sdks?.microsoftTeams || !this.context.pageContext?.listItem?.id) ? '100%' : '65vh';
-
     return {
       pages: [
         {
@@ -136,18 +172,18 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
               groupFields: [
                 PropertyPaneSizeField('width', {
                   label: strings.FieldWidth,
-                  description: "Specify value and units (leave blank for default)",
+                  description: "Specify width value and units",
                   value: this.properties.width,
                   screenUnits: 'w',
-                  placeholder: defaultWidth
+                  getDefaultValue: () => this.getDefaultWidth()
                 }),
 
                 PropertyPaneSizeField('height', {
                   label: strings.FieldHeight,
-                  description: "Specify value and units (leave blank for default)",
+                  description: "Specify height value and units",
                   value: this.properties.height,
                   screenUnits: 'h',
-                  placeholder: defaultHeight
+                  getDefaultValue: () => this.getDefaultHeight()
                 }),
                 PropertyPaneToggle('hideToolbars', {
                   label: "Hide Toolbars",

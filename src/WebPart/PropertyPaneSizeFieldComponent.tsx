@@ -1,18 +1,16 @@
 import * as React from 'react';
-import { Dropdown, IDropdownOption, Stack, TextField, Text, useTheme } from '@fluentui/react';
+import { Dropdown, IDropdownOption, Stack, TextField, Text } from '@fluentui/react';
 
 export function PropertyPaneSizeFieldComponent(props: {
   value: string;
   setValue: (value: string) => void;
+  getDefaultValue: () => Promise<string>;
   label: string;
-  placeholder: string;
   description: string;
   screenUnits: string;
 }) {
 
   const screen = `v${props.screenUnits}`;
-
-  const { palette } = useTheme();
 
   const unitsOptions: IDropdownOption[] = [
     { key: screen, text: "% of the screen" },
@@ -26,41 +24,36 @@ export function PropertyPaneSizeFieldComponent(props: {
 
   const [value, setValue] = React.useState(props.value);
   React.useEffect(() => {
-    const timeout = setTimeout(() => props.setValue(value), 500);
+    const timeout = setTimeout(() => {
+      if (value) {
+        props.setValue(value);
+      } else {
+        props.getDefaultValue().then(defaultVal => {
+          setValue(defaultVal);
+        });
+      }
+    }, 1000);
     return () => clearTimeout(timeout);
   }, [value]);
 
   const matches = value.match(/(\d+)\s*(\w+|%)?/);
 
-  const placeholderMatches = props.placeholder.match(/(\d+)\s*(\w+|%)?/);
-
-  const placeholderNumber = placeholderMatches?.[1];
-  const placeholderUnits = placeholderMatches[2];
-
   const number = matches?.[1] ?? '';
-  const units = matches?.[2] ?? placeholderUnits;
+  const units = matches?.[2] ?? screen;
 
-  const onNumberChanged = (_, val) => {
-    setValue(val ? val + units : '');
+  const onNumberChanged = async (_, val) => {
+    setValue(val + units);
   };
 
   const onUnitChanged = (_, val) => {
     setValue(number + val.key);
   };
 
-  const fieldStyles = {
-    field: {
-      '&::placeholder': {
-        color: palette.neutralTertiary
-      }
-    }
-  };
-
   return (
     <Stack tokens={{ childrenGap: "s2" }}>
       <Stack horizontal tokens={{ childrenGap: "s2" }}>
         <Stack.Item grow>
-          <TextField label={props.label} styles={fieldStyles} placeholder={placeholderNumber} value={number} onChange={onNumberChanged} />
+          <TextField label={props.label} value={number} onChange={onNumberChanged} />
         </Stack.Item>
         <Stack.Item align='end'>
           <Dropdown style={{ minWidth: "10em" }} options={unitsOptions} selectedKey={units} disabled={number === ''} onChange={onUnitChanged} />
