@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dropdown, IDropdownOption, Stack, TextField, Text } from '@fluentui/react';
+import { Dropdown, IDropdownOption, Stack, TextField, Text, useTheme } from '@fluentui/react';
 
 export function PropertyPaneSizeFieldComponent(props: {
   value: string;
@@ -11,6 +11,8 @@ export function PropertyPaneSizeFieldComponent(props: {
 }) {
 
   const screen = `v${props.screenUnits}`;
+
+  const { palette } = useTheme();
 
   const unitsOptions: IDropdownOption[] = [
     { key: screen, text: "% of the screen" },
@@ -36,7 +38,7 @@ export function PropertyPaneSizeFieldComponent(props: {
   const placeholderUnits = placeholderMatches[2];
 
   const number = matches?.[1] ?? '';
-  const units = matches?.[2] ?? (number ? screen : placeholderUnits);
+  const units = matches?.[2] ?? placeholderUnits;
 
   const onNumberChanged = (_, val) => {
     setValue(val ? val + units : '');
@@ -46,11 +48,19 @@ export function PropertyPaneSizeFieldComponent(props: {
     setValue(number + val.key);
   };
 
+  const fieldStyles = {
+    field: {
+      '&::placeholder': {
+        color: palette.neutralTertiary
+      }
+    }
+  };
+
   return (
     <Stack tokens={{ childrenGap: "s2" }}>
       <Stack horizontal tokens={{ childrenGap: "s2" }}>
         <Stack.Item grow>
-          <TextField label={props.label} placeholder={placeholderNumber} value={number} onChange={onNumberChanged} />
+          <TextField label={props.label} styles={fieldStyles} placeholder={placeholderNumber} value={number} onChange={onNumberChanged} />
         </Stack.Item>
         <Stack.Item align='end'>
           <Dropdown style={{ minWidth: "10em" }} options={unitsOptions} selectedKey={units} disabled={number === ''} onChange={onUnitChanged} />

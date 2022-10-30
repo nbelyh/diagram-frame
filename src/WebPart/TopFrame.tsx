@@ -110,8 +110,8 @@ export function TopFrame(props: ITopFrameProps) {
   const defaultHeight = (props.context.sdks?.microsoftTeams || !props.context.pageContext?.listItem?.id) ? '100%' : '65vh';
 
   const rootStyle = {
-    height: props.height ?? defaultHeight,
-    width: props.width ?? defaultWidth,
+    height: props.height ? props.height : defaultHeight,
+    width: props.width ? props.width : defaultWidth,
     overflow: 'hidden'
   };
 
