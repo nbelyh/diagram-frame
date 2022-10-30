@@ -12,6 +12,8 @@ import { PropertyPaneUrlFieldComponent } from './PropertyPaneUrlFieldComponent';
 export function PropertyPaneUrlField(targetProperty: string, props: {
   url: string;
   context: WebPartContext;
+  defaultFolderName: string;
+  defaultFolderRelativeUrl: string;
 }): IPropertyPaneField<IPropertyPaneCustomFieldProps> {
 
   return {
@@ -26,6 +28,8 @@ export function PropertyPaneUrlField(targetProperty: string, props: {
             context={props.context}
             url={props.url}
             setUrl={(url) => changeCallback(targetProperty, url)}
+            defaultFolderName={props.defaultFolderName}
+            defaultFolderRelativeUrl={props.defaultFolderRelativeUrl}
           />, parent);
       },
 

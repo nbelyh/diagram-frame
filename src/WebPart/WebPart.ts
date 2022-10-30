@@ -34,10 +34,36 @@ export interface IWebPartProps {
 
 export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
+  private defaultFolderName;
+  private defaultFolderRelativeUrl;
+
   public onInit(): Promise<void> {
 
     return super.onInit().then(() => {
       sp.setup({ spfxContext: this.context as any });
+
+      const teamsContext = this.context.sdks.microsoftTeams?.context;
+      if (teamsContext) {
+        this.defaultFolderName = teamsContext.channelName;
+        this.defaultFolderRelativeUrl = teamsContext.channelRelativeUrl;
+      } else {
+        sp.web.lists.select('DefaultViewURL', 'Title').filter('BaseTemplate eq 101 and Hidden eq false').get().then(results => {
+          const firstList = results[0];
+          if (firstList) {
+            const webUrl = this.context.pageContext.web.serverRelativeUrl;
+            let viewUrl = firstList.DefaultViewUrl;
+            if (viewUrl.startsWith(webUrl))
+              viewUrl = viewUrl.substring(webUrl.length);
+
+              const pos = viewUrl.indexOf("/Forms/");
+              if (pos >= 0) {
+                const docLibPath = viewUrl.substring(0, pos);
+                this.defaultFolderName = firstList.Title;
+                this.defaultFolderRelativeUrl = `${webUrl}${docLibPath}`;
+              }
+          }
+        });
+      }
     });
   }
 
@@ -85,7 +111,9 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
               groupFields: [
                 PropertyPaneUrlField('url', {
                   url: this.properties.url,
-                  context: this.context
+                  context: this.context,
+                  defaultFolderName: this.defaultFolderName,
+                  defaultFolderRelativeUrl: this.defaultFolderRelativeUrl,
                 }),
 
                 PropertyPaneTextField('startPage', {

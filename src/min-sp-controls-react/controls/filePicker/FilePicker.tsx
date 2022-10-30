@@ -379,7 +379,7 @@ export class FilePicker extends React.Component<
         name: "OneDrive",
         url: addUrl ? "#onedrive" : undefined,
         key: "keyOneDrive",
-        icon: "OneDrive",
+        icon: "OneDriveLogo",
       });
     }
     if (!this.props.hideLocalUploadTab) {

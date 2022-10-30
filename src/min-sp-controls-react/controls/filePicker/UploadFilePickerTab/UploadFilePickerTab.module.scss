@@ -20,6 +20,8 @@
 .localTabLabel {
   color: "[theme:themePrimary, default:#{$ms-color-themePrimary}]";
   cursor: pointer;
+  font-size: large;
+  text-decoration: underline;
 }
 
 .localTabInput {

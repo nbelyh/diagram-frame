@@ -7,26 +7,54 @@ import "@pnp/sp/folders";
 import "@pnp/sp/lists";
 import "@pnp/sp/files";
 import { WebPartContext } from '@microsoft/sp-webpart-base';
+import { FolderExplorer, IFolder } from '../min-sp-controls-react/controls/folderExplorer';
 
 export function PropertyPaneUrlFieldComponent(props: {
   url: string;
   setUrl: (url: string) => void;
-  context: WebPartContext
+  context: WebPartContext;
+  defaultFolderName: string;
+  defaultFolderRelativeUrl: string;
 }) {
 
-  const onChangeImage = (results: IFilePickerResult[]) => {
+  const onChangeFile = (results: IFilePickerResult[]) => {
     const result = results[0];
     props.setUrl(result.fileAbsoluteUrl);
   };
 
-  const onUploadImage = async (results: IFilePickerResult[]) => {
+  const onUploadFile = async (results: IFilePickerResult[]) => {
     const result = results[0];
     const fileConent = await result.downloadFileContent();
-    const siteAssetsList = await sp.web.lists.ensureSiteAssetsLibrary();
-    const fileInfo = await siteAssetsList.rootFolder.files.add(result.fileName, fileConent, true);
+    const targetList = selectedFolder
+      ? sp.web.getList(selectedFolder)
+      : await sp.web.lists.ensureSiteAssetsLibrary();
+    const fileInfo = await targetList.rootFolder.files.add(result.fileName, fileConent, true);
     props.setUrl(fileInfo.data.ServerRelativeUrl);
   };
 
+  const [selectedFolder, setSelectedFolder] = React.useState<string>(props.defaultFolderRelativeUrl);
+
+  const rootFolder: IFolder = {
+    Name: "Site",
+    ServerRelativeUrl: props.context.pageContext.web.serverRelativeUrl
+  };
+
+  const documentsFolder: IFolder = {
+    Name: props.defaultFolderName,
+    ServerRelativeUrl: props.defaultFolderRelativeUrl
+  };
+
+  const renderCustomUploadTabContent = () => (
+    <FolderExplorer
+      context={props.context}
+      rootFolder={rootFolder}
+      defaultFolder={documentsFolder}
+      onSelect={folder => setSelectedFolder(folder.ServerRelativeUrl)}
+      canCreateFolders={true}
+    />
+  );
+
+  const siteUrl = new URL(props.context.pageContext.web.absoluteUrl);
   const fileName = props.url?.split('/').pop().split('?')[0].split('#')[0];
 
   return (
@@ -34,12 +62,14 @@ export function PropertyPaneUrlFieldComponent(props: {
       label={fileName ?? 'Visio Document'}
       accepts={[".vsd", ".vsdx", ".vsdm"]}
       buttonLabel="Browse..."
-      onSave={(filePickerResult: IFilePickerResult[]) => onUploadImage(filePickerResult)}
-      onChange={(filePickerResult: IFilePickerResult[]) => onChangeImage(filePickerResult)}
+      onSave={(filePickerResult: IFilePickerResult[]) => onUploadFile(filePickerResult)}
+      onChange={(filePickerResult: IFilePickerResult[]) => onChangeFile(filePickerResult)}
+      defaultFolderAbsolutePath={`${siteUrl.origin}${props.defaultFolderRelativeUrl}`}
       context={props.context}
       hideStockImages
       hideRecentTab
       hideLocalMultipleUploadTab
+      renderCustomUploadTabContent={renderCustomUploadTabContent}
     />
   );
 }
