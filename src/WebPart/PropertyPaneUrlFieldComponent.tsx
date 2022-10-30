@@ -25,7 +25,7 @@ export function PropertyPaneUrlFieldComponent(props: {
   const ensureUploadFolder = async (uploadPath: string) => {
     try {
       const existingFolder = sp.web.getFolderByServerRelativePath(uploadPath);
-      let folderInfo = await existingFolder.select('Exists')();
+      const folderInfo = await existingFolder.select('Exists')();
       if (folderInfo.Exists) {
         return existingFolder;
       } else {
@@ -42,10 +42,14 @@ export function PropertyPaneUrlFieldComponent(props: {
 
   const onUploadFile = async (results: IFilePickerResult[]) => {
     const result = results[0];
-    const fileConent = await result.downloadFileContent();
-    const targetFolder = await ensureUploadFolder(selectedFolder);
-    const fileInfo = await targetFolder.files.add(result.fileName, fileConent, true);
-    props.setUrl(fileInfo.data.ServerRelativeUrl);
+    if (result.fileAbsoluteUrl) {
+      props.setUrl(result.fileAbsoluteUrl);
+    } else {
+      const fileConent = await result.downloadFileContent();
+      const targetFolder = await ensureUploadFolder(selectedFolder);
+      const fileInfo = await targetFolder.files.add(result.fileName, fileConent, true);
+      props.setUrl(fileInfo.data.ServerRelativeUrl);
+    }
   };
 
   const rootFolder: IFolder = {
