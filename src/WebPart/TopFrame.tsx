@@ -29,9 +29,6 @@ export function TopFrame(props: ITopFrameProps) {
     ctx.document.view.disablePanZoomWindow = props.disablePanZoomWindow;
     ctx.document.view.disableZoom = props.disableZoom;
 
-    if (props.startPage)
-      ctx.document.setActivePage(props.startPage);
-
     const result = await ctx.sync();
 
     enablePropsChanged.current = true;
@@ -68,7 +65,18 @@ export function TopFrame(props: ITopFrameProps) {
         width: '100%'
       });
 
-      session.init().then(() => Visio.run(session, ctx => init(ctx)));
+      session.init().then(() => Visio.run(session, async (ctx) => {
+        await init(ctx);
+        if (props.startPage) {
+          const setActivePage = async () => {
+            ctx.document.setActivePage(props.startPage);
+            await ctx.sync();
+            ctx.document.onDocumentLoadComplete.remove(setActivePage);
+          };
+          ctx.document.onDocumentLoadComplete.add(setActivePage);
+        }
+
+      }));
 
       return () => {
         root.innerHTML = "";
