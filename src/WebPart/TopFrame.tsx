@@ -16,7 +16,9 @@ export function TopFrame(props: ITopFrameProps) {
   const ref = React.useRef(null);
   const [embedUrl, setEmbedUrl] = React.useState(null);
 
-  const init = (ctx: Visio.RequestContext) => {
+  const enablePropsChanged = React.useRef(false);
+
+  const init = async (ctx: Visio.RequestContext) => {
 
     ctx.document.application.showToolbars = !props.hideToolbars;
     ctx.document.application.showBorders = !props.hideBorders;
@@ -30,14 +32,20 @@ export function TopFrame(props: ITopFrameProps) {
     if (props.startPage)
       ctx.document.setActivePage(props.startPage);
 
-    return ctx.sync();
+    const result = await ctx.sync();
+
+    enablePropsChanged.current = true;
+
+    return result;
   };
 
   const [propsChanged, setPropsChanged] = React.useState(0);
 
   React.useEffect(() => {
-    const timer = setTimeout(() => setPropsChanged(propsChanged + 1), 1000);
-    return () => clearTimeout(timer);
+    if (enablePropsChanged.current) {
+      const timer = setTimeout(() => setPropsChanged(propsChanged + 1), 1000);
+      return () => clearTimeout(timer);
+    }
   }, [
     props.height, props.width,
     props.zoom, props.startPage,
@@ -65,6 +73,8 @@ export function TopFrame(props: ITopFrameProps) {
       return () => {
         root.innerHTML = "";
       };
+    } else {
+      enablePropsChanged.current = true;
     }
 
   }, [embedUrl, propsChanged]);
