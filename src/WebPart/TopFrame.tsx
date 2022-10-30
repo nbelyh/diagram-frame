@@ -18,7 +18,7 @@ export function TopFrame(props: ITopFrameProps) {
 
   const enablePropsChanged = React.useRef(false);
 
-  const init = async (ctx: Visio.RequestContext) => {
+  const init = async (session: OfficeExtension.EmbeddedSession, ctx: Visio.RequestContext) => {
 
     ctx.document.application.showToolbars = !props.hideToolbars;
     ctx.document.application.showBorders = !props.hideBorders;
@@ -30,6 +30,15 @@ export function TopFrame(props: ITopFrameProps) {
     ctx.document.view.disableZoom = props.disableZoom;
 
     const result = await ctx.sync();
+
+    if (props.startPage) {
+      setTimeout(() => {
+        Visio.run(session, (ctxPage) => {
+          ctxPage.document.setActivePage(props.startPage);
+          return ctxPage.sync();
+        });
+      }, 750);
+    }
 
     enablePropsChanged.current = true;
 
@@ -65,18 +74,7 @@ export function TopFrame(props: ITopFrameProps) {
         width: '100%'
       });
 
-      session.init().then(() => Visio.run(session, async (ctx) => {
-        await init(ctx);
-        if (props.startPage) {
-          const setActivePage = async () => {
-            ctx.document.setActivePage(props.startPage);
-            await ctx.sync();
-            ctx.document.onDocumentLoadComplete.remove(setActivePage);
-          };
-          ctx.document.onDocumentLoadComplete.add(setActivePage);
-        }
-
-      }));
+      session.init().then(() => Visio.run(session, (ctx) => init(session, ctx)));
 
       return () => {
         root.innerHTML = "";
