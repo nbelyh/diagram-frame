@@ -7,6 +7,7 @@ import { PropertyPaneSizeFieldComponent } from './PropertyPaneSizeFieldComponent
 export function PropertyPaneSizeField(targetProperty: string, props: {
   value: string;
   label: string;
+  placeholder: string;
   description: string;
   screenUnits: string;
 }): IPropertyPaneField<IPropertyPaneCustomFieldProps> {
@@ -22,6 +23,7 @@ export function PropertyPaneSizeField(targetProperty: string, props: {
           <PropertyPaneSizeFieldComponent
             value={props.value}
             label={props.label}
+            placeholder={props.placeholder}
             description={props.description}
             screenUnits={props.screenUnits}
             setValue={(val) => changeCallback(targetProperty, val)}

@@ -101,6 +101,10 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+
+    const defaultWidth = '100%';
+    const defaultHeight = (this.context.sdks?.microsoftTeams || !this.context.pageContext?.listItem?.id) ? '100%' : '65vh';
+
     return {
       pages: [
         {
@@ -134,14 +138,16 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
                   label: strings.FieldWidth,
                   description: "Specify value and units (leave blank for default)",
                   value: this.properties.width,
-                  screenUnits: 'w'
+                  screenUnits: 'w',
+                  placeholder: defaultWidth
                 }),
 
                 PropertyPaneSizeField('height', {
                   label: strings.FieldHeight,
                   description: "Specify value and units (leave blank for default)",
                   value: this.properties.height,
-                  screenUnits: 'h'
+                  screenUnits: 'h',
+                  placeholder: defaultHeight
                 }),
                 PropertyPaneToggle('hideToolbars', {
                   label: "Hide Toolbars",

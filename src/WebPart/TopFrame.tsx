@@ -106,9 +106,13 @@ export function TopFrame(props: ITopFrameProps) {
     });
   }, [props.url]);
 
+  const defaultWidth = '100%';
+  const defaultHeight = (props.context.sdks?.microsoftTeams || !props.context.pageContext?.listItem?.id) ? '100%' : '65vh';
+
   const rootStyle = {
-    height: props.height ?? "65vh",
-    width: props.width ?? "100%",
+    height: props.height ?? defaultHeight,
+    width: props.width ?? defaultWidth,
+    overflow: 'hidden'
   };
 
   return (
