@@ -22,17 +22,31 @@ export function PropertyPaneUrlFieldComponent(props: {
     props.setUrl(result.fileAbsoluteUrl);
   };
 
+  const ensureUploadFolder = async (uploadPath: string) => {
+    try {
+      const existingFolder = sp.web.getFolderByServerRelativePath(uploadPath);
+      let folderInfo = await existingFolder.select('Exists')();
+      if (folderInfo.Exists) {
+        return existingFolder;
+      } else {
+        const { folder: newFolder } = await sp.web.folders.addUsingPath(uploadPath);
+        return newFolder;
+      }
+    } catch (error) {
+      const siteAssetsLib = await sp.web.lists.ensureSiteAssetsLibrary();
+      return siteAssetsLib.rootFolder;
+    }
+  }
+
+  const [selectedFolder, setSelectedFolder] = React.useState<string>(props.defaultFolderRelativeUrl);
+
   const onUploadFile = async (results: IFilePickerResult[]) => {
     const result = results[0];
     const fileConent = await result.downloadFileContent();
-    const targetList = selectedFolder
-      ? sp.web.getList(selectedFolder)
-      : await sp.web.lists.ensureSiteAssetsLibrary();
-    const fileInfo = await targetList.rootFolder.files.add(result.fileName, fileConent, true);
+    const targetFolder = await ensureUploadFolder(selectedFolder);
+    const fileInfo = await targetFolder.files.add(result.fileName, fileConent, true);
     props.setUrl(fileInfo.data.ServerRelativeUrl);
   };
-
-  const [selectedFolder, setSelectedFolder] = React.useState<string>(props.defaultFolderRelativeUrl);
 
   const rootFolder: IFolder = {
     Name: "Site",
