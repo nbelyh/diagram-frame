@@ -8,12 +8,12 @@ import "@pnp/sp/lists";
 import "@pnp/sp/files";
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { PropertyPaneUrlFieldComponent } from './PropertyPaneUrlFieldComponent';
+import { IDefaultFolder } from "./IDefaultFolder";
 
 export function PropertyPaneUrlField(targetProperty: string, props: {
   url: string;
   context: WebPartContext;
-  defaultFolderName: string;
-  defaultFolderRelativeUrl: string;
+  getDefaultFolder: () => Promise<IDefaultFolder>;
 }): IPropertyPaneField<IPropertyPaneCustomFieldProps> {
 
   return {
@@ -28,8 +28,7 @@ export function PropertyPaneUrlField(targetProperty: string, props: {
             context={props.context}
             url={props.url}
             setUrl={(url) => changeCallback(targetProperty, url)}
-            defaultFolderName={props.defaultFolderName}
-            defaultFolderRelativeUrl={props.defaultFolderRelativeUrl}
+            getDefaultFolder={props.getDefaultFolder}
           />, parent);
       },
 

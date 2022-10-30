@@ -8,13 +8,13 @@ import "@pnp/sp/lists";
 import "@pnp/sp/files";
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { FolderExplorer, IFolder } from '../min-sp-controls-react/controls/folderExplorer';
+import { IDefaultFolder } from './IDefaultFolder';
 
 export function PropertyPaneUrlFieldComponent(props: {
   url: string;
   setUrl: (url: string) => void;
   context: WebPartContext;
-  defaultFolderName: string;
-  defaultFolderRelativeUrl: string;
+  getDefaultFolder: () => Promise<IDefaultFolder>;
 }) {
 
   const onChangeFile = (results: IFilePickerResult[]) => {
@@ -38,7 +38,7 @@ export function PropertyPaneUrlFieldComponent(props: {
     }
   }
 
-  const [selectedFolder, setSelectedFolder] = React.useState<string>(props.defaultFolderRelativeUrl);
+  const [selectedFolder, setSelectedFolder] = React.useState<string>();
 
   const onUploadFile = async (results: IFilePickerResult[]) => {
     const result = results[0];
@@ -57,10 +57,14 @@ export function PropertyPaneUrlFieldComponent(props: {
     ServerRelativeUrl: props.context.pageContext.web.serverRelativeUrl
   };
 
-  const documentsFolder: IFolder = {
-    Name: props.defaultFolderName,
-    ServerRelativeUrl: props.defaultFolderRelativeUrl
-  };
+  const [documentsFolder, setDocumentsFolder] = React.useState<IFolder>();
+
+  React.useEffect(() => {
+    props.getDefaultFolder().then(f => {
+      setDocumentsFolder({ Name: f.name, ServerRelativeUrl: f.relativeUrl });
+      setSelectedFolder(f.relativeUrl);
+    })
+  }, []);
 
   const renderCustomUploadTabContent = () => (
     <FolderExplorer
@@ -82,7 +86,7 @@ export function PropertyPaneUrlFieldComponent(props: {
       buttonLabel="Browse..."
       onSave={(filePickerResult: IFilePickerResult[]) => onUploadFile(filePickerResult)}
       onChange={(filePickerResult: IFilePickerResult[]) => onChangeFile(filePickerResult)}
-      defaultFolderAbsolutePath={`${siteUrl.origin}${props.defaultFolderRelativeUrl}`}
+      defaultFolderAbsolutePath={`${siteUrl.origin}${documentsFolder?.ServerRelativeUrl}`}
       context={props.context}
       hideStockImages
       hideRecentTab

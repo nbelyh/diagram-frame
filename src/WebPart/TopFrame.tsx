@@ -6,9 +6,13 @@ import { IWebPartProps } from './WebPart';
 import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
+import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
 
 interface ITopFrameProps extends IWebPartProps {
   context: WebPartContext;
+  isPropertyPaneOpen: boolean;
+  isReadOnly: boolean;
+  onConfigure: () => void;
 }
 
 export function TopFrame(props: ITopFrameProps) {
@@ -96,13 +100,17 @@ export function TopFrame(props: ITopFrameProps) {
     }
   };
 
+  const [loadError, setLoadError] = React.useState('');
+
   React.useEffect(() => {
-    props.context.statusRenderer.displayLoadingIndicator(ref.current, 'diagram');
+    setLoadError('');
+    // props.context.statusRenderer.displayLoadingIndicator(ref.current, 'diagram');
     resolveUrl(props.url).then(val => {
-      props.context.statusRenderer.clearLoadingIndicator(ref.current);
+      // props.context.statusRenderer.clearLoadingIndicator(ref.current);
       setEmbedUrl(val);
     }, err => {
-      props.context.statusRenderer.renderError(ref.current, err);
+      setLoadError(err);
+      // props.context.statusRenderer.renderError(ref.current, err);
     });
   }, [props.url]);
 
@@ -112,7 +120,33 @@ export function TopFrame(props: ITopFrameProps) {
     overflow: 'hidden'
   };
 
-  return (
-    <div className={styles.root} style={rootStyle} ref={ref} />
-  );
+  return loadError
+    ? <Placeholder
+      iconName="Error"
+      iconText={"Unable to show this Visio diagram"}
+      description={props.isPropertyPaneOpen
+        ? `${loadError} Click 'Browse...' Button on configuration panel to select other diagram. Unable to display: ${props.url}`
+        : props.isReadOnly
+          ? `${loadError} Click 'Edit' to start page editing to reconfigure this web part. Unable to display: ${props.url}`
+          : `${loadError} Click 'Configure' button to reconfigure this web part. Unable to display: ${props.url}`}
+      buttonLabel={"Configure"}
+      onConfigure={() => props.onConfigure()}
+      hideButton={props.isReadOnly}
+      disableButton={props.isPropertyPaneOpen}
+    />
+    : props.url
+      ? <div className={styles.root} style={rootStyle} ref={ref} />
+      : <Placeholder
+        iconName="Edit"
+        iconText={"Configure Web Part"}
+        description={props.isPropertyPaneOpen
+          ? "Click 'Browse...' Button on configuration panel to select the diagram"
+          : props.isReadOnly
+          ? `Click 'Edit' to start page editing to reconfigure this web part`
+          : `Click 'Configure' button to configure the web part`}
+        buttonLabel={"Configure"}
+        onConfigure={() => props.onConfigure()}
+        hideButton={props.isReadOnly}
+        disableButton={props.isPropertyPaneOpen}
+      />;
 }

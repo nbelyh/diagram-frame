@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import { DisplayMode, Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import { IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneToggle } from "@microsoft/sp-property-pane";
 import { sp } from '@pnp/sp';
@@ -12,8 +12,8 @@ import * as strings from 'WebPartStrings';
 import { TopFrame } from './TopFrame';
 import { PropertyPaneVersionField } from './PropertyPaneVersionField';
 import { PropertyPaneUrlField } from './PropertyPaneUrlField';
-import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
 import { PropertyPaneSizeField } from './PropertyPaneSizeField';
+import { IDefaultFolder } from './IDefaultFolder';
 
 export interface IWebPartProps {
   url: string;
@@ -34,36 +34,52 @@ export interface IWebPartProps {
 
 export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
-  private defaultFolderName;
-  private defaultFolderRelativeUrl;
+  private defaultFolder: IDefaultFolder;
+  private async getDefaultFolder(): Promise<IDefaultFolder> {
+    if (this.defaultFolder) {
+      return this.defaultFolder;
+    }
+
+    const teamsContext = this.context.sdks.microsoftTeams?.context;
+    if (teamsContext) {
+      return this.defaultFolder = {
+        name: teamsContext.channelName,
+        relativeUrl: teamsContext.channelRelativeUrl
+      };
+    }
+
+    try {
+      const lists = await sp.web.lists.select('DefaultViewURL', 'Title').filter('BaseTemplate eq 101 and Hidden eq false').get();
+      const firstList = lists[0];
+      if (firstList) {
+        const webUrl = this.context.pageContext.web.serverRelativeUrl;
+        let viewUrl = firstList.DefaultViewUrl;
+        if (viewUrl.startsWith(webUrl))
+          viewUrl = viewUrl.substring(webUrl.length);
+
+        const pos = viewUrl.indexOf("/Forms/");
+        if (pos >= 0) {
+          const docLibPath = viewUrl.substring(0, pos);
+          return this.defaultFolder = {
+            name: firstList.Title,
+            relativeUrl: `${webUrl}${docLibPath}`
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Unable to dtermine default folder using default', err);
+    }
+
+    return this.defaultFolder = {
+      name: undefined,
+      relativeUrl: undefined
+    };
+  }
 
   public onInit(): Promise<void> {
 
     return super.onInit().then(() => {
       sp.setup({ spfxContext: this.context as any });
-
-      const teamsContext = this.context.sdks.microsoftTeams?.context;
-      if (teamsContext) {
-        this.defaultFolderName = teamsContext.channelName;
-        this.defaultFolderRelativeUrl = teamsContext.channelRelativeUrl;
-      } else {
-        sp.web.lists.select('DefaultViewURL', 'Title').filter('BaseTemplate eq 101 and Hidden eq false').get().then(results => {
-          const firstList = results[0];
-          if (firstList) {
-            const webUrl = this.context.pageContext.web.serverRelativeUrl;
-            let viewUrl = firstList.DefaultViewUrl;
-            if (viewUrl.startsWith(webUrl))
-              viewUrl = viewUrl.substring(webUrl.length);
-
-              const pos = viewUrl.indexOf("/Forms/");
-              if (pos >= 0) {
-                const docLibPath = viewUrl.substring(0, pos);
-                this.defaultFolderName = firstList.Title;
-                this.defaultFolderRelativeUrl = `${webUrl}${docLibPath}`;
-              }
-          }
-        });
-      }
     });
   }
 
@@ -77,19 +93,13 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
       height: this.properties.height || '65vh'
     };
 
-    const element: React.ReactElement = (this.properties.url)
-      ? React.createElement(TopFrame, {
-        ...properties,
-        context: this.context
-      })
-      : React.createElement(Placeholder, {
-        iconName: "Edit",
-        iconText: isPropertyPaneOpen ? "Select Visio Diagram" : "Configure Web Part",
-        description: isPropertyPaneOpen ? "Click 'Browse...' Button on configuration panel to select the diagram" : "Press 'Configure' button to configure the web part",
-        buttonLabel: "Configure",
-        onConfigure: () => this.context.propertyPane.open(),
-        hideButton: isPropertyPaneOpen
-      });
+    const element = React.createElement(TopFrame, {
+      ...properties,
+      isPropertyPaneOpen,
+      onConfigure: () => this.context.propertyPane.open(),
+      isReadOnly: this.displayMode === DisplayMode.Read,
+      context: this.context
+    });
 
     ReactDom.render(element, this.domElement);
   }
@@ -131,7 +141,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
       try {
         const item = await sp.web.lists.getById(pageContext.list.id.toString()).items.getById(pageContext.listItem.id).select('PageLayoutType').get();
         if (item['PageLayoutType'] === 'SingleWebPartAppPage') {
-            return this.defaultHeight = '100%';
+          return this.defaultHeight = '100%';
         }
       } catch (err) {
         console.warn('Unable to dtermine default height using default', err);
@@ -152,8 +162,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
                 PropertyPaneUrlField('url', {
                   url: this.properties.url,
                   context: this.context,
-                  defaultFolderName: this.defaultFolderName,
-                  defaultFolderRelativeUrl: this.defaultFolderRelativeUrl,
+                  getDefaultFolder: () => this.getDefaultFolder(),
                 }),
 
                 PropertyPaneTextField('startPage', {
