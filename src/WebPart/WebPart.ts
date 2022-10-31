@@ -90,7 +90,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
     const properties = {
       ...this.properties,
       width: this.properties.width || '100%',
-      height: this.properties.height || '65vh'
+      height: this.properties.height || '50vh'
     };
 
     const element = React.createElement(TopFrame, {
@@ -147,7 +147,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
         console.warn('Unable to dtermine default height using default', err);
       }
     }
-    return this.defaultHeight = '65vh';
+    return this.defaultHeight = '50vh';
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
