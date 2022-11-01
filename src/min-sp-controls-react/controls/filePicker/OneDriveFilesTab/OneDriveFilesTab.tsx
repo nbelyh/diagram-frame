@@ -12,6 +12,7 @@ import { IFilePickerResult } from '../FilePicker.types';
 
 import styles from './OneDriveFilesTab.module.scss';
 import * as strings from 'ControlStrings';
+import Dialog, { DialogFooter, DialogType } from '@fluentui/react/lib/Dialog';
 
 export class OneDriveFilesTab extends React.Component<IOneDriveFilesTabProps, IOneDriveFilesTabState> {
   constructor(props: IOneDriveFilesTabProps) {
@@ -23,7 +24,8 @@ export class OneDriveFilesTab extends React.Component<IOneDriveFilesTabProps, IO
       libraryUrl: '/Documents',
       folderPath: undefined,
       folderName: strings.DocumentLibraries,
-      breadcrumbItems: []
+      breadcrumbItems: [],
+      confirmationVisible: false
     };
   }
 
@@ -66,7 +68,7 @@ export class OneDriveFilesTab extends React.Component<IOneDriveFilesTabProps, IO
     return (
       <div className={styles.tabContainer}>
         <div className={styles.tabHeaderContainer}>
-          <Breadcrumb items={this.state.breadcrumbItems} /*onRenderItem={this.renderBreadcrumbItem}*/ className={styles.breadcrumbNav}/>
+          <Breadcrumb items={this.state.breadcrumbItems} /*onRenderItem={this.renderBreadcrumbItem}*/ className={styles.breadcrumbNav} />
         </div>
         <div className={styles.tabFiles}>
           {this.state.libraryAbsolutePath !== undefined &&
@@ -78,6 +80,17 @@ export class OneDriveFilesTab extends React.Component<IOneDriveFilesTabProps, IO
               folderPath={this.state.folderPath}
               accepts={this.props.accepts} />}
         </div>
+        <Dialog hidden={!this.state.confirmationVisible} onDismiss={() => this.setState({ confirmationVisible: false })}
+          dialogContentProps={{
+            type: DialogType.normal,
+            title: strings.OneDriveConfirmDialogTitle,
+            subText: strings.OneDriveConfirmDialogBody
+          }}>
+          <DialogFooter>
+            <PrimaryButton onClick={() => this._handleConfirmSave()} text="Copy to Site Assets" />
+            <DefaultButton onClick={() => this.setState({ confirmationVisible: false })} text="Don't copy" />
+          </DialogFooter>
+        </Dialog>
         <div className={styles.actionButtonsContainer}>
           <div className={styles.actionButtons}>
             <PrimaryButton
@@ -144,7 +157,12 @@ export class OneDriveFilesTab extends React.Component<IOneDriveFilesTabProps, IO
    * Called when user saves
    */
   private _handleSave = () => {
+    this.setState({ confirmationVisible: true });
+  }
+
+  private _handleConfirmSave = () => {
     this.props.onSave([this.state.filePickerResult]);
+    this.setState({ confirmationVisible: false });
   }
 
   /**

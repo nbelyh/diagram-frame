@@ -2,10 +2,7 @@ import * as React from 'react';
 import styles from './TopFrame.module.scss';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IWebPartProps } from './WebPart';
-
-import { sp } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/files";
+import { SPHttpClient } from "@microsoft/sp-http";
 import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
 
 interface ITopFrameProps extends IWebPartProps {
@@ -89,13 +86,31 @@ export function TopFrame(props: ITopFrameProps) {
 
   }, [embedUrl, propsChanged]);
 
-  const resolveUrl = async (url: string) => {
-    if (url) {
-      const file = sp.web.getFileByUrl(url);
-      const item = await file.getItem();
+  const resolveUrl = async (fileUrl: string): Promise<string> => {
 
-      const wopiFrameUrl = await item.getWopiFrameUrl(0);
-      const result = wopiFrameUrl.replace("action=view", "action=embedview");
+    if (fileUrl) {
+      const apiUrl = `${props.context.pageContext.web.absoluteUrl}/_api/SP.RemoteWeb(@a1)/Web/GetFileByUrl(@a1)/ListItemAllFields/GetWopiFrameUrl(0)?@a1='${encodeURIComponent(fileUrl)}'`;
+      const oneDriveWopiFrameResult = await props.context.spHttpClient.post(apiUrl, SPHttpClient.configurations.v1, {
+        headers: {
+          "accept": "application/json;odata=nometadata",
+          "content-type": "application/json;odata=nometadata",
+          "odata-version": ""
+        }
+      });
+
+      if (!oneDriveWopiFrameResult || !oneDriveWopiFrameResult.ok) {
+        throw new Error(`Something went wrong when resolving file URL: ${fileUrl}. Status='${oneDriveWopiFrameResult.status}'`);
+      }
+
+      const oneDriveWopiFrameData = await oneDriveWopiFrameResult.json();
+      if (!oneDriveWopiFrameData || !oneDriveWopiFrameData.value) {
+        throw new Error(`Cannot resolve file URL: ${fileUrl}`);
+      }
+
+      const result = oneDriveWopiFrameData.value
+        .replace("action=view", "action=embedview")
+        .replace("action=default", "action=embedview");
+
       return result;
     }
   };

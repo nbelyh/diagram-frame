@@ -9,4 +9,5 @@ export interface IOneDriveFilesTabState {
   folderName: string;
 
   breadcrumbItems: OneDriveFilesBreadcrumbItem[];
+  confirmationVisible: boolean;
 }
