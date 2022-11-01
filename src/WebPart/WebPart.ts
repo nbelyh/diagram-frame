@@ -40,7 +40,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
       return this.defaultFolder;
     }
 
-    const teamsContext = this.context.sdks.microsoftTeams?.context;
+    const teamsContext = this.context.sdks?.microsoftTeams?.context;
     if (teamsContext) {
       return this.defaultFolder = {
         name: teamsContext.channelName,
@@ -98,7 +98,8 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
       isPropertyPaneOpen,
       onConfigure: () => this.context.propertyPane.open(),
       isReadOnly: this.displayMode === DisplayMode.Read,
-      context: this.context
+      context: this.context,
+      isTeams: !!this.context.sdks?.microsoftTeams?.context
     });
 
     ReactDom.render(element, this.domElement);

@@ -4,11 +4,13 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IWebPartProps } from './WebPart';
 import { SPHttpClient } from "@microsoft/sp-http";
 import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
+import { MessageBar, MessageBarType, ThemeProvider } from '@fluentui/react';
 
 interface ITopFrameProps extends IWebPartProps {
   context: WebPartContext;
   isPropertyPaneOpen: boolean;
   isReadOnly: boolean;
+  isTeams: boolean;
   onConfigure: () => void;
 }
 
@@ -99,6 +101,12 @@ export function TopFrame(props: ITopFrameProps) {
       });
 
       if (!oneDriveWopiFrameResult || !oneDriveWopiFrameResult.ok) {
+        if (oneDriveWopiFrameResult.status === 404) {
+          throw new Error(`The Visio file this web part is connected to is not found at the URL ${fileUrl}. Was the file deleted?`);
+        }
+        if (oneDriveWopiFrameResult.status === 403) {
+          throw new Error(`The Visio file this web part is connected to cannot be accessed at the URL ${fileUrl}. Are some permissions missing?`);
+        }
         throw new Error(`Something went wrong when resolving file URL: ${fileUrl}. Status='${oneDriveWopiFrameResult.status}'`);
       }
 
@@ -125,7 +133,7 @@ export function TopFrame(props: ITopFrameProps) {
       setEmbedUrl(val);
     }, err => {
       props.context.statusRenderer.clearLoadingIndicator(ref.current);
-      setLoadError(err);
+      setLoadError(`${err}`);
       // props.context.statusRenderer.renderError(ref.current, err);
     });
   }, [props.url]);
@@ -135,33 +143,37 @@ export function TopFrame(props: ITopFrameProps) {
     width: props.width,
   };
 
+  const showPlaceholder = !props.url || loadError;
+
+  const placeholderIconName = loadError
+    ? "Error"
+    : "Edit";
+
+  const placeholderIconText = loadError
+    ? "Unable to show this Visio diagram"
+    : "Visio diagram not selected";
+
+  const placeholderDescription = props.isPropertyPaneOpen
+    ? `Please click 'Browse...' Button on configuration panel to select the diagram.`
+    : props.isReadOnly
+      ? (props.isTeams
+        ? `Please click 'Settings' menu on the Tab to reconfigure this web part.`
+        : `Please click 'Edit' to start page editing to reconfigure this web part.`
+        )
+      : `Click 'Configure' button to reconfigure this web part.`;
+
   return (
-    <div className={styles.root} style={rootStyle} ref={ref}>
-      {!props.url && <Placeholder
-        iconName="Edit"
-        iconText={"Configure Web Part"}
-        description={props.isPropertyPaneOpen
-          ? "Click 'Browse...' Button on configuration panel to select the diagram"
-          : props.isReadOnly
-            ? `Click 'Edit' to start page editing to reconfigure this web part`
-            : `Click 'Configure' button to configure the web part`}
+    <ThemeProvider className={styles.root} style={rootStyle} ref={ref}>
+      {loadError && <MessageBar messageBarType={MessageBarType.error}>{loadError}</MessageBar>}
+      {showPlaceholder && <Placeholder
+        iconName={placeholderIconName}
+        iconText={placeholderIconText}
+        description={placeholderDescription}
         buttonLabel={"Configure"}
         onConfigure={() => props.onConfigure()}
         hideButton={props.isReadOnly}
         disableButton={props.isPropertyPaneOpen}
       />}
-      {!!loadError && <Placeholder
-        iconName="Error"
-        iconText={"Unable to show this Visio diagram"}
-        description={props.isPropertyPaneOpen
-          ? `${loadError} Click 'Browse...' Button on configuration panel to select other diagram. Unable to display: ${props.url}`
-          : props.isReadOnly
-            ? `${loadError} Click 'Edit' to start page editing to reconfigure this web part. Unable to display: ${props.url}`
-            : `${loadError} Click 'Configure' button to reconfigure this web part. Unable to display: ${props.url}`}
-        buttonLabel={"Configure"}
-        onConfigure={() => props.onConfigure()}
-        hideButton={props.isReadOnly}
-        disableButton={props.isPropertyPaneOpen}
-      />}
-    </div>);
+    </ThemeProvider>
+  );
 }
