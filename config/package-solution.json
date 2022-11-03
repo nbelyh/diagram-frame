@@ -8,7 +8,7 @@
       "websiteUrl": "https://unmanagedvisio.com/products/diagram-frame-sharepoint-visio-web-part",
       "mpnId": "6213191"
     },
-    "name": "Diagram Frame",
+    "name": "Diagram Frame WebPart",
     "id": "bc8110d6-2d34-408e-98c5-7f32eab887cb",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
