@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@microsoft/rush-stack-compiler-4.5": "^0.2.2",
-    "@microsoft/sp-build-web": "1.16.0",
+    "@microsoft/sp-build-web": "1.15.2",
     "@microsoft/sp-module-interfaces": "1.15.2",
     "@types/chai": "^4.3.3",
     "@types/es6-promise": "^3.3.0",
