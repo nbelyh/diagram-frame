@@ -62,6 +62,7 @@ stages:
         displayName: 'Publish Artifact: drop'
 
 - stage: GitHubRelease
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   pool:
     vmImage: 'windows-latest'
   jobs:
