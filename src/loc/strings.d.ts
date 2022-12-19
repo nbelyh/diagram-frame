@@ -44,8 +44,6 @@ declare interface IWebPartStrings {
   millimeters: string;
   points: string;
   pixels: string;
-
-
 }
 
 declare module 'WebPartStrings' {
