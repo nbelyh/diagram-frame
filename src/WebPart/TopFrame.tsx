@@ -5,6 +5,7 @@ import { IWebPartProps } from './WebPart';
 import { SPHttpClient } from "@microsoft/sp-http";
 import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
 import { MessageBar, MessageBarType, ThemeProvider } from '@fluentui/react';
+import * as strings from 'WebPartStrings';
 
 interface ITopFrameProps extends IWebPartProps {
   context: WebPartContext;
@@ -102,17 +103,17 @@ export function TopFrame(props: ITopFrameProps) {
 
       if (!oneDriveWopiFrameResult || !oneDriveWopiFrameResult.ok) {
         if (oneDriveWopiFrameResult.status === 404) {
-          throw new Error(`The Visio file this web part is connected to is not found at the URL ${fileUrl}. Was the file deleted?`);
+          throw new Error(`${strings.messageVisioFileNotFound} ${fileUrl} ${strings.messageWasTheFileDeleted}`);
         }
         if (oneDriveWopiFrameResult.status === 403) {
-          throw new Error(`The Visio file this web part is connected to cannot be accessed at the URL ${fileUrl}. Are some permissions missing?`);
+          throw new Error(`${strings.messageVisioFileCannotAccessed} ${fileUrl} ${strings.messageArePermissionsMissing}`); // "The Visio file this web part is connected to cannot be accessed at the URL" // "Are some permissions missing?",
         }
-        throw new Error(`Something went wrong when resolving file URL: ${fileUrl}. Status='${oneDriveWopiFrameResult.status}'`);
+        throw new Error(`${strings.messageSomethingWentWrongResolveURL}  ${fileUrl}. Status='${oneDriveWopiFrameResult.status}'`); // "Something went wrong when resolving file URL:",
       }
 
       const oneDriveWopiFrameData = await oneDriveWopiFrameResult.json();
       if (!oneDriveWopiFrameData || !oneDriveWopiFrameData.value) {
-        throw new Error(`Cannot resolve file URL: ${fileUrl}`);
+        throw new Error(`${strings.messageCannotResolveFileURL} ${fileUrl}`);
       }
 
       const result = oneDriveWopiFrameData.value
@@ -146,21 +147,21 @@ export function TopFrame(props: ITopFrameProps) {
   const showPlaceholder = !props.url || loadError;
 
   const placeholderIconName = loadError
-    ? "Error"
-    : "Edit";
+    ? strings.Error // "Error"
+    : strings.Edit // "Edit";
 
   const placeholderIconText = loadError
-    ? "Unable to show this Visio diagram"
-    : "Visio diagram not selected";
+    ? strings.placeholderIconTextUnableShowVisio // "Unable to show this Visio diagram"
+    : strings.placeholderIconTextVisioNotSelected // "Visio diagram not selected";
 
   const placeholderDescription = props.isPropertyPaneOpen
-    ? `Please click 'Browse...' Button on configuration panel to select the diagram.`
+    ? strings.placeholderIconTextPleaseclickBrowse //`Please click 'Browse...' Button on configuration panel to select the diagram.`
     : props.isReadOnly
       ? (props.isTeams
-        ? `Please click 'Settings' menu on the Tab to reconfigure this web part.`
-        : `Please click 'Edit' to start page editing to reconfigure this web part.`
+        ? strings.placeholderIconTextPleaseclickSettings //`Please click 'Settings' menu on the Tab to reconfigure this web part.`
+        : strings.placeholderIconTextPleaseclickEdit // `Please click 'Edit' to start page editing to reconfigure this web part.`
         )
-      : `Click 'Configure' button to reconfigure this web part.`;
+      : strings.placeholderIconTextPleaseclickConfigure //`Click 'Configure' button to reconfigure this web part.`;
 
   return (
     <ThemeProvider className={styles.root} style={rootStyle} ref={ref}>
@@ -169,7 +170,7 @@ export function TopFrame(props: ITopFrameProps) {
         iconName={placeholderIconName}
         iconText={placeholderIconText}
         description={placeholderDescription}
-        buttonLabel={"Configure"}
+        buttonLabel={strings.FieldConfigureLabel} // Configure
         onConfigure={() => props.onConfigure()}
         hideButton={props.isReadOnly}
         disableButton={props.isPropertyPaneOpen}

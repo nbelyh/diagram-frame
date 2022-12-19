@@ -22,6 +22,28 @@ declare interface IWebPartStrings {
   FieldWidthDescription: string;
   FieldStartPageDescription: string;
   FieldZoomDescription: string;
+  FieldConfigureLabel: string;
+  Error: string;
+  Edit: string;
+  placeholderIconTextUnableShowVisio: string;
+  placeholderIconTextVisioNotSelected: string;
+  placeholderIconTextPleaseclickBrowse: string;
+  placeholderIconTextPleaseclickSettings: string;
+  placeholderIconTextPleaseclickEdit: string;
+  placeholderIconTextPleaseclickConfigure: string;
+  messageWasTheFileDeleted: string;
+  messageArePermissionsMissing: string;
+  messageCannotResolveFileURL: string;
+  messageSomethingWentWrongResolveURL: string;
+  messageVisioFileNotFound: string;
+  messageVisioFileCannotAccessed: string;
+  percOfScreen: string;
+  percOfFrame: string;
+  centimeters: string;
+  inches: string;
+  millimeters: string;
+  points: string;
+  pixels: string;
 }
 
 declare module 'WebPartStrings' {

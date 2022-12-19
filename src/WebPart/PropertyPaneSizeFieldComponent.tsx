@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Dropdown, IDropdownOption, Stack, TextField, Text } from '@fluentui/react';
+import * as strings from 'WebPartStrings';
 
 const makeSplitValue = (value: string) => {
   const matches = value?.match(/(\d+)\s*(\w+|%)?/);
@@ -21,13 +22,13 @@ export function PropertyPaneSizeFieldComponent(props: {
   const screen = `v${props.screenUnits}`;
 
   const unitsOptions: IDropdownOption[] = [
-    { key: screen, text: "% of the screen" },
-    { key: '%', text: "% of the frame" },
-    { key: 'cm', text: "centimeters" },
-    { key: 'in', text: "inches" },
-    { key: 'mm', text: "millimeters" },
-    { key: 'pt', text: "points" },
-    { key: 'px', text: "pixels" },
+    { key: screen, text: strings.percOfScreen }, // % of the Screen
+    { key: '%', text: strings.percOfFrame }, // % of the Frame
+    { key: 'cm', text:  strings.centimeters },
+    { key: 'in', text:  strings.inches },
+    { key: 'mm', text:  strings.millimeters },
+    { key: 'pt', text:  strings.points },
+    { key: 'px', text:  strings.pixels },
   ];
 
   const splitValue = makeSplitValue(props.value);
