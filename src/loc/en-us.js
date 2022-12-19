@@ -23,6 +23,7 @@ define([], function () {
     "FieldWidthDescription": "Specify width value and units",
     "FieldStartPageDescription": "Page (name) to activate on load",
     "FieldZoomDescription": "Zoom level (percents) to set on load",
+    "FieldConfigureLabel": "Configure",
     "Error": "Error",
     "Edit": "Edit",
     "placeholderIconTextUnableShowVisio": "Unable to show this Visio diagram",
