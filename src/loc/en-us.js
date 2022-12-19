@@ -22,6 +22,27 @@ define([], function () {
     "FieldHeightDescription": "Specify height value and units",
     "FieldWidthDescription": "Specify width value and units",
     "FieldStartPageDescription": "Page (name) to activate on load",
-    "FieldZoomDescription": "Zoom level (percents) to set on load"
+    "FieldZoomDescription": "Zoom level (percents) to set on load",
+    "Error": "Error",
+    "Edit": "Edit",
+    "placeholderIconTextUnableShowVisio": "Unable to show this Visio diagram",
+    "placeholderIconTextVisioNotSelected": "Visio diagram not selected",
+    "placeholderIconTextPleaseclickBrowse": "Please click 'Browse...' Button on configuration panel to select the diagram.",
+    "placeholderIconTextPleaseclickSettings": "Please click 'Settings' menu on the Tab to reconfigure this web part.",
+    "placeholderIconTextPleaseclickEdit": "Please click 'Edit' to start page editing to reconfigure this web part.",
+    "placeholderIconTextPleaseclickConfigure": "Click 'Configure' button to reconfigure this web part.",
+    "messageWasTheFileDeleted": "Was the file deleted?",
+    "messageArePermissionsMissing": "Are some permissions missing?",
+    "messageSomethingWentWrongResolveURL": "Something went wrong when resolving file URL:",
+    "messageCannotResolveFileURL": "Cannot resolve file URL:",
+    "messageVisioFileNotFound": "The Visio file this web part is connected to is not found at the URL",
+    "messageVisioFileCannotAccessed": "The Visio file this web part is connected to cannot be accessed at the URL",
+    "percOfScreen": "% of the screen",
+    "percOfFrame":  "% of the frame",
+    "centimeters": "centimeters",
+    "inches": "inches",
+    "millimeters": "millimeters",
+    "points": "points",
+    "pixels": "pixels"
   }
 });
