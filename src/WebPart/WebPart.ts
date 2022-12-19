@@ -67,7 +67,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
         }
       }
     } catch (err) {
-      console.warn('Unable to dtermine default folder using default', err);
+      console.warn('Unable to determine default folder using default', err);
     }
 
     return this.defaultFolder = {
@@ -145,7 +145,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
           return this.defaultHeight = '100%';
         }
       } catch (err) {
-        console.warn('Unable to dtermine default height using default', err);
+        console.warn('Unable to determine default height using default', err);
       }
     }
     return this.defaultHeight = '50vh';
@@ -158,7 +158,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
           displayGroupsAsAccordion: true,
           groups: [
             {
-              groupName: "Drawing Display",
+              groupName: strings.PropertyPaneLabelDrawingDisplay, // Drawing Display
               groupFields: [
                 PropertyPaneUrlField('url', {
                   url: this.properties.url,
@@ -168,21 +168,21 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
                 PropertyPaneTextField('startPage', {
                   label: strings.FieldStartPage,
-                  description: "Page (name) to activate on load"
+                  description: strings.FieldStartPageDescription
                 }),
 
                 PropertyPaneTextField('zoom', {
                   label: strings.FieldZoom,
-                  description: "Zoom level (percents) to set on load"
+                  description: strings.FieldZoomDescription
                 }),
               ]
             },
             {
-              groupName: "Appearance",
+              groupName: strings.PropertyPaneLabelAppearance, // Appearance 
               groupFields: [
                 PropertyPaneSizeField('width', {
                   label: strings.FieldWidth,
-                  description: "Specify width value and units",
+                  description: strings.FieldWidthDescription,
                   value: this.properties.width,
                   screenUnits: 'w',
                   getDefaultValue: () => this.getDefaultWidth()
@@ -190,42 +190,42 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 
                 PropertyPaneSizeField('height', {
                   label: strings.FieldHeight,
-                  description: "Specify height value and units",
+                  description: strings.FieldHeightDescription,
                   value: this.properties.height,
                   screenUnits: 'h',
                   getDefaultValue: () => this.getDefaultHeight()
                 }),
                 PropertyPaneToggle('hideToolbars', {
-                  label: "Hide Toolbars",
+                  label: strings.PropertyPaneLabelhideToolbars,
                 }),
                 PropertyPaneToggle('hideDiagramBoundary', {
-                  label: "Hide Diagram Boundary",
+                  label: strings.PropertyPaneLabelhideDiagramBoundary,
                 }),
                 PropertyPaneToggle('hideBorders', {
-                  label: "Hide Borders",
+                  label: strings.PropertyPaneLabelhideBorders,
                 }),
               ]
             },
             {
-              groupName: "Drawing Interactivity",
+              groupName: strings.PropertyPaneLabelInteractivity, // Drawing Interactivity
               isCollapsed: true,
               groupFields: [
                 PropertyPaneToggle('disableHyperlinks', {
-                  label: "Disable Hyperlinks",
+                  label: strings.PropertyPaneLabeldisableHyperlinks,
                 }),
                 PropertyPaneToggle('disablePan', {
-                  label: "Disable Pan",
+                  label: strings.PropertyPaneLabeldisablePan,
                 }),
                 PropertyPaneToggle('disableZoom', {
-                  label: "Disable Zoom",
+                  label: strings.PropertyPaneLabeldisableZoom,
                 }),
                 PropertyPaneToggle('disablePanZoomWindow', {
-                  label: "Disable PanZoom Window",
+                  label: strings.PropertyPaneLabeldisablePanZoomWindow,
                 }),
               ]
             },
             {
-              groupName: "About",
+              groupName: strings.PropertyPaneLabelAbout, // About
               groupFields: [
                 PropertyPaneVersionField(this.context.manifest.version)
               ]
