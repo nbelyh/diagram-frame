@@ -72,13 +72,13 @@ export function PropertyPaneSizeFieldComponent(props: {
   };
 
   return (
-    <Stack tokens={{ childrenGap: "s2" }}>
-      <Stack horizontal tokens={{ childrenGap: "s2" }}>
+    <Stack tokens={{ childrenGap: 's2' }}>
+      <Stack horizontal tokens={{ childrenGap: 's2' }}>
         <Stack.Item grow>
           <TextField label={props.label} value={number} onChange={onNumberChanged} />
         </Stack.Item>
         <Stack.Item align='end'>
-          <Dropdown style={{ minWidth: "10em" }} options={unitsOptions} selectedKey={units} disabled={number === ''} onChange={onUnitChanged} />
+          <Dropdown style={{ minWidth: '10em' }} options={unitsOptions} selectedKey={units} disabled={number === ''} onChange={onUnitChanged} />
         </Stack.Item>
       </Stack>
       <Text variant='small' >{props.description}</Text>

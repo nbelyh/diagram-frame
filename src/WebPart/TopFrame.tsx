@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './TopFrame.module.scss';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IWebPartProps } from './WebPart';
-import { SPHttpClient } from "@microsoft/sp-http";
+import { SPHttpClient } from '@microsoft/sp-http';
 import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
 import { MessageBar, MessageBarType, ThemeProvider } from '@fluentui/react';
 import * as strings from 'WebPartStrings';
@@ -81,7 +81,7 @@ export function TopFrame(props: ITopFrameProps) {
       session.init().then(() => Visio.run(session, (ctx) => init(session, ctx)));
 
       return () => {
-        root.innerHTML = "";
+        root.innerHTML = '';
       };
     } else {
       enablePropsChanged.current = true;
@@ -95,9 +95,9 @@ export function TopFrame(props: ITopFrameProps) {
       const apiUrl = `${props.context.pageContext.web.absoluteUrl}/_api/SP.RemoteWeb(@a1)/Web/GetFileByUrl(@a1)/ListItemAllFields/GetWopiFrameUrl(0)?@a1='${encodeURIComponent(fileUrl)}'`;
       const oneDriveWopiFrameResult = await props.context.spHttpClient.post(apiUrl, SPHttpClient.configurations.v1, {
         headers: {
-          "accept": "application/json;odata=nometadata",
-          "content-type": "application/json;odata=nometadata",
-          "odata-version": ""
+          'accept': 'application/json;odata=nometadata',
+          'content-type': 'application/json;odata=nometadata',
+          'odata-version': ''
         }
       });
 
@@ -106,9 +106,9 @@ export function TopFrame(props: ITopFrameProps) {
           throw new Error(`${strings.messageVisioFileNotFound} ${fileUrl} ${strings.messageWasTheFileDeleted}`);
         }
         if (oneDriveWopiFrameResult.status === 403) {
-          throw new Error(`${strings.messageVisioFileCannotAccessed} ${fileUrl} ${strings.messageArePermissionsMissing}`); // "The Visio file this web part is connected to cannot be accessed at the URL" // "Are some permissions missing?",
+          throw new Error(`${strings.messageVisioFileCannotAccessed} ${fileUrl} ${strings.messageArePermissionsMissing}`);
         }
-        throw new Error(`${strings.messageSomethingWentWrongResolveURL}  ${fileUrl}. Status='${oneDriveWopiFrameResult.status}'`); // "Something went wrong when resolving file URL:",
+        throw new Error(`${strings.messageSomethingWentWrongResolveURL}  ${fileUrl}. Status='${oneDriveWopiFrameResult.status}'`);
       }
 
       const oneDriveWopiFrameData = await oneDriveWopiFrameResult.json();
@@ -117,8 +117,8 @@ export function TopFrame(props: ITopFrameProps) {
       }
 
       const result = oneDriveWopiFrameData.value
-        .replace("action=view", "action=embedview")
-        .replace("action=default", "action=embedview");
+        .replace('action=view', 'action=embedview')
+        .replace('action=default', 'action=embedview');
 
       return result;
     }
@@ -147,21 +147,21 @@ export function TopFrame(props: ITopFrameProps) {
   const showPlaceholder = !props.url || loadError;
 
   const placeholderIconName = loadError
-    ? strings.Error // "Error"
-    : strings.Edit // "Edit";
+    ? strings.Error
+    : strings.Edit;
 
   const placeholderIconText = loadError
-    ? strings.placeholderIconTextUnableShowVisio // "Unable to show this Visio diagram"
-    : strings.placeholderIconTextVisioNotSelected // "Visio diagram not selected";
+    ? strings.placeholderIconTextUnableShowVisio
+    : strings.placeholderIconTextVisioNotSelected
 
   const placeholderDescription = props.isPropertyPaneOpen
-    ? strings.placeholderIconTextPleaseclickBrowse //`Please click 'Browse...' Button on configuration panel to select the diagram.`
+    ? strings.placeholderIconTextPleaseclickBrowse
     : props.isReadOnly
       ? (props.isTeams
-        ? strings.placeholderIconTextPleaseclickSettings //`Please click 'Settings' menu on the Tab to reconfigure this web part.`
-        : strings.placeholderIconTextPleaseclickEdit // `Please click 'Edit' to start page editing to reconfigure this web part.`
-        )
-      : strings.placeholderIconTextPleaseclickConfigure //`Click 'Configure' button to reconfigure this web part.`;
+        ? strings.placeholderIconTextPleaseclickSettings
+        : strings.placeholderIconTextPleaseclickEdit
+      )
+      : strings.placeholderIconTextPleaseclickConfigure
 
   return (
     <ThemeProvider className={styles.root} style={rootStyle} ref={ref}>
@@ -170,7 +170,7 @@ export function TopFrame(props: ITopFrameProps) {
         iconName={placeholderIconName}
         iconText={placeholderIconText}
         description={placeholderDescription}
-        buttonLabel={strings.FieldConfigureLabel} // Configure
+        buttonLabel={strings.FieldConfigureLabel}
         onConfigure={() => props.onConfigure()}
         hideButton={props.isReadOnly}
         disableButton={props.isPropertyPaneOpen}

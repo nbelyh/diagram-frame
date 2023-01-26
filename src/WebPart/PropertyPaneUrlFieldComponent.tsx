@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { FilePicker, IFilePickerResult } from './../min-sp-controls-react/controls/filePicker';
 
-import { sp } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/folders";
-import "@pnp/sp/lists";
-import "@pnp/sp/files";
+import { sp } from '@pnp/sp';
+import '@pnp/sp/webs';
+import '@pnp/sp/folders';
+import '@pnp/sp/lists';
+import '@pnp/sp/files';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { FolderExplorer, IFolder } from '../min-sp-controls-react/controls/folderExplorer';
 import { IDefaultFolder } from './IDefaultFolder';
 import { Stack } from '@fluentui/react/lib/Stack';
 import { Text } from '@fluentui/react/lib/Text';
 import { mergeStyles } from '@fluentui/react';
+import * as strings from 'WebPartStrings';
 
 export function PropertyPaneUrlFieldComponent(props: {
   url: string;
@@ -99,7 +100,7 @@ export function PropertyPaneUrlFieldComponent(props: {
   return (
     <Stack tokens={{ childrenGap: 's2' }}>
       <FilePicker
-        label={"Visio Document"}
+        label={strings.VisioDocument}
         accepts={[".vsd", ".vsdx", ".vsdm"]}
         buttonLabel="Browse..."
         onSave={(filePickerResult: IFilePickerResult[]) => onUploadFile(filePickerResult)}

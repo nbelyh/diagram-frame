@@ -18,7 +18,7 @@
     }
   },
   "localizedResources": {
-    "WebPartStrings": "./src/loc/{locale}.js",
-    "ControlStrings": "./src/min-sp-controls-react/loc/{locale}.js"
+    "WebPartStrings": "src/loc/{locale}.js",
+    "ControlStrings": "src/min-sp-controls-react/loc/{locale}.js"
   }
 }

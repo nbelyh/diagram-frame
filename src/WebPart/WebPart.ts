@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { DisplayMode, Version } from '@microsoft/sp-core-library';
-import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
-import { IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneToggle } from "@microsoft/sp-property-pane";
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import { IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
 import { sp } from '@pnp/sp';
 
 require('VisioEmbed');
@@ -57,7 +57,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
         if (viewUrl.startsWith(webUrl))
           viewUrl = viewUrl.substring(webUrl.length);
 
-        const pos = viewUrl.indexOf("/Forms/");
+        const pos = viewUrl.indexOf('/Forms/');
         if (pos >= 0) {
           const docLibPath = viewUrl.substring(0, pos);
           return this.defaultFolder = {
@@ -178,7 +178,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
               ]
             },
             {
-              groupName: strings.PropertyPaneLabelAppearance, // Appearance 
+              groupName: strings.PropertyPaneLabelAppearance, // Appearance
               groupFields: [
                 PropertyPaneSizeField('width', {
                   label: strings.FieldWidth,
