@@ -1,5 +1,11 @@
 .root {
   overflow: hidden;
+  display: flex;
+  flex-direction: column,
+}
+
+.diagram {
+  flex: 1;
 
   iframe {
     border: 0

@@ -3,7 +3,7 @@ import styles from './TopFrame.module.scss';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IWebPartProps } from "./IWebPartProps";
 import { Utils } from './Utils';
-import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
+import { ErrorPlaceholder } from './components/ErrorPlaceholder';
 import { Breadcrumb, IBreadcrumbItem, MessageBar, MessageBarType, ThemeProvider } from '@fluentui/react';
 import * as strings from 'WebPartStrings';
 
@@ -212,51 +212,12 @@ export function TopFrame(props: ITopFrameProps) {
 
   const [breadcrumb, setBreadcrumb] = React.useState<IBreadcrumbItem[]>([]);
 
-  const rootStyle: React.CSSProperties = {
-    height: props.height,
-    width: props.width,
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column'
-  };
-
-  const divStyle = {
-    flexGrow: 1
-  };
-
-  const showPlaceholder = !props.url;
-
-  const placeholderIconName = error
-    ? strings.Error
-    : strings.Edit;
-
-  const placeholderIconText = error
-    ? strings.placeholderIconTextUnableShowVisio
-    : strings.placeholderIconTextVisioNotSelected
-
-  const placeholderDescription = props.isPropertyPaneOpen
-    ? strings.placeholderIconTextPleaseclickBrowse
-    : props.isReadOnly
-      ? (props.isTeams
-        ? strings.placeholderIconTextPleaseclickSettings
-        : strings.placeholderIconTextPleaseclickEdit
-      )
-      : strings.placeholderIconTextPleaseclickConfigure
-
   return (
-    <ThemeProvider className={styles.root} style={rootStyle} >
+    <ThemeProvider className={styles.root} style={{ height: props.height, width: props.width }} >
       {props.enableNavigation && <Breadcrumb styles={{ root: { margin: 4 } }} items={breadcrumb} />}
       {error && <MessageBar onDismiss={() => setError('')} messageBarType={MessageBarType.severeWarning}>{error}</MessageBar>}
-      {showPlaceholder && <Placeholder
-        iconName={placeholderIconName}
-        iconText={placeholderIconText}
-        description={placeholderDescription}
-        buttonLabel={strings.FieldConfigureLabel}
-        onConfigure={() => props.onConfigure()}
-        hideButton={props.isReadOnly}
-        disableButton={props.isPropertyPaneOpen}
-      />}
-      <div style={divStyle} ref={refContainer} />
+      {!props.url && <ErrorPlaceholder context={props.context} isReadOnly={props.isReadOnly} />}
+      <div className={styles.diagram} ref={refContainer} />
     </ThemeProvider>
   );
 }
