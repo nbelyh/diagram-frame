@@ -9,10 +9,7 @@ import * as strings from 'WebPartStrings';
 
 interface ITopFrameProps extends IWebPartProps {
   context: WebPartContext;
-  isPropertyPaneOpen: boolean;
   isReadOnly: boolean;
-  isTeams: boolean;
-  onConfigure: () => void;
 }
 
 export function TopFrame(props: ITopFrameProps) {
