@@ -40,10 +40,16 @@ declare interface IWebPartStrings {
   percOfScreen: string;
   percOfFrame: string;
   centimeters: string;
+  FieldEnableNavigation: string;
   inches: string;
   millimeters: string;
+  NavigationHome: string;
   points: string;
   pixels: string;
+  UploadTo: string;
+  UrlNotSelected: string;
+  UrlPickerBrowse: string;
+  UrlPickerExtensions: string;
   VisioDocument: string;
 }
 

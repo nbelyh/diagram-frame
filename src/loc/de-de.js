@@ -5,6 +5,7 @@ define([], function() {
     Edit: "Editieren",
     Error: "Fehler",
     FieldConfigureLabel: "Konfigurieren",
+    FieldEnableNavigation: "Navigation aktivieren (experimentell)",
     FieldHeight: "Diagram Höhe",
     FieldHeightDescription: "Specify height value and units",
     FieldStartPage: "Initiale Seite",
@@ -23,6 +24,7 @@ define([], function() {
     messageVisioFileNotFound: "Die mit diesem Web Part verknüpfte Visio Datei wurde nicht gefunden.",
     messageWasTheFileDeleted: "Wurde die Datei gelöscht?",
     millimeters: "Millimeter",
+    NavigationHome: "Home",
     percOfFrame: "% vom Widgetbereich",
     percOfScreen: "% vom Bildschirm",
     pixels: "Pixel",
@@ -44,6 +46,10 @@ define([], function() {
     PropertyPaneLabelhideDiagramBoundary: "Verstecke Diagramm Rand",
     PropertyPaneLabelhideToolbars: "Verstecke Toolbars",
     PropertyPaneLabelInteractivity: "Interaktivität",
+    UploadTo: "Hochladen auf",
+    UrlNotSelected: "Nicht ausgewählt",
+    UrlPickerBrowse: "Öffnen...",
+    UrlPickerExtensions: ".vsd\", \".vsdx\", \".vsdm",
     View: "Ansicht",
     VisioDocument: "Visio Document"
   };

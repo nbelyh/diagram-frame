@@ -71,7 +71,7 @@ export function PropertyPaneUrlFieldComponent(props: {
   };
 
   const rootFolder: IFolder = {
-    Name: "Upload To",
+    Name: strings.UploadTo,
     ServerRelativeUrl: props.context.pageContext.web.serverRelativeUrl
   };
 
@@ -101,8 +101,8 @@ export function PropertyPaneUrlFieldComponent(props: {
     <Stack tokens={{ childrenGap: 's2' }}>
       <FilePicker
         label={strings.VisioDocument}
-        accepts={[".vsd", ".vsdx", ".vsdm"]}
-        buttonLabel="Browse..."
+        accepts={[strings.UrlPickerExtensions]}
+        buttonLabel={strings.UrlPickerBrowse}
         onSave={(filePickerResult: IFilePickerResult[]) => onUploadFile(filePickerResult)}
         onChange={(filePickerResult: IFilePickerResult[]) => onChangeFile(filePickerResult)}
         defaultFolderAbsolutePath={`${siteUrl.origin}${documentsFolder?.ServerRelativeUrl}`}
@@ -112,7 +112,7 @@ export function PropertyPaneUrlFieldComponent(props: {
         hideLocalMultipleUploadTab
         renderCustomUploadTabContent={renderCustomUploadTabContent}
       />
-      <Text variant='small'>{props.url || "Not selected"}</Text>
+      <Text variant='small'>{props.url || strings.UrlNotSelected}</Text>
     </Stack>
   );
 }

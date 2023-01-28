@@ -5,6 +5,7 @@ define([], function() {
     Edit: "Edit",
     Error: "Error",
     FieldConfigureLabel: "Configure",
+    FieldEnableNavigation: "Enable Navigation (experimental)",
     FieldHeight: "Diagram height",
     FieldHeightDescription: "Specify height value and units",
     FieldStartPage: "Initial Page",
@@ -23,6 +24,7 @@ define([], function() {
     messageVisioFileNotFound: "The Visio file this web part is connected to is not found at the URL",
     messageWasTheFileDeleted: "Was the file deleted?",
     millimeters: "millimeters",
+    NavigationHome: "Home",
     percOfFrame: "% of the frame",
     percOfScreen: "% of the screen",
     pixels: "pixels",
@@ -44,6 +46,10 @@ define([], function() {
     PropertyPaneLabelhideDiagramBoundary: "Hide Diagram Boundary",
     PropertyPaneLabelhideToolbars: "Hide Toolbars",
     PropertyPaneLabelInteractivity: "Drawing Interactivity",
+    UploadTo: "Upload To",
+    UrlNotSelected: "Not selected",
+    UrlPickerBrowse: "Browse...",
+    UrlPickerExtensions: ".vsd\", \".vsdx\", \".vsdm",
     View: "View",
     VisioDocument: "Visio Document"
   };

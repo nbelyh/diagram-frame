@@ -29,6 +29,8 @@ export interface IWebPartProps {
   disablePanZoomWindow: boolean;
   disableZoom: boolean;
 
+  enableNavigation: boolean;
+
   zoom: number;
 }
 
@@ -174,6 +176,9 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
                 PropertyPaneTextField('zoom', {
                   label: strings.FieldZoom,
                   description: strings.FieldZoomDescription
+                }),
+                PropertyPaneToggle('enableNavigation', {
+                  label: strings.FieldEnableNavigation,
                 }),
               ]
             },
