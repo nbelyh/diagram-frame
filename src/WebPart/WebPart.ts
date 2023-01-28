@@ -10,29 +10,11 @@ require('VisioEmbed');
 import * as strings from 'WebPartStrings';
 
 import { TopFrame } from './TopFrame';
-import { PropertyPaneVersionField } from './PropertyPaneVersionField';
-import { PropertyPaneUrlField } from './PropertyPaneUrlField';
-import { PropertyPaneSizeField } from './PropertyPaneSizeField';
-import { IDefaultFolder } from './IDefaultFolder';
-
-export interface IWebPartProps {
-  url: string;
-  startPage: string;
-  width: string;
-  height: string;
-  hideToolbars: boolean;
-  hideBorders: boolean;
-
-  hideDiagramBoundary: boolean;
-  disableHyperlinks: boolean;
-  disablePan: boolean;
-  disablePanZoomWindow: boolean;
-  disableZoom: boolean;
-
-  enableNavigation: boolean;
-
-  zoom: number;
-}
+import { PropertyPaneVersionField } from './properties/PropertyPaneVersionField';
+import { PropertyPaneUrlField } from './properties/PropertyPaneUrlField';
+import { PropertyPaneSizeField } from './properties/PropertyPaneSizeField';
+import { IDefaultFolder } from './properties/IDefaultFolder';
+import { IWebPartProps } from './IWebPartProps';
 
 export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
 

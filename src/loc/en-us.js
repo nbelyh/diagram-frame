@@ -49,7 +49,6 @@ define([], function() {
     UploadTo: "Upload To",
     UrlNotSelected: "Not selected",
     UrlPickerBrowse: "Browse...",
-    UrlPickerExtensions: ".vsd\", \".vsdx\", \".vsdm",
     View: "View",
     VisioDocument: "Visio Document"
   };

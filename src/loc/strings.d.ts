@@ -49,7 +49,6 @@ declare interface IWebPartStrings {
   UploadTo: string;
   UrlNotSelected: string;
   UrlPickerBrowse: string;
-  UrlPickerExtensions: string;
   VisioDocument: string;
 }
 

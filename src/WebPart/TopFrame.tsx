@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './TopFrame.module.scss';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
-import { IWebPartProps } from './WebPart';
+import { IWebPartProps } from "./IWebPartProps";
 import { Utils } from './Utils';
 import { Placeholder } from '../min-sp-controls-react/controls/placeholder';
 import { Breadcrumb, IBreadcrumbItem, MessageBar, MessageBarType, ThemeProvider } from '@fluentui/react';
