@@ -4,7 +4,7 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 
 export class Utils {
 
-  static async doWithRetry(fn: () => Promise<any>, retries = 3, timeout = 750) {
+  static async doWithRetry(fn: () => Promise<any>, retries = 3, timeout = 1000) {
     let retry = 0;
     for (;;) {
       try {

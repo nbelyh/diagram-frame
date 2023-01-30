@@ -152,7 +152,7 @@ export function TopFrame(props: ITopFrameProps) {
 
       if (newPageNameOrDefault && (oldPageNameOrDefault !== newPageNameOrDefault || force)) {
         if (reloaded) { // Visio bug (hanging) on immediate page change with logo screen, timeout seems to help a bit
-          setTimeout(() => setPage(newPageNameOrDefault), 750);
+          setTimeout(() => setPage(newPageNameOrDefault), 1000);
         } else {
           await setPage(newPageNameOrDefault);
         }
