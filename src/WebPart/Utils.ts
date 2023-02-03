@@ -4,23 +4,6 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 
 export class Utils {
 
-  static async doWithRetry(fn: () => Promise<any>, retries = 3, timeout = 1000) {
-    let retry = 0;
-    for (;;) {
-      try {
-        return await fn();
-      } catch (err) {
-        if (retry < retries) {
-          console.error(`retry ${retry}`, err);
-          await new Promise(r => setTimeout(r, timeout));
-          retry = retry + 1;
-        } else {
-          throw err;
-        }
-      }
-    }
-  }
-
   static resolvedUrls = {};
 
   public static joinPageUrl(baseUrl: string, newPageName: string) {

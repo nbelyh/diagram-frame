@@ -19,6 +19,8 @@ export function TopFrame(props: ITopFrameProps) {
 
   const refSession = React.useRef<OfficeExtension.EmbeddedSession>(null);
 
+  const refDefaultPageName = React.useRef({});
+
   const getVisioLink = async (args: Visio.SelectionChangedEventArgs) => {
     return await Visio.run(refSession.current, async (ctx) => {
       const [shapeName] = args.shapeNames;
@@ -81,34 +83,35 @@ export function TopFrame(props: ITopFrameProps) {
     })
   }
 
-  const doInit = async (url: string, startPage: string) => {
-    await Visio.run(refSession.current, async (ctx) => {
-      ctx.document.application.showToolbars = !props.hideToolbars;
-      ctx.document.application.showBorders = !props.hideBorders;
-
-      ctx.document.view.hideDiagramBoundary = props.hideDiagramBoundary;
-      ctx.document.view.disableHyperlinks = props.disableHyperlinks;
-      ctx.document.view.disablePan = props.disablePan;
-      ctx.document.view.disablePanZoomWindow = props.disablePanZoomWindow;
-      ctx.document.view.disableZoom = props.disableZoom;
-
-      if (props.enableNavigation) {
-        ctx.document.onSelectionChanged.add(onVisioSelectionChanged);
-      }
-
-      if (startPage) {
-        ctx.document.setActivePage(startPage);
-      }
-
-      await ctx.sync();
-    });
-  };
-
-  const init = async (url: string, pageName: string) => {
+  const init = async (url: string, startPage: string) => {
     try {
-      await Utils.doWithRetry(() => doInit(url, pageName))
+      await Visio.run(refSession.current, async (ctx) => {
+        ctx.document.application.showToolbars = !props.hideToolbars;
+        ctx.document.application.showBorders = !props.hideBorders;
+
+        ctx.document.view.hideDiagramBoundary = props.hideDiagramBoundary;
+        ctx.document.view.disableHyperlinks = props.disableHyperlinks;
+        ctx.document.view.disablePan = props.disablePan;
+        ctx.document.view.disablePanZoomWindow = props.disablePanZoomWindow;
+        ctx.document.view.disableZoom = props.disableZoom;
+
+        if (props.enableNavigation) {
+          ctx.document.onSelectionChanged.add(onVisioSelectionChanged);
+        }
+
+        const defaultPage = ctx.document.getActivePage().load('name');
+
+        if (startPage) {
+          await new Promise(r => setTimeout(r, 750));
+          ctx.document.setActivePage(startPage);
+        }
+
+        await ctx.sync();
+
+        refDefaultPageName.current[url] = defaultPage.name;
+      });
     } catch (err) {
-      throw new Error(`Error initializing diagram parameters. The view may be not the expected one. ${err.message}`)
+      throw new Error(`Error initializing diagram parameters. The view may be not the expected one. ${err.message}`);
     }
   }
 
@@ -159,19 +162,29 @@ export function TopFrame(props: ITopFrameProps) {
         reloaded = true;
       }
 
-      if (newPageName && (oldPageName !== newPageName || force)) {
+      const oldPageNameOrDefault = oldPageName || refDefaultPageName.current[oldBaseUrl];
+      const newPageNameOrDefault = newPageName || refDefaultPageName.current[newBaseUrl];
+
+      if (newPageNameOrDefault && (oldPageNameOrDefault !== newPageNameOrDefault || force)) {
+
         if (reloaded) { // Visio bug (hanging) on immediate page change with logo screen, timeout seems to help a bit
-          // await new Promise(r => setTimeout(r, 750));
-          // await setPage(newPageNameOrDefault);
-          await new Promise(r => setTimeout(r, 750));
-          const pageName = await getPage();
-          if (pageName !== newPageName) {
-            if (opts.retry < 3) {
-              await reloadEmbed({...opts, retry: opts.retry + 1});
-            }
+          for (let i = 0;; ++i) {
+            await new Promise(r => setTimeout(r, 1000));
+
+            const pageName = await getPage();
+            if (pageName === newPageNameOrDefault)
+              break;
+
+            if (i > 2)
+              break;
+
+            if (opts.retry > 2)
+              break;
+
+            await reloadEmbed({...opts,  retry: opts.retry + 1});
           }
         } else {
-          await setPage(newPageName);
+          await setPage(newPageNameOrDefault);
         }
       }
 
