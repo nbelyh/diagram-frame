@@ -1,6 +1,8 @@
 define([], function() {
   return {
     BasicGroupName: "Basic Settings",
+    BreadcrumbLoading: "Loading...",
+    BreadcrumbStart: "Start",
     centimeters: "centimeters",
     Edit: "Edit",
     Error: "Error",

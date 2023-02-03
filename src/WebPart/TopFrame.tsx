@@ -17,8 +17,6 @@ export function TopFrame(props: ITopFrameProps) {
   const refContainer = React.useRef<HTMLDivElement>(null);
   const refUrl = React.useRef('');
 
-  const refDefaultPageName = React.useRef({});
-
   const refSession = React.useRef<OfficeExtension.EmbeddedSession>(null);
 
   const getVisioLink = async (args: Visio.SelectionChangedEventArgs) => {
@@ -58,7 +56,7 @@ export function TopFrame(props: ITopFrameProps) {
         const target = Utils.getVisioLinkTarget(link, baseUrl, shapeName);
         if (target) {
           await deselectVisioShape(args);
-          await reloadEmbed(target);
+          await reloadEmbed({...target, retry: 0 });
         }
       }
     } catch (err) {
@@ -66,7 +64,7 @@ export function TopFrame(props: ITopFrameProps) {
     }
   };
 
-  const doSetPage = async (startPage: string) => {
+  const setPage = async (startPage: string) => {
     await Visio.run(refSession.current, async ctx => {
       console.log(`[DiagramFrame] set page ${startPage}`);
       ctx.document.setActivePage(startPage);
@@ -74,15 +72,16 @@ export function TopFrame(props: ITopFrameProps) {
     })
   }
 
-  const setPage = async (startPage: string) => {
-    try {
-      await Utils.doWithRetry(() => doSetPage(startPage));
-    } catch (err) {
-      throw new Error(`Unable to set page to ${startPage}. The current page may not be the expected one. ${err.message}`);
-    }
+  const getPage = async () => {
+    return await Visio.run(refSession.current, async ctx => {
+      const page = ctx.document.getActivePage().load('name');
+      await ctx.sync();
+      console.log(`[DiagramFrame] get page: ${page.name}`);
+      return page.name;
+    })
   }
 
-  const doInit = async (url: string) => {
+  const doInit = async (url: string, startPage: string) => {
     await Visio.run(refSession.current, async (ctx) => {
       ctx.document.application.showToolbars = !props.hideToolbars;
       ctx.document.application.showBorders = !props.hideBorders;
@@ -97,23 +96,35 @@ export function TopFrame(props: ITopFrameProps) {
         ctx.document.onSelectionChanged.add(onVisioSelectionChanged);
       }
 
-      const page = ctx.document.getActivePage().load('name');
+      if (startPage) {
+        ctx.document.setActivePage(startPage);
+      }
 
       await ctx.sync();
-
-      refDefaultPageName.current[url] = page.name;
     });
   };
 
-  const init = async (url: string) => {
+  const init = async (url: string, pageName: string) => {
     try {
-      await Utils.doWithRetry(() => doInit(url))
+      await Utils.doWithRetry(() => doInit(url, pageName))
     } catch (err) {
       throw new Error(`Error initializing diagram parameters. The view may be not the expected one. ${err.message}`)
     }
   }
 
-  const reloadEmbed = async (opts: { url: string, label?: string }) => {
+  const udpateBreadcrumb = (opts: { url: string, label?: string }) => {
+    setBreadcrumb(oldBreadcrumb => {
+      const foundIndex = oldBreadcrumb.findIndex(x => x.key === opts.url);
+      const newBreadcrumb = [...oldBreadcrumb];
+      if (foundIndex >= 0) {
+        newBreadcrumb.splice(foundIndex);
+      }
+      newBreadcrumb.push({ key: opts.url, text: opts.label, onClick: () => reloadEmbed({ url: opts.url, label: opts.label, retry: 0 }) });
+      return newBreadcrumb;
+    });
+  }
+
+  const reloadEmbed = async (opts: { url: string, label: string, retry: number }) => {
 
     setError('');
     try {
@@ -144,31 +155,28 @@ export function TopFrame(props: ITopFrameProps) {
         });
 
         await refSession.current.init();
-        await init(newBaseUrl);
+        await init(newBaseUrl, newPageName);
         reloaded = true;
       }
 
-      const oldPageNameOrDefault = oldPageName || refDefaultPageName.current[oldBaseUrl];
-      const newPageNameOrDefault = newPageName || refDefaultPageName.current[newBaseUrl];
-
-      if (newPageNameOrDefault && (oldPageNameOrDefault !== newPageNameOrDefault || force)) {
+      if (newPageName && (oldPageName !== newPageName || force)) {
         if (reloaded) { // Visio bug (hanging) on immediate page change with logo screen, timeout seems to help a bit
-          setTimeout(() => setPage(newPageNameOrDefault), 750);
+          // await new Promise(r => setTimeout(r, 750));
+          // await setPage(newPageNameOrDefault);
+          await new Promise(r => setTimeout(r, 750));
+          const pageName = await getPage();
+          if (pageName !== newPageName) {
+            if (opts.retry < 3) {
+              await reloadEmbed({...opts, retry: opts.retry + 1});
+            }
+          }
         } else {
-          setPage(newPageNameOrDefault);
+          await setPage(newPageName);
         }
       }
 
       if (opts?.label && props.enableNavigation || force) {
-        setBreadcrumb(oldBreadcrumb => {
-          const foundIndex = oldBreadcrumb.findIndex(x => x.key === opts.url);
-          const newBreadcrumb = [...oldBreadcrumb];
-          if (foundIndex >= 0) {
-            newBreadcrumb.splice(foundIndex);
-          }
-          newBreadcrumb.push({ key: opts.url, text: opts.label, onClick: () => reloadEmbed({ url: opts.url, label: opts.label }) });
-          return newBreadcrumb;
-        });
+        udpateBreadcrumb(opts);
       }
 
       refUrl.current = opts.url;
@@ -179,32 +187,30 @@ export function TopFrame(props: ITopFrameProps) {
 
   }
 
-  const [reloadTrigger, setReloadTrigger] = React.useState(0);
-
   React.useEffect(() => {
     if (refSession.current) {
-      const timer = setTimeout(() => setReloadTrigger(old => old + 1), 1000);
+      const timer = setTimeout(() => {
+        reloadEmbed({ url: refUrl.current, label: undefined, retry: 0 })
+      }, 750);
       return () => clearTimeout(timer);
     }
   }, [
-    props.height, props.width, props.zoom, props.startPage,
+    props.height, props.width, props.zoom,
     props.hideToolbars, props.hideBorders, props.hideDiagramBoundary,
     props.disablePan, props.disableZoom, props.disablePanZoomWindow, props.disableHyperlinks
   ]);
 
   React.useEffect(() => {
-    if (refSession.current) {
-      reloadEmbed({ url: refUrl.current });
-    }
-  }, [reloadTrigger]);
-
-  React.useEffect(() => {
-    setBreadcrumb([]);
-    if (props.url) {
-      const url = Utils.joinPageUrl(props.url, props.startPage);
-      reloadEmbed({ url, label: strings.NavigationHome });
-    }
-  }, [props.url, props.enableNavigation]);
+    const timer = setTimeout(() => {
+      setBreadcrumb([]);
+      if (props.url) {
+        const opts = { url: Utils.joinPageUrl(props.url, props.startPage), label: strings.BreadcrumbStart, retry: 0 };
+        udpateBreadcrumb({...opts, label: strings.BreadcrumbLoading });
+        reloadEmbed(opts);
+      }
+    }, 750);
+    return () => clearTimeout(timer);
+  }, [props.url, props.startPage, props.enableNavigation]);
 
   const [error, setError] = React.useState('');
 

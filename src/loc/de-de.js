@@ -1,6 +1,8 @@
 define([], function() {
   return {
     BasicGroupName: "Grundeinstellungen",
+    BreadcrumbLoading: "Wird geladen...",
+    BreadcrumbStart: "Start",
     centimeters: "Zentimeter",
     Edit: "Editieren",
     Error: "Fehler",
@@ -50,6 +52,6 @@ define([], function() {
     UrlNotSelected: "Nicht ausgewählt",
     UrlPickerBrowse: "Öffnen...",
     View: "Ansicht",
-    VisioDocument: "Visio Document"
+    VisioDocument: "Visio-Dokument"
   };
 });

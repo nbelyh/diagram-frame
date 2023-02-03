@@ -3,6 +3,8 @@ declare interface IWebPartStrings {
   FieldVisioFileBrowse: string;
   FieldZoom: string;
   BasicGroupName: string;
+  BreadcrumbLoading: string;
+  BreadcrumbStart: string;
   FieldWidth: string;
   FieldHeight: string;
   View: string;
