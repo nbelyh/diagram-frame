@@ -68,6 +68,7 @@ export function TopFrame(props: ITopFrameProps) {
 
   const doSetPage = async (startPage: string) => {
     await Visio.run(refSession.current, async ctx => {
+      console.log(`[DiagramFrame] set page ${startPage}`);
       ctx.document.setActivePage(startPage);
       await ctx.sync();
     })
@@ -135,7 +136,7 @@ export function TopFrame(props: ITopFrameProps) {
 
         refSession.current = null;
 
-        console.debug(`start new Visio session ${newBaseUrl}`);
+        console.log(`[DiagramFrame] open file ${newBaseUrl}`);
         refSession.current = new OfficeExtension.EmbeddedSession(resolved, {
           container: refContainer.current,
           height: '100%',
@@ -152,9 +153,9 @@ export function TopFrame(props: ITopFrameProps) {
 
       if (newPageNameOrDefault && (oldPageNameOrDefault !== newPageNameOrDefault || force)) {
         if (reloaded) { // Visio bug (hanging) on immediate page change with logo screen, timeout seems to help a bit
-          setTimeout(() => setPage(newPageNameOrDefault), 1000);
+          setTimeout(() => setPage(newPageNameOrDefault), 750);
         } else {
-          await setPage(newPageNameOrDefault);
+          setPage(newPageNameOrDefault);
         }
       }
 

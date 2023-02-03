@@ -87,9 +87,13 @@ export class Utils {
     let label = link.description;
     if (newBaseUrl && Utils.isRelativeUrl(newBaseUrl) && Utils.isVisioFileExtension(newBaseUrl)) {
       newBaseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1) + link.address;
-      newPageName = '';
+      newPageName = link.subAddress || '';
       if (!label) {
-        label = link.address.replace(/\.vsdx$/, '').replace(/\.vsdm$/, '').replace(/\.vsd$/, '');
+        if (newPageName) {
+          label = newPageName;
+        } else {
+          label = link.address.replace(/\.vsdx$/, '').replace(/\.vsdm$/, '').replace(/\.vsd$/, '');
+        }
       }
     }
     if (!newBaseUrl) {
