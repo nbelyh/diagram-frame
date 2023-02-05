@@ -37,7 +37,7 @@ export class Defaults {
         }
       }
     } catch (err) {
-      console.warn('Unable to dtermine default folder using default', err);
+      console.warn(`[DiagramFrame] Unable to dtermine default folder using default ${err.message}`, err);
     }
 
     return this.defaultFolder = {
@@ -75,7 +75,7 @@ export class Defaults {
           return this.defaultHeight = '100%';
         }
       } catch (err) {
-        console.warn('Unable to dtermine default height using default', err);
+        console.warn(`[DiagramFrame] Unable to dtermine default height using default ${err.message}`, err);
       }
     }
     return this.defaultHeight = '50vh';

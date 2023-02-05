@@ -30,28 +30,28 @@ export function TopFrame(props: ITopFrameProps) {
           await ctx.sync();
           return links.items[0];
         } catch (err) {
-          console.error(err);
+          console.warn(`[DiagramFrame] unable to get shape "${shapeName}" ${err.message}`);
         }
       }
     });
   }
 
   const deselectVisioShape = async (args: Visio.SelectionChangedEventArgs) => {
+    const [shapeName] = args.shapeNames;
     try {
       await Visio.run(refSession.current, async (ctx) => {
-        const [shapeName] = args.shapeNames;
         ctx.document.pages.getItem(args.pageName).shapes.getItem(shapeName).set({ select: false });
         await ctx.sync();
       });
     } catch (err) {
-      console.error(err);
+      console.warn(`[DiagramFrame] unable to deselect shape "${shapeName}" ${err.message}`);
     }
   }
 
   const onVisioSelectionChanged = async (args: Visio.SelectionChangedEventArgs) => {
+    const [shapeName] = args.shapeNames;
     try {
       const { baseUrl } = Utils.splitPageUrl(refUrl.current);
-      const [shapeName] = args.shapeNames;
 
       const link = await getVisioLink(args);
       if (link) {
@@ -62,13 +62,13 @@ export function TopFrame(props: ITopFrameProps) {
         }
       }
     } catch (err) {
-      console.error(err);
+      console.warn(`[DiagramFrame] unable to navigate to shape "${shapeName}" ${err.message}`);
     }
   };
 
   const setPage = async (startPage: string) => {
     await Visio.run(refSession.current, async ctx => {
-      console.log(`[DiagramFrame] set page ${startPage}`);
+      console.log(`[DiagramFrame] set page "${startPage}"`);
       ctx.document.setActivePage(startPage);
       await ctx.sync();
     })
@@ -78,9 +78,13 @@ export function TopFrame(props: ITopFrameProps) {
     return await Visio.run(refSession.current, async ctx => {
       const page = ctx.document.getActivePage().load('name');
       await ctx.sync();
-      console.log(`[DiagramFrame] get page: ${page.name}`);
+      console.log(`[DiagramFrame] get page returned "${page.name}"`);
       return page.name;
     })
+  }
+
+  const onVisioDocumentLoaded = async (args: Visio.DocumentLoadCompleteEventArgs) => {
+    console.log(`[DiagramFrame] document loaded: ${args.success}`);
   }
 
   const init = async (url: string, startPage: string) => {
@@ -99,6 +103,8 @@ export function TopFrame(props: ITopFrameProps) {
           ctx.document.onSelectionChanged.add(onVisioSelectionChanged);
         }
 
+        ctx.document.onDocumentLoadComplete.add(onVisioDocumentLoaded);
+
         const defaultPage = ctx.document.getActivePage().load('name');
 
         if (startPage) {
@@ -111,6 +117,7 @@ export function TopFrame(props: ITopFrameProps) {
         refDefaultPageName.current[url] = defaultPage.name;
       });
     } catch (err) {
+      console.error(`[DiagramFrame] error initializing diagram ${err.message}`);
       throw new Error(`Error initializing diagram parameters. The view may be not the expected one. ${err.message}`);
     }
   }
@@ -150,7 +157,7 @@ export function TopFrame(props: ITopFrameProps) {
 
         refSession.current = null;
 
-        console.log(`[DiagramFrame] open file ${newBaseUrl}`);
+        console.log(`[DiagramFrame] loading "${newBaseUrl}#${newPageName}"`);
         refSession.current = new OfficeExtension.EmbeddedSession(resolved, {
           container: refContainer.current,
           height: '100%',
@@ -168,21 +175,29 @@ export function TopFrame(props: ITopFrameProps) {
       if (newPageNameOrDefault && (oldPageNameOrDefault !== newPageNameOrDefault || force)) {
 
         if (reloaded) { // Visio bug (hanging) on immediate page change with logo screen, timeout seems to help a bit
-          for (let i = 0;; ++i) {
-            await new Promise(r => setTimeout(r, 1000));
+          let pageSet = false;
+          for (let i = 0; i  < (opts.retry + 1) * 3; ++i) {
 
             const pageName = await getPage();
-            if (pageName === newPageNameOrDefault)
+            if (pageName === newPageNameOrDefault) {
+              pageSet = true;
               break;
+            }
 
-            if (i > 2)
-              break;
-
-            if (opts.retry > 2)
-              break;
-
-            await reloadEmbed({...opts,  retry: opts.retry + 1});
+            console.warn(`[DiagramFrame] Page mismatch after ${1+i} seconds, resceduling check`);
+            await new Promise(r => setTimeout(r, 1000));
           }
+
+          if (!pageSet) {
+            console.warn(`[DiagramFrame] Page mismatch, initiating reload`);
+            if (opts.retry < 2) {
+              reloadEmbed({...opts,  retry: opts.retry + 1});
+              return;
+            }
+
+            throw new Error(`Error while loading diagram. The view may be not the expected one.`);
+          }
+
         } else {
           await setPage(newPageNameOrDefault);
         }
@@ -195,6 +210,7 @@ export function TopFrame(props: ITopFrameProps) {
       refUrl.current = opts.url;
 
     } catch (err) {
+      console.error(`[DiagramFrame] unable to initialize the diagram, ${err.message}`);
       setError(`${err}`);
     }
 
