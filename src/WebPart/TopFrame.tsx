@@ -4,7 +4,7 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IWebPartProps } from "./IWebPartProps";
 import { Utils } from './Utils';
 import { ErrorPlaceholder } from './components/ErrorPlaceholder';
-import { Breadcrumb, IBreadcrumbItem, MessageBar, MessageBarType, ThemeProvider } from '@fluentui/react';
+import { Breadcrumb, IBreadcrumbItem, MessageBar, MessageBarType, Spinner, Stack, ThemeProvider } from '@fluentui/react';
 import * as strings from 'WebPartStrings';
 
 interface ITopFrameProps extends IWebPartProps {
@@ -87,7 +87,7 @@ export function TopFrame(props: ITopFrameProps) {
     console.log(`[DiagramFrame] document loaded: ${args.success}`);
   }
 
-  const init = async (url: string, startPage: string) => {
+  const init = async (url: string, startPage: string, retry: number) => {
     try {
       await Visio.run(refSession.current, async (ctx) => {
         ctx.document.application.showToolbars = !props.hideToolbars;
@@ -108,7 +108,7 @@ export function TopFrame(props: ITopFrameProps) {
         const defaultPage = ctx.document.getActivePage().load('name');
 
         if (startPage) {
-          await new Promise(r => setTimeout(r, 750));
+          await new Promise(r => setTimeout(r, retry*750));
           ctx.document.setActivePage(startPage);
         }
 
@@ -118,7 +118,7 @@ export function TopFrame(props: ITopFrameProps) {
       });
     } catch (err) {
       console.error(`[DiagramFrame] error initializing diagram ${err.message}`);
-      throw new Error(`Error initializing diagram parameters. The view may be not the expected one. ${err.message}`);
+      throw new Error(`Error initializing diagram parameters. The view may be not the expected one. Please try reloading the page. ${err.message}`);
     }
   }
 
@@ -137,6 +137,7 @@ export function TopFrame(props: ITopFrameProps) {
   const reloadEmbed = async (opts: { url: string, label: string, retry: number }) => {
 
     setError('');
+    setIsLoading(true);
     try {
 
       // if clicked the same URL, force reload
@@ -165,7 +166,7 @@ export function TopFrame(props: ITopFrameProps) {
         });
 
         await refSession.current.init();
-        await init(newBaseUrl, newPageName);
+        await init(newBaseUrl, newPageName, opts.retry);
         reloaded = true;
       }
 
@@ -195,7 +196,7 @@ export function TopFrame(props: ITopFrameProps) {
               return;
             }
 
-            throw new Error(`Error while loading diagram. The view may be not the expected one.`);
+            throw new Error(`Error while loading diagram. The view may be not the expected one. Please try reloading the page.`);
           }
 
         } else {
@@ -212,6 +213,8 @@ export function TopFrame(props: ITopFrameProps) {
     } catch (err) {
       console.error(`[DiagramFrame] unable to initialize the diagram, ${err.message}`);
       setError(`${err}`);
+    } finally {
+      setIsLoading(false);
     }
 
   }
@@ -242,12 +245,17 @@ export function TopFrame(props: ITopFrameProps) {
   }, [props.url, props.startPage, props.enableNavigation]);
 
   const [error, setError] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [breadcrumb, setBreadcrumb] = React.useState<IBreadcrumbItem[]>([]);
 
   return (
     <ThemeProvider className={styles.root} style={{ height: props.height, width: props.width }} >
-      {props.enableNavigation && <Breadcrumb styles={{ root: { margin: 4 } }} items={breadcrumb} />}
+      {props.enableNavigation && <Stack horizontal>
+        <Stack.Item grow><Breadcrumb styles={{ root: { margin: 4 } }} items={breadcrumb} /></Stack.Item>
+        <Stack.Item align='center'>{isLoading && <Spinner />}</Stack.Item>
+      </Stack>
+      }
       {error && <MessageBar onDismiss={() => setError('')} messageBarType={MessageBarType.severeWarning}>{error}</MessageBar>}
       {!props.url && <ErrorPlaceholder context={props.context} isReadOnly={props.isReadOnly} />}
       <div className={styles.diagram} ref={refContainer} />
