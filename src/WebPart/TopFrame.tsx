@@ -99,6 +99,8 @@ export function TopFrame(props: ITopFrameProps) {
 
         await ctx.sync();
 
+        // trying to call Visio online API before 'loaded' event results in all sort of odd errors on slow LAN
+        // cna be tested by switching "Slow 3G" for example in chrone dev tools.
         for (let i = 0; !loaded && i < 4*10; ++i) {
           await sleep(250);
         }
@@ -120,22 +122,23 @@ export function TopFrame(props: ITopFrameProps) {
 
         const defaultPage = ctx.document.getActivePage().load('name');
 
-        await ctx.sync();
-
-        refDefaultPageName.current[url] = defaultPage.name;
-
-        if (startPage) {
-          await sleep(750 * (1 + retry*2));
-          console.log(`[DiagramFrame] initialize page "${startPage}"`);
-          ctx.document.setActivePage(startPage);
-          await ctx.sync();
-        }
-
         if (props.enableNavigation) {
           ctx.document.onSelectionChanged.add(onVisioSelectionChanged);
         }
 
         await ctx.sync();
+
+        refDefaultPageName.current[url] = defaultPage.name;
+
+        if (startPage) {
+          // A Visio online issue, depends also on the network speed, see
+          // https://github.com/OfficeDev/office-js/issues/1539
+          await sleep(750 * (1 + retry*2));
+
+          console.log(`[DiagramFrame] initialize page "${startPage}"`);
+          ctx.document.setActivePage(startPage);
+          await ctx.sync();
+        }
 
       });
     } catch (err) {
@@ -196,7 +199,11 @@ export function TopFrame(props: ITopFrameProps) {
 
       if (newPageNameOrDefault && (oldPageNameOrDefault !== newPageNameOrDefault || force)) {
 
-        if (reloaded) { // Visio bug (hanging) on immediate page change with logo screen, timeout seems to help a bit
+        if (reloaded) {
+          // Visio bug (hanging) on immediate page change with logo screen, timeout seems to help a bit
+          // See https://github.com/OfficeDev/office-js/issues/1539
+          // This is a heuristic workaround to eventually set the page
+
           let pageSet = false;
           for (let i = 0; i  < (opts.retry + 1) * 3; ++i) {
 
