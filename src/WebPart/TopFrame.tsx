@@ -12,6 +12,8 @@ interface ITopFrameProps extends IWebPartProps {
   isReadOnly: boolean;
 }
 
+const sleep = async (ms: number) => await new Promise(r => setTimeout(r, ms));
+
 export function TopFrame(props: ITopFrameProps) {
 
   const refContainer = React.useRef<HTMLDivElement>(null);
@@ -83,13 +85,30 @@ export function TopFrame(props: ITopFrameProps) {
     })
   }
 
-  const onVisioDocumentLoaded = async (args: Visio.DocumentLoadCompleteEventArgs) => {
-    console.log(`[DiagramFrame] document loaded: ${args.success}`);
-  }
-
   const init = async (url: string, startPage: string, retry: number) => {
     try {
       await Visio.run(refSession.current, async (ctx) => {
+
+        let loaded = false;
+        const onVisioDocumentLoaded = async (args: Visio.DocumentLoadCompleteEventArgs) => {
+          loaded = true;
+          console.log(`[DiagramFrame] document loaded: ${args.success}`);
+        }
+
+        ctx.document.onDocumentLoadComplete.add(onVisioDocumentLoaded);
+
+        await ctx.sync();
+
+        for (let i = 0; !loaded && i < 4*10; ++i) {
+          await sleep(250);
+        }
+
+        if (!loaded) {
+          throw new Error('Timeout while waiting for the diagram to load');
+        }
+
+        ctx.document.onDocumentLoadComplete.remove(onVisioDocumentLoaded);
+
         ctx.document.application.showToolbars = !props.hideToolbars;
         ctx.document.application.showBorders = !props.hideBorders;
 
@@ -99,22 +118,25 @@ export function TopFrame(props: ITopFrameProps) {
         ctx.document.view.disablePanZoomWindow = props.disablePanZoomWindow;
         ctx.document.view.disableZoom = props.disableZoom;
 
-        if (props.enableNavigation) {
-          ctx.document.onSelectionChanged.add(onVisioSelectionChanged);
-        }
-
-        ctx.document.onDocumentLoadComplete.add(onVisioDocumentLoaded);
-
         const defaultPage = ctx.document.getActivePage().load('name');
-
-        if (startPage) {
-          await new Promise(r => setTimeout(r, retry*750));
-          ctx.document.setActivePage(startPage);
-        }
 
         await ctx.sync();
 
         refDefaultPageName.current[url] = defaultPage.name;
+
+        if (startPage) {
+          await sleep(750 * (1 + retry*2));
+          console.log(`[DiagramFrame] initialize page "${startPage}"`);
+          ctx.document.setActivePage(startPage);
+          await ctx.sync();
+        }
+
+        if (props.enableNavigation) {
+          ctx.document.onSelectionChanged.add(onVisioSelectionChanged);
+        }
+
+        await ctx.sync();
+
       });
     } catch (err) {
       console.error(`[DiagramFrame] error initializing diagram ${err.message}`);
@@ -155,7 +177,6 @@ export function TopFrame(props: ITopFrameProps) {
           resolved = resolved + `&wdzoom=${props.zoom}`;
 
         refContainer.current.innerHTML = '';
-
         refSession.current = null;
 
         console.log(`[DiagramFrame] loading "${newBaseUrl}#${newPageName}"`);
@@ -186,7 +207,7 @@ export function TopFrame(props: ITopFrameProps) {
             }
 
             console.warn(`[DiagramFrame] Page mismatch after ${1+i} seconds, resceduling check`);
-            await new Promise(r => setTimeout(r, 1000));
+            await sleep(1000);
           }
 
           if (!pageSet) {
