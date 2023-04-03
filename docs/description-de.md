@@ -33,6 +33,12 @@ You can optionally hide diagram toolbar, diagram boundary, border
 
 You can optionally disable hyperlinks, zoom, pan, and the navigator
 
+What is new in version 1.2
+--------------------------
+
+- German localization
+- Optional navigation between pages and diagrams on single click (experimental)
+
 What is new in version 1.1
 --------------------------
 

@@ -7,6 +7,14 @@ name: $(Version).$(BuildID)
 trigger:
 - master
 
+resources:
+  repositories:
+  - repository: diagram-frame-releases
+    type: github
+    name: nbelyh/diagram-frame-releases
+    endpoint: github.com_nbelyh
+    ref: main
+
 stages:
 - stage: 'build'
   displayName: 'build'
@@ -52,10 +60,15 @@ stages:
           arguments: '--ship'
 
       - task: CopyFiles@2
-        displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+        displayName: 'Copy SPFx files to artifcacts'
         inputs:
-          Contents: |
-            sharepoint/**/*.sppkg
+          Contents: sharepoint/**/*.sppkg
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+      - task: CopyFiles@2
+        displayName: 'Copy DIST files to artifacts'
+        inputs:
+          Contents: dist/**/*
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
@@ -88,6 +101,38 @@ stages:
                 $versionShort = "$($version.Major).$($version.Minor)"
                 Write-Host "##vso[task.setvariable variable=versionShort]$($versionShort)"
 
+          - checkout: diagram-frame-releases
+            path: diagram-frame-releases
+            persistCredentials: true
+
+          - task: PowerShell@2
+            displayName: 'Git pull'
+            inputs:
+              targetType: 'inline'
+              workingDirectory: '$(Agent.BuildDirectory)/diagram-frame-releases'
+              script: |
+                git checkout main
+                git pull
+
+          - task: CopyFiles@2
+            displayName: 'Copy build artifacts to releases repo'
+            inputs:
+              SourceFolder: '$(System.ArtifactsDirectory)/drop/dist'
+              Contents: '**'
+              TargetFolder: '$(Agent.BuildDirectory)/diagram-frame-releases/$(Build.BuildNumber)'
+
+          - task: PowerShell@2
+            displayName: 'Git commit'
+            inputs:
+              targetType: 'inline'
+              workingDirectory: '$(Agent.BuildDirectory)/diagram-frame-releases'
+              script: |
+                git config user.email "build@unmanagedvisio.com"
+                git config user.name "Azure Pipelines Build"
+                git add .
+                git commit -m "Release $(Build.BuildNumber)"
+                git push origin main
+
           - task: GitHubRelease@1
             inputs:
               gitHubConnection: 'github.com_nbelyh'
@@ -98,7 +143,7 @@ stages:
               title: '$(Build.BuildNumber)'
               releaseNotesSource: 'inline'
               releaseNotesInline: 'TBD'
-              assets: '$(System.ArtifactsDirectory)\drop\sharepoint\solution\*.sppkg'
+              assets: '$(System.ArtifactsDirectory)/drop/sharepoint/solution/*.sppkg'
               isPreRelease: true
               changeLogCompareToRelease: 'lastFullRelease'
               changeLogType: 'commitBased'
