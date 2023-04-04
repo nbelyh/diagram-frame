@@ -16,6 +16,6 @@
     "skipFeatureDeployment": true
   },
   "paths": {
-    "zippedPackage": "solution/diagram-frame-webpart.sppkg"
+    "zippedPackage": "solution/diagram-frame-webpart-no-cdn.sppkg"
   }
 }

@@ -48,13 +48,41 @@ stages:
         displayName: 'npm test'
 
       - task: gulp@1
-        displayName: 'Bundle project'
+        displayName: 'Bundle NO-CDN versopm'
         inputs:
           targets: bundle
           arguments: '--ship'
 
       - task: gulp@1
-        displayName: 'Package Solution'
+        displayName: 'Package NO-CDN version'
+        inputs:
+          targets: 'package-solution'
+          arguments: '--ship'
+
+      - task: CopyFiles@2
+        displayName: 'Copy SPFx files to artifcacts'
+        inputs:
+          Contents: sharepoint/**/*.sppkg
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+      - task: gulp@1
+        displayName: 'Cleanup'
+        inputs:
+          targets: 'full-clean'
+
+      - task: gulp@1
+        displayName: 'Target CDN'
+        inputs:
+          targets: 'target-cdn'
+
+      - task: gulp@1
+        displayName: 'Bundle CDN version'
+        inputs:
+          targets: bundle
+          arguments: '--ship'
+
+      - task: gulp@1
+        displayName: 'Package CDN version'
         inputs:
           targets: 'package-solution'
           arguments: '--ship'
@@ -66,9 +94,15 @@ stages:
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: CopyFiles@2
-        displayName: 'Copy DIST files to artifacts'
+        displayName: 'Copy CDN files to artifacts'
         inputs:
           Contents: dist/**/*
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+      - task: CopyFiles@2
+        displayName: 'Copy docs files to artifacts'
+        inputs:
+          Contents: docs/**/*
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
@@ -119,7 +153,7 @@ stages:
             inputs:
               SourceFolder: '$(System.ArtifactsDirectory)/drop/dist'
               Contents: '**'
-              TargetFolder: '$(Agent.BuildDirectory)/diagram-frame-releases/$(Build.BuildNumber)'
+              TargetFolder: '$(Agent.BuildDirectory)/diagram-frame-releases/$(versionShort)'
 
           - task: PowerShell@2
             displayName: 'Git commit'
@@ -137,12 +171,11 @@ stages:
             inputs:
               gitHubConnection: 'github.com_nbelyh'
               repositoryName: '$(Build.Repository.Name)'
-              action: 'edit'
+              action: 'create'
               target: '$(Build.SourceVersion)'
               tag: '$(versionShort)'
               title: '$(Build.BuildNumber)'
-              releaseNotesSource: 'inline'
-              releaseNotesInline: 'TBD'
+              releaseNotesFilePath: 'docs/release-notes-$(versionShort).md'
               assets: '$(System.ArtifactsDirectory)/drop/sharepoint/solution/*.sppkg'
               isPreRelease: true
               changeLogCompareToRelease: 'lastFullRelease'

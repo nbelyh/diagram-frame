@@ -23,15 +23,33 @@ gulp.task('update-version', function (cb) {
 
   var packageSolutionJson = require('./config/package-solution.json');
   packageSolutionJson.solution.version = version + '.0';
-  packageSolutionJson.solution.includeClientSideAssets = false;
   fs.writeFileSync('./config/package-solution.json', JSON.stringify(packageSolutionJson, null, 2));
 
   var webPartManfiestJson = require('./src/WebPart/WebPart.manifest.json');
   webPartManfiestJson.version = version;
   fs.writeFileSync('./src/WebPart/WebPart.manifest.json', JSON.stringify(webPartManfiestJson, null, 2));
 
+ cb();
+});
+
+gulp.task('target-cdn', function (cb) {
+
+  const gutil = require('gulp-util');
+  const fs = require('fs');
+
+  var src = require('./package.json');
+  var version = src.version.split('-')[0];
+  var versionShort = version.split('.').slice(0, 2).join('.');
+
+  gutil.log('Targeting CDN:\t' + version);
+
+  var packageSolutionJson = require('./config/package-solution.json');
+  packageSolutionJson.solution.includeClientSideAssets = false;
+  packageSolutionJson.paths.zippedPackage = "solution/diagram-frame-webpart.sppkg";
+  fs.writeFileSync('./config/package-solution.json', JSON.stringify(packageSolutionJson, null, 2));
+
   var writeManfiestJson = require('./config/write-manifests.json');
-  writeManfiestJson.cdnBasePath = `https://cdn.jsdelivr.net/gh/nbelyh/diagram-frame-releases/${version}`;
+  writeManfiestJson.cdnBasePath = `https://cdn.jsdelivr.net/gh/nbelyh/diagram-frame-releases/${versionShort}`;
   fs.writeFileSync('./config/write-manifests.json', JSON.stringify(writeManfiestJson, null, 2));
 
   cb();
