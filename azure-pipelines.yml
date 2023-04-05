@@ -145,6 +145,7 @@ stages:
               targetType: 'inline'
               workingDirectory: '$(Agent.BuildDirectory)/diagram-frame-releases'
               script: |
+                git fetch
                 git checkout main
                 git pull
 
@@ -171,11 +172,11 @@ stages:
             inputs:
               gitHubConnection: 'github.com_nbelyh'
               repositoryName: '$(Build.Repository.Name)'
-              action: 'create'
+              action: 'edit'
               target: '$(Build.SourceVersion)'
               tag: '$(versionShort)'
               title: '$(Build.BuildNumber)'
-              releaseNotesFilePath: 'docs/release-notes-$(versionShort).md'
+              releaseNotesFilePath: '$(System.ArtifactsDirectory)/drop/docs/release-notes-$(versionShort).md'
               assets: '$(System.ArtifactsDirectory)/drop/sharepoint/solution/*.sppkg'
               isPreRelease: true
               changeLogCompareToRelease: 'lastFullRelease'
