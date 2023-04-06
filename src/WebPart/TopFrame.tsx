@@ -71,8 +71,16 @@ export function TopFrame(props: ITopFrameProps) {
   const setPage = async (startPage: string) => {
     await Visio.run(refSession.current, async ctx => {
       console.log(`[DiagramFrame] set page "${startPage}"`);
-      ctx.document.setActivePage(startPage);
-      await ctx.sync();
+      try {
+        ctx.document.setActivePage(startPage);
+        await ctx.sync();
+      } catch (err) {
+        if (err.code === 'ItemNotFound') {
+          throw new Error(`Unable to set active page to "${startPage}" because it is not found. Please check you have specified an existing page in the web part settings.`);
+        } else {
+          throw err;
+        }
+      }
     })
   }
 
@@ -136,8 +144,16 @@ export function TopFrame(props: ITopFrameProps) {
           await sleep(750 * (1 + retry*2));
 
           console.log(`[DiagramFrame] initialize page "${startPage}"`);
-          ctx.document.setActivePage(startPage);
-          await ctx.sync();
+          try {
+            ctx.document.setActivePage(startPage);
+            await ctx.sync();
+          } catch (err) {
+            if (err.code === 'ItemNotFound') {
+              throw new Error(`Unable to set active page to "${startPage}" because it is not found. Please check you have specified an existing page in the web part settings.`);
+            } else {
+              throw err;
+            }
+          }
         }
 
       });
