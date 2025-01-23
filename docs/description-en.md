@@ -33,6 +33,12 @@ You can optionally hide diagram toolbar, diagram boundary, border
 
 You can optionally disable hyperlinks, zoom, pan, and the navigator
 
+What is new in version 1.3
+--------------------------
+
+- Navigation option to enable external links in the new tab
+- Navigation option to open office files instead of downloading
+
 What is new in version 1.2
 --------------------------
 
