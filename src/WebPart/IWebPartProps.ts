@@ -15,5 +15,8 @@ export interface IWebPartProps {
 
   enableNavigation: boolean;
 
+  openHyperlinksInNewWindow: boolean;
+  forceOpeningOfficeFilesOnline: boolean;
+
   zoom: number;
 }

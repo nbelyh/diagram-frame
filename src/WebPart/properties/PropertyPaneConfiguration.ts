@@ -36,6 +36,17 @@ export class PropertyPaneConfiguration {
                 }),
                 PropertyPaneToggle('enableNavigation', {
                   label: strings.FieldEnableNavigation,
+                  inlineLabel: true,
+                }),
+                PropertyPaneToggle('openHyperlinksInNewWindow', {
+                  label: "Open Hyperlinks in New Window",
+                  disabled: properties.disableHyperlinks || !properties.enableNavigation,
+                  inlineLabel: true,
+                }),
+                PropertyPaneToggle('forceOpeningOfficeFilesOnline', {
+                  label: "Force Open Office Files",
+                  disabled: properties.disableHyperlinks || !properties.enableNavigation,
+                  inlineLabel: true,
                 }),
               ]
             },
@@ -59,12 +70,15 @@ export class PropertyPaneConfiguration {
                 }),
                 PropertyPaneToggle('hideToolbars', {
                   label: strings.PropertyPaneLabelhideToolbars,
+                  inlineLabel: true,
                 }),
                 PropertyPaneToggle('hideDiagramBoundary', {
                   label: strings.PropertyPaneLabelhideDiagramBoundary,
+                  inlineLabel: true,
                 }),
                 PropertyPaneToggle('hideBorders', {
                   label: strings.PropertyPaneLabelhideBorders,
+                  inlineLabel: true,
                 }),
               ]
             },
@@ -74,15 +88,19 @@ export class PropertyPaneConfiguration {
               groupFields: [
                 PropertyPaneToggle('disableHyperlinks', {
                   label: strings.PropertyPaneLabeldisableHyperlinks,
+                  inlineLabel: true,
                 }),
                 PropertyPaneToggle('disablePan', {
                   label: strings.PropertyPaneLabeldisablePan,
+                  inlineLabel: true,
                 }),
                 PropertyPaneToggle('disableZoom', {
                   label: strings.PropertyPaneLabeldisableZoom,
+                  inlineLabel: true,
                 }),
                 PropertyPaneToggle('disablePanZoomWindow', {
                   label: strings.PropertyPaneLabeldisablePanZoomWindow,
+                  inlineLabel: true,
                 }),
               ]
             },

@@ -64,31 +64,51 @@ export class Utils {
     return fileUrl.endsWith('.vsd') || fileUrl.endsWith('.vsdx') || fileUrl.endsWith('.vsdm');
   }
 
-  public static getVisioLinkTarget(link: Visio.Hyperlink, baseUrl: string, defaultLabel: string) {
-    let newBaseUrl = link.address;
-    let newPageName = '';
-    let label = link.description;
-    if (newBaseUrl && Utils.isRelativeUrl(newBaseUrl) && Utils.isVisioFileExtension(newBaseUrl)) {
-      newBaseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1) + link.address;
-      newPageName = link.subAddress || '';
-      if (!label) {
-        if (newPageName) {
-          label = newPageName;
+  public static parseLink(link: Visio.Hyperlink, baseUrl: string, defaultLabel: string): {
+    external: boolean;
+    url: string,
+    label: string
+  } {
+    const { address, subAddress, description } = link;
+
+    if (address) {
+      if (Utils.isVisioFileExtension(address)) {
+        if (Utils.isRelativeUrl(address)) {
+          const absoluteUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1) + address;
+          return {
+            external: false,
+            url: Utils.joinPageUrl(absoluteUrl, subAddress),
+            label: description || subAddress || address.replace(/\.vsdx$/, '').replace(/\.vsdm$/, '').replace(/\.vsd$/, '')
+          }
         } else {
-          label = link.address.replace(/\.vsdx$/, '').replace(/\.vsdm$/, '').replace(/\.vsd$/, '');
+          return {
+            external: false,
+            url: Utils.joinPageUrl(address, subAddress),
+            label: description || subAddress || defaultLabel
+          }
+        }
+      } else {
+        if (Utils.isRelativeUrl(address)) {
+          const absoluteUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1) + address;
+          return {
+            external: true,
+            url: absoluteUrl,
+            label: description || address || defaultLabel
+          }
+        } else {
+          return {
+            external: true,
+            url: address,
+            label: description || defaultLabel
+          }
         }
       }
-    }
-    if (!newBaseUrl) {
-      newBaseUrl = baseUrl;
-      newPageName = link.subAddress;
-      if (!label) {
-        label = link.subAddress;
+    } else {
+      return {
+        external: false,
+        url: Utils.joinPageUrl(baseUrl, subAddress),
+        label: description || subAddress || defaultLabel
       }
     }
-    if (!label) {
-      label = defaultLabel;
-    }
-    return { url: Utils.joinPageUrl(newBaseUrl, newPageName), label };
   }
 }

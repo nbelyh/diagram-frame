@@ -32,7 +32,7 @@ export function TopFrame(props: ITopFrameProps) {
           await ctx.sync();
           return links.items[0];
         } catch (err) {
-          console.warn(`[DiagramFrame] unable to get shape "${shapeName}" ${err.message}`);
+          console.warn(`[DiagramFrame] unable to get shape "${shapeName}" on page "${args.pageName}": ${err.message}`);
         }
       }
     });
@@ -50,6 +50,21 @@ export function TopFrame(props: ITopFrameProps) {
     }
   }
 
+  const officeExtensions = new Set([
+    'doc', 'docx', 'dot', 'dotx', // Word
+    'xls', 'xlsx', 'xlsm', 'xltx', 'xltm',  // Excel
+    'ppt', 'pptx', 'pps', 'ppsx', 'pot', 'potx', // PowerPoint
+    'pub', // Publisher
+    'vsd', 'vsdx', // Visio
+    'odt', 'ods', 'odp', // OpenDocument Text/Spreadsheet/Presentation
+    'rtf' // Rich Text Format
+  ]);
+
+  const isOfficeFileExtension = (url: string) => {
+    const extension = url.split('.').pop().toLowerCase().split(/#|\?/)[0];
+    return officeExtensions.has(extension);
+  }
+
   const onVisioSelectionChanged = async (args: Visio.SelectionChangedEventArgs) => {
     const [shapeName] = args.shapeNames;
     try {
@@ -57,10 +72,23 @@ export function TopFrame(props: ITopFrameProps) {
 
       const link = await getVisioLink(args);
       if (link) {
-        const target = Utils.getVisioLinkTarget(link, baseUrl, shapeName);
-        if (target) {
-          await deselectVisioShape(args);
-          await reloadEmbed({...target, retry: 0 });
+        const parsed = Utils.parseLink(link, baseUrl, shapeName);
+        if (parsed) {
+          if (parsed.external) {
+
+            const fileUrl = new URL(parsed.url);
+            if (props.forceOpeningOfficeFilesOnline && isOfficeFileExtension(parsed.url)) {
+              fileUrl.searchParams.append('web', '1');
+            }
+
+            if (props.openHyperlinksInNewWindow)
+              window.open(fileUrl, '_blank');
+            else
+              document.location = fileUrl.toString();
+          } else {
+            await deselectVisioShape(args);
+            await reloadEmbed({...parsed, retry: 0 });
+          }
         }
       }
     } catch (err) {
@@ -286,7 +314,7 @@ export function TopFrame(props: ITopFrameProps) {
       }
     }, 750);
     return () => clearTimeout(timer);
-  }, [props.url, props.startPage, props.enableNavigation]);
+  }, [props.url, props.startPage, props.enableNavigation, props.openHyperlinksInNewWindow, props.forceOpeningOfficeFilesOnline]);
 
   const [error, setError] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);

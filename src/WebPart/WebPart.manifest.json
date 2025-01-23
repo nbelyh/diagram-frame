@@ -29,6 +29,8 @@
       "fullPageAppIconImageUrl": "https://unmanagedvisio.com/upload/spfx/diagram-frame-icon-11.svg",
       "iconImageUrl": "https://unmanagedvisio.com/upload/spfx/diagram-frame-icon-11.svg",
       "properties": {
+        "openHyperlinksInNewWindow": true,
+        "forceOpeningOfficeFilesOnline": true
       }
     }
   ]
