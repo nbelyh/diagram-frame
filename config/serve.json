@@ -2,5 +2,5 @@
   "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
   "port": 4321,
   "https": true,
-  "initialPage": "https://unmanagedvisio.sharepoint.com/_layouts/15/workbench.aspx"
+  "initialPage": "https://svgpublish.sharepoint.com/_layouts/15/workbench.aspx"
 }
