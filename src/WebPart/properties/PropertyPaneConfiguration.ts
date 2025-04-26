@@ -38,16 +38,6 @@ export class PropertyPaneConfiguration {
                   label: strings.FieldEnableNavigation,
                   inlineLabel: true,
                 }),
-                PropertyPaneToggle('openHyperlinksInNewWindow', {
-                  label: "Open Hyperlinks in New Window",
-                  disabled: properties.disableHyperlinks || !properties.enableNavigation,
-                  inlineLabel: true,
-                }),
-                PropertyPaneToggle('forceOpeningOfficeFilesOnline', {
-                  label: "Force Open Office Files",
-                  disabled: properties.disableHyperlinks || !properties.enableNavigation,
-                  inlineLabel: true,
-                }),
               ]
             },
             {
@@ -88,6 +78,16 @@ export class PropertyPaneConfiguration {
               groupFields: [
                 PropertyPaneToggle('disableHyperlinks', {
                   label: strings.PropertyPaneLabeldisableHyperlinks,
+                  inlineLabel: true,
+                }),
+                PropertyPaneToggle('openHyperlinksInNewWindow', {
+                  label: "Open Hyperlinks in New Window",
+                  disabled: properties.disableHyperlinks,
+                  inlineLabel: true,
+                }),
+                PropertyPaneToggle('forceOpeningOfficeFilesOnline', {
+                  label: "Force Open Office Files",
+                  disabled: properties.disableHyperlinks,
                   inlineLabel: true,
                 }),
                 PropertyPaneToggle('disablePan', {
