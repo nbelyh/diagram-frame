@@ -29,9 +29,9 @@ stages:
       npm_config_cache: $(Pipeline.Workspace)/.npm
     steps:
       - task: NodeTool@0
-        displayName: 'Use Node 18.x'
+        displayName: 'Use Node 22.x'
         inputs:
-          versionSpec: 18.x
+          versionSpec: 22.x
 
       - script: npm ci
         displayName: 'npm ci'
