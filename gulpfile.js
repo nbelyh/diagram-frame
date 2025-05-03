@@ -13,13 +13,10 @@ gulp.task('full-clean', function (cb) {
 
 gulp.task('update-version', function (cb) {
 
-  const gutil = require('gulp-util');
   const fs = require('fs');
 
   var src = require('./package.json');
   var version = src.version.split('-')[0];
-
-  gutil.log('Setting version to:\t' + version);
 
   var packageSolutionJson = require('./config/package-solution.json');
   packageSolutionJson.solution.version = version + '.0';
@@ -34,14 +31,11 @@ gulp.task('update-version', function (cb) {
 
 gulp.task('target-cdn', function (cb) {
 
-  const gutil = require('gulp-util');
   const fs = require('fs');
 
   var src = require('./package.json');
   var version = src.version.split('-')[0];
   var versionShort = version.split('.').slice(0, 2).join('.');
-
-  gutil.log('Targeting CDN:\t' + version);
 
   var packageSolutionJson = require('./config/package-solution.json');
   packageSolutionJson.solution.includeClientSideAssets = false;
