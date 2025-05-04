@@ -28,6 +28,7 @@ export default class WebPart extends BaseClientSideWebPart<IWebPartProps> {
       height: this.properties.height || '50vh',
       openHyperlinksInNewWindow: typeof(this.properties.openHyperlinksInNewWindow) === 'undefined' ? true : this.properties.openHyperlinksInNewWindow,
       forceOpeningOfficeFilesOnline: typeof(this.properties.forceOpeningOfficeFilesOnline) === 'undefined' ? true : this.properties.forceOpeningOfficeFilesOnline,
+      enableNavigationHeader: typeof(this.properties.enableNavigationHeader) === 'undefined' ? true : this.properties.enableNavigationHeader,
     };
 
     const element = React.createElement(TopFrame, {

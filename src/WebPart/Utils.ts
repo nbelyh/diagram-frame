@@ -69,7 +69,7 @@ export class Utils {
     url: string,
     label: string
   } {
-    const { address, subAddress, description } = link;
+    const { address, subAddress, description, extraInfo } = link;
 
     if (address) {
       if (Utils.isVisioFileExtension(address)) {
@@ -98,7 +98,7 @@ export class Utils {
         } else {
           return {
             external: true,
-            url: address,
+            url: address + (extraInfo ? `?${extraInfo}` : ''),
             label: description || defaultLabel
           }
         }

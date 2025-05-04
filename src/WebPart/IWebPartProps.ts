@@ -14,6 +14,7 @@ export interface IWebPartProps {
   disableZoom: boolean;
 
   enableNavigation: boolean;
+  enableNavigationHeader: boolean;
 
   openHyperlinksInNewWindow: boolean;
   forceOpeningOfficeFilesOnline: boolean;

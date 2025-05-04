@@ -276,7 +276,7 @@ export function TopFrame(props: ITopFrameProps) {
         }
       }
 
-      if (opts?.label && props.enableNavigation || force) {
+      if (opts?.label && props.enableNavigation && props.enableNavigationHeader || force) {
         udpateBreadcrumb(opts);
       }
 
@@ -314,7 +314,7 @@ export function TopFrame(props: ITopFrameProps) {
       }
     }, 750);
     return () => clearTimeout(timer);
-  }, [props.url, props.startPage, props.enableNavigation, props.openHyperlinksInNewWindow, props.forceOpeningOfficeFilesOnline]);
+  }, [props.url, props.startPage, props.enableNavigation, props.enableNavigationHeader, props.openHyperlinksInNewWindow, props.forceOpeningOfficeFilesOnline]);
 
   const [error, setError] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
@@ -323,7 +323,7 @@ export function TopFrame(props: ITopFrameProps) {
 
   return (
     <ThemeProvider className={styles.root} style={{ height: props.height, width: props.width }} >
-      {props.enableNavigation && <Stack horizontal>
+      {props.enableNavigation && props.enableNavigationHeader && <Stack horizontal>
         <Stack.Item grow><Breadcrumb styles={{ root: { margin: 4 } }} items={breadcrumb} /></Stack.Item>
         <Stack.Item align='center'>{isLoading && <Spinner />}</Stack.Item>
       </Stack>

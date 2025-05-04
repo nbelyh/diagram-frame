@@ -7,7 +7,7 @@ define([], function() {
     Edit: "Editieren",
     Error: "Fehler",
     FieldConfigureLabel: "Konfigurieren",
-    FieldEnableNavigation: "Navigation aktivieren (experimentell)",
+    FieldEnableNavigation: "Aktivieren der Ein-Klick-Navigation",
     FieldHeight: "Diagram Höhe",
     FieldHeightDescription: "Specify height value and units",
     FieldStartPage: "Initiale Seite",
