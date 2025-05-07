@@ -23,8 +23,8 @@
         "de-de": "Diagramm Frame"
       },
       "description": {
-        "default": "The web part is a specialized widget to display a Microsoft Visio diagram in a modern SharePoint page. Similar to the 'Visio Web Access' web part in 'classic' SharePoint. Enables default zoom, page, chrome, and interactivity settings.",
-        "de-de": "Dieses Web Part ist ein erweitertes Widgket um Microsoft Visio Diagramme in Modernen Sharepoint Seiten anzuzeigen. (Ähnlich des 'Visio Web Access' Web Part im klassischen SharePoint.) Ermöglicht Standardzoom und Seite einzustellen sowie weitere Interaktionsmöglichkeiten."
+        "default": "The Diagram Frame SharePoint Visio Web Part lets you embed and interact with Visio diagrams in SharePoint, Teams, or full-page apps. It supports hierarchical navigation, customizable start pages, zoom levels, and interface controls, allowing users to explore complex diagrams and tailor the viewing experience to their needs.",
+        "de-de": "Das Diagram Frame SharePoint Visio Webpart ermöglicht das Einbetten und Interagieren mit Visio-Diagrammen in SharePoint, Teams oder als Vollseitenanwendung. Es unterstützt hierarchische Navigation, anpassbare Startseiten, Zoomstufen und Interface-Steuerungen, wodurch Nutzer komplexe Diagramme erkunden und die Ansicht individuell gestalten können."
       },
       "fullPageAppIconImageUrl": "https://unmanagedvisio.com/upload/spfx/diagram-frame-icon-11.svg",
       "iconImageUrl": "https://unmanagedvisio.com/upload/spfx/diagram-frame-icon-11.svg",
