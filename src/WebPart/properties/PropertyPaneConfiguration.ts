@@ -39,17 +39,17 @@ export class PropertyPaneConfiguration {
                   inlineLabel: true,
                 }),
                 PropertyPaneToggle('enableNavigationHeader', {
-                  label: "Show Navigation Header",
+                  label: strings.FieldEnableNavHeader,
                   disabled: !properties.enableNavigation,
                   inlineLabel: true,
                 }),
                 PropertyPaneToggle('openHyperlinksInNewWindow', {
-                  label: "Open Hyperlinks in New Window",
+                  label: strings.FieldHyperlinksNewWindow,
                   disabled: !properties.enableNavigation,
                   inlineLabel: true,
                 }),
                 PropertyPaneToggle('forceOpeningOfficeFilesOnline', {
-                  label: "Force Open Office Files",
+                  label: strings.FieldForceOpenOfficeFiles,
                   disabled: !properties.enableNavigation,
                   inlineLabel: true,
                 }),

@@ -42,7 +42,10 @@ declare interface IWebPartStrings {
   percOfScreen: string;
   percOfFrame: string;
   centimeters: string;
+  FieldEnableNavHeader: string;
   FieldEnableNavigation: string;
+  FieldForceOpenOfficeFiles: string;
+  FieldHyperlinksNewWindow: string;
   inches: string;
   millimeters: string;
   NavigationHome: string;
