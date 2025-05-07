@@ -27,7 +27,7 @@ export class Defaults {
         if (viewUrl.startsWith(webUrl))
           viewUrl = viewUrl.substring(webUrl.length);
 
-        const pos = viewUrl.indexOf("/Forms/");
+        const pos = viewUrl.indexOf('/Forms/');
         if (pos >= 0) {
           const docLibPath = viewUrl.substring(0, pos);
           return this.defaultFolder = {

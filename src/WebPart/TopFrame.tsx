@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './TopFrame.module.scss';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
-import { IWebPartProps } from "./IWebPartProps";
+import { IWebPartProps } from './IWebPartProps';
 import { Utils } from './Utils';
 import { ErrorPlaceholder } from './components/ErrorPlaceholder';
 import { Breadcrumb, IBreadcrumbItem, MessageBar, MessageBarType, Spinner, Stack, ThemeProvider } from '@fluentui/react';
@@ -32,7 +32,7 @@ export function TopFrame(props: ITopFrameProps) {
           await ctx.sync();
           return links.items[0];
         } catch (err) {
-          console.warn(`[DiagramFrame] unable to get shape "${shapeName}" on page "${args.pageName}": ${err.message}`);
+          console.warn(`[DiagramFrame] unable to get shape '${shapeName}' on page '${args.pageName}': ${err.message}`);
         }
       }
     });
@@ -46,7 +46,7 @@ export function TopFrame(props: ITopFrameProps) {
         await ctx.sync();
       });
     } catch (err) {
-      console.warn(`[DiagramFrame] unable to deselect shape "${shapeName}" ${err.message}`);
+      console.warn(`[DiagramFrame] unable to deselect shape '${shapeName}' ${err.message}`);
     }
   }
 
@@ -92,19 +92,19 @@ export function TopFrame(props: ITopFrameProps) {
         }
       }
     } catch (err) {
-      console.warn(`[DiagramFrame] unable to navigate to shape "${shapeName}" ${err.message}`);
+      console.warn(`[DiagramFrame] unable to navigate to shape '${shapeName}' ${err.message}`);
     }
   };
 
   const setPage = async (startPage: string) => {
     await Visio.run(refSession.current, async ctx => {
-      console.log(`[DiagramFrame] set page "${startPage}"`);
+      console.log(`[DiagramFrame] set page '${startPage}'`);
       try {
         ctx.document.setActivePage(startPage);
         await ctx.sync();
       } catch (err) {
         if (err.code === 'ItemNotFound') {
-          throw new Error(`Unable to set active page to "${startPage}" because it is not found. Please check you have specified an existing page in the web part settings.`);
+          throw new Error(`Unable to set active page to '${startPage}' because it is not found. Please check you have specified an existing page in the web part settings.`);
         } else {
           throw err;
         }
@@ -116,7 +116,7 @@ export function TopFrame(props: ITopFrameProps) {
     return await Visio.run(refSession.current, async ctx => {
       const page = ctx.document.getActivePage().load('name');
       await ctx.sync();
-      console.log(`[DiagramFrame] get page returned "${page.name}"`);
+      console.log(`[DiagramFrame] get page returned '${page.name}'`);
       return page.name;
     })
   }
@@ -136,7 +136,7 @@ export function TopFrame(props: ITopFrameProps) {
         await ctx.sync();
 
         // trying to call Visio online API before 'loaded' event results in all sort of odd errors on slow LAN
-        // cna be tested by switching "Slow 3G" for example in chrone dev tools.
+        // cna be tested by switching 'Slow 3G' for example in chrone dev tools.
         for (let i = 0; !loaded && i < 4*10; ++i) {
           await sleep(250);
         }
@@ -171,13 +171,13 @@ export function TopFrame(props: ITopFrameProps) {
           // https://github.com/OfficeDev/office-js/issues/1539
           await sleep(750 * (1 + retry*2));
 
-          console.log(`[DiagramFrame] initialize page "${startPage}"`);
+          console.log(`[DiagramFrame] initialize page '${startPage}'`);
           try {
             ctx.document.setActivePage(startPage);
             await ctx.sync();
           } catch (err) {
             if (err.code === 'ItemNotFound') {
-              throw new Error(`Unable to set active page to "${startPage}" because it is not found. Please check you have specified an existing page in the web part settings.`);
+              throw new Error(`Unable to set active page to '${startPage}' because it is not found. Please check you have specified an existing page in the web part settings.`);
             } else {
               throw err;
             }
@@ -226,7 +226,7 @@ export function TopFrame(props: ITopFrameProps) {
         refContainer.current.innerHTML = '';
         refSession.current = null;
 
-        console.log(`[DiagramFrame] loading "${newBaseUrl}#${newPageName}"`);
+        console.log(`[DiagramFrame] loading '${newBaseUrl}#${newPageName}'`);
         refSession.current = new OfficeExtension.EmbeddedSession(resolved, {
           container: refContainer.current,
           height: '100%',
