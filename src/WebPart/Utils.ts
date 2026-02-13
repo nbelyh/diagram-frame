@@ -72,7 +72,13 @@ export class Utils {
     const { address, subAddress, description, extraInfo } = link;
 
     if (address) {
-      if (Utils.isVisioFileExtension(address)) {
+      if (address.endsWith('Doc.aspx') && Utils.isVisioFileExtension(description)) {
+        return {
+          external: false,
+          url: `${address}?${extraInfo}`,
+          label: description
+        }
+      } else if (Utils.isVisioFileExtension(address)) {
         if (Utils.isRelativeUrl(address)) {
           const absoluteUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1) + address;
           return {
