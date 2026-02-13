@@ -1,0 +1,1 @@
+The Diagram Frame web part is in configuration mode. The sidebar displays configurable parameters, such as the initial page, zoom level, size, and more.

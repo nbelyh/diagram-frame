@@ -1,0 +1,1 @@
+You can also use the Diagram Frame web part in Teams and in FullPage mode in SharePoint. In this case, the web part will occupy all available space.

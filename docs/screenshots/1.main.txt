@@ -1,0 +1,1 @@
+Three Diagram Frame web parts display two Visio diagrams. The left side shows different pages of the same diagram. This represents the "user view" when the web part is in "view" mode, meaning it is not in configuration mode.
